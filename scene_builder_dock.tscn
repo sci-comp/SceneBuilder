@@ -1,0 +1,326 @@
+[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
+
+[ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_ew6id"]
+
+[node name="Scene Builder" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -832.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Collection" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+columns = 4
+
+[node name="1" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "1"
+
+[node name="2" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "2"
+
+[node name="3" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "3"
+
+[node name="4" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "4"
+
+[node name="5" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "5"
+
+[node name="6" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "6"
+
+[node name="7" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "7"
+
+[node name="8" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "8"
+
+[node name="9" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "9"
+
+[node name="10" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "10"
+
+[node name="11" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "11"
+
+[node name="12" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "12"
+
+[node name="13" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "13"
+
+[node name="14" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "14"
+
+[node name="15" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "15"
+
+[node name="16" type="Button" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "16"
+
+[node name="HSeparator1" type="HSeparator" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Icons" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Icons"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Options" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Top" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="UseSurfaceNormals" type="CheckButton" parent="Options/Top"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Use surface normal"
+
+[node name="UseMultiMeshInstance" type="CheckButton" parent="Options/Top"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Add to MultiMeshInstance"
+
+[node name="Middle" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="MultiSelect" type="CheckButton" parent="Options/Middle"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Multi select"
+
+[node name="Bottom" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="GenerateNewIcons2" type="Button" parent="Options/Bottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Find world 3d"
+
+[node name="GenerateNewIcons" type="Button" parent="Options/Bottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Generate new icons"
+
+[node name="RegenAllIcons" type="Button" parent="Options/Bottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Regen all Icons"
+
+[node name="HSeparator3" type="HSeparator" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Tabs" type="TabContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Placement" type="VBoxContainer" parent="Tabs"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="Boolean" type="HBoxContainer" parent="Tabs/Placement"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Placement/Boolean"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Randomize"
+
+[node name="Rotation" type="CheckButton" parent="Tabs/Placement/Boolean"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Rot"
+
+[node name="Scale" type="CheckButton" parent="Tabs/Placement/Boolean"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Scale"
+
+[node name="Headers" type="HBoxContainer" parent="Tabs/Placement"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Placement/Headers"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+
+[node name="x" type="Label" parent="Tabs/Placement/Headers"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "x"
+
+[node name="y" type="Label" parent="Tabs/Placement/Headers"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "y"
+
+[node name="z" type="Label" parent="Tabs/Placement/Headers"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "z"
+
+[node name="Rotation" type="HBoxContainer" parent="Tabs/Placement"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Placement/Rotation"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Rotation"
+
+[node name="x" type="HSlider" parent="Tabs/Placement/Rotation"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 360.0
+
+[node name="y" type="HSlider" parent="Tabs/Placement/Rotation"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 360.0
+
+[node name="z" type="HSlider" parent="Tabs/Placement/Rotation"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 360.0
+
+[node name="HSeparator" type="HSeparator" parent="Tabs/Placement"]
+layout_mode = 2
+
+[node name="Scale" type="HBoxContainer" parent="Tabs/Placement"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Placement/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Scale"
+
+[node name="x" type="SpinBox" parent="Tabs/Placement/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.01
+value = 1.01
+custom_arrow_step = 0.02
+
+[node name="y" type="SpinBox" parent="Tabs/Placement/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.01
+value = 1.01
+custom_arrow_step = 0.02
+
+[node name="z" type="SpinBox" parent="Tabs/Placement/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.01
+value = 1.01
+custom_arrow_step = 0.02
+
+[node name="Scale2" type="HBoxContainer" parent="Tabs/Placement"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Placement/Scale2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+
+[node name="x" type="SpinBox" parent="Tabs/Placement/Scale2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.02
+value = 1.02
+custom_arrow_step = 0.02
+
+[node name="y" type="SpinBox" parent="Tabs/Placement/Scale2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.02
+value = 1.02
+custom_arrow_step = 0.02
+
+[node name="z" type="SpinBox" parent="Tabs/Placement/Scale2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.02
+value = 1.02
+custom_arrow_step = 0.02
