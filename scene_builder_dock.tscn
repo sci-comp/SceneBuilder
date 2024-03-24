@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
+[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
 
 [ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_ew6id"]
+[ext_resource type="Script" path="res://addons/SceneBuilder/all_tabs_visible.gd" id="1_i3re5"]
 
 [node name="Scene Builder" type="VBoxContainer"]
 anchors_preset = 15
@@ -10,250 +11,310 @@ offset_right = -832.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Collection" type="GridContainer" parent="."]
+[node name="Collection" type="Control" parent="."]
 layout_mode = 2
-size_flags_vertical = 0
+script = ExtResource("1_i3re5")
+
+[node name="Tab" type="GridContainer" parent="Collection"]
+layout_mode = 2
+offset_right = 320.0
+offset_bottom = 68.0
 columns = 4
 
-[node name="1" type="Button" parent="Collection"]
+[node name="1" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "1"
-clip_text = true
 
-[node name="2" type="Button" parent="Collection"]
+[node name="2" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "2"
-clip_text = true
 
-[node name="3" type="Button" parent="Collection"]
+[node name="3" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "3"
-clip_text = true
 
-[node name="4" type="Button" parent="Collection"]
+[node name="4" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "4"
-clip_text = true
 
-[node name="5" type="Button" parent="Collection"]
+[node name="5" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "5"
-clip_text = true
 
-[node name="6" type="Button" parent="Collection"]
+[node name="6" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "6"
-clip_text = true
 
-[node name="7" type="Button" parent="Collection"]
+[node name="7" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "7"
-clip_text = true
 
-[node name="8" type="Button" parent="Collection"]
+[node name="8" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "8"
-clip_text = true
 
-[node name="9" type="Button" parent="Collection"]
+[node name="9" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "9"
-clip_text = true
 
-[node name="10" type="Button" parent="Collection"]
+[node name="10" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "10"
-clip_text = true
 
-[node name="11" type="Button" parent="Collection"]
+[node name="11" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "11"
-clip_text = true
 
-[node name="12" type="Button" parent="Collection"]
+[node name="12" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "12"
-clip_text = true
 
-[node name="HSeparator1" type="HSeparator" parent="."]
+[node name="TabContainer" type="TabContainer" parent="Collection"]
 layout_mode = 2
-size_flags_vertical = 0
+offset_top = 72.0
+offset_right = 320.0
+offset_bottom = 72.0
+tabs_visible = false
 
-[node name="Icons" type="ScrollContainer" parent="."]
+[node name="1" type="ScrollContainer" parent="Collection/TabContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Grid" type="GridContainer" parent="Icons"]
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/1"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/2"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="3" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/3"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="4" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/4"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="5" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/5"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="6" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/6"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="7" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/7"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="8" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/8"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="9" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/9"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="10" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/10"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="11" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/11"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="12" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/12"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
 [node name="HSeparator2" type="HSeparator" parent="."]
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_vertical = 10
 
-[node name="Tabs" type="TabContainer" parent="."]
+[node name="Settings" type="TabContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 8
+current_tab = 1
 
-[node name="Options" type="VBoxContainer" parent="Tabs"]
-custom_minimum_size = Vector2(0, 164)
-layout_mode = 2
-size_flags_vertical = 8
-
-[node name="Top" type="HBoxContainer" parent="Tabs/Options"]
-layout_mode = 2
-
-[node name="UseSurfaceNormals" type="CheckButton" parent="Tabs/Options/Top"]
-layout_mode = 2
-theme = ExtResource("1_ew6id")
-text = "Use surface normal"
-
-[node name="UseMultiMeshInstance" type="CheckButton" parent="Tabs/Options/Top"]
-layout_mode = 2
-theme = ExtResource("1_ew6id")
-text = "Add to MultiMeshInstance"
-
-[node name="Middle" type="HBoxContainer" parent="Tabs/Options"]
-layout_mode = 2
-
-[node name="MultiSelect" type="CheckButton" parent="Tabs/Options/Middle"]
-layout_mode = 2
-theme = ExtResource("1_ew6id")
-text = "Multi select"
-
-[node name="Bottom" type="HBoxContainer" parent="Tabs/Options"]
-layout_mode = 2
-
-[node name="GenerateNewIcons2" type="Button" parent="Tabs/Options/Bottom"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "Find world 3d"
-
-[node name="GenerateNewIcons" type="Button" parent="Tabs/Options/Bottom"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "Generate new icons"
-
-[node name="RegenAllIcons" type="Button" parent="Tabs/Options/Bottom"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "Regen all Icons"
-
-[node name="Placement" type="VBoxContainer" parent="Tabs"]
+[node name="Placement" type="VBoxContainer" parent="Settings"]
 visible = false
 custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="Boolean" type="HBoxContainer" parent="Tabs/Placement"]
+[node name="Boolean" type="HBoxContainer" parent="Settings/Placement"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Placement/Boolean"]
+[node name="Label" type="Label" parent="Settings/Placement/Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Randomize"
 
-[node name="Rotation" type="CheckButton" parent="Tabs/Placement/Boolean"]
+[node name="Rotation" type="CheckButton" parent="Settings/Placement/Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Rotation"
 
-[node name="Scale" type="CheckButton" parent="Tabs/Placement/Boolean"]
+[node name="Scale" type="CheckButton" parent="Settings/Placement/Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Scale"
 
-[node name="Headers" type="HBoxContainer" parent="Tabs/Placement"]
+[node name="Headers" type="HBoxContainer" parent="Settings/Placement"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Placement/Headers"]
+[node name="Label" type="Label" parent="Settings/Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 
-[node name="x" type="Label" parent="Tabs/Placement/Headers"]
+[node name="x" type="Label" parent="Settings/Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "x"
 
-[node name="y" type="Label" parent="Tabs/Placement/Headers"]
+[node name="y" type="Label" parent="Settings/Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "y"
 
-[node name="z" type="Label" parent="Tabs/Placement/Headers"]
+[node name="z" type="Label" parent="Settings/Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "z"
 
-[node name="Rotation" type="HBoxContainer" parent="Tabs/Placement"]
+[node name="Rotation" type="HBoxContainer" parent="Settings/Placement"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Placement/Rotation"]
+[node name="Label" type="Label" parent="Settings/Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Rotation"
 
-[node name="x" type="HSlider" parent="Tabs/Placement/Rotation"]
+[node name="x" type="HSlider" parent="Settings/Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 360.0
 
-[node name="y" type="HSlider" parent="Tabs/Placement/Rotation"]
+[node name="y" type="HSlider" parent="Settings/Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 360.0
 
-[node name="z" type="HSlider" parent="Tabs/Placement/Rotation"]
+[node name="z" type="HSlider" parent="Settings/Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 360.0
 
-[node name="ScaleMin" type="HBoxContainer" parent="Tabs/Placement"]
+[node name="ScaleMin" type="HBoxContainer" parent="Settings/Placement"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Placement/ScaleMin"]
+[node name="Label" type="Label" parent="Settings/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Scale"
 
-[node name="x" type="SpinBox" parent="Tabs/Placement/ScaleMin"]
+[node name="x" type="SpinBox" parent="Settings/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
@@ -262,7 +323,7 @@ step = 0.01
 value = 0.9
 custom_arrow_step = 0.02
 
-[node name="y" type="SpinBox" parent="Tabs/Placement/ScaleMin"]
+[node name="y" type="SpinBox" parent="Settings/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
@@ -271,7 +332,7 @@ step = 0.01
 value = 0.9
 custom_arrow_step = 0.02
 
-[node name="z" type="SpinBox" parent="Tabs/Placement/ScaleMin"]
+[node name="z" type="SpinBox" parent="Settings/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
@@ -280,30 +341,21 @@ step = 0.01
 value = 0.9
 custom_arrow_step = 0.02
 
-[node name="Label2" type="Label" parent="Tabs/Placement/ScaleMin"]
+[node name="Label2" type="Label" parent="Settings/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "min"
 
-[node name="ScaleMax" type="HBoxContainer" parent="Tabs/Placement"]
+[node name="ScaleMax" type="HBoxContainer" parent="Settings/Placement"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Placement/ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-
-[node name="x" type="SpinBox" parent="Tabs/Placement/ScaleMax"]
+[node name="Label" type="Label" parent="Settings/Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
-min_value = 0.02
-step = 0.01
-value = 1.1
-custom_arrow_step = 0.02
 
-[node name="y" type="SpinBox" parent="Tabs/Placement/ScaleMax"]
+[node name="x" type="SpinBox" parent="Settings/Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
@@ -312,7 +364,7 @@ step = 0.01
 value = 1.1
 custom_arrow_step = 0.02
 
-[node name="z" type="SpinBox" parent="Tabs/Placement/ScaleMax"]
+[node name="y" type="SpinBox" parent="Settings/Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
@@ -321,8 +373,271 @@ step = 0.01
 value = 1.1
 custom_arrow_step = 0.02
 
-[node name="Label2" type="Label" parent="Tabs/Placement/ScaleMax"]
+[node name="z" type="SpinBox" parent="Settings/Placement/ScaleMax"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.02
+step = 0.01
+value = 1.1
+custom_arrow_step = 0.02
+
+[node name="Label2" type="Label" parent="Settings/Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "max"
+
+[node name="Options" type="VBoxContainer" parent="Settings"]
+custom_minimum_size = Vector2(0, 164)
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Top" type="HBoxContainer" parent="Settings/Options"]
+layout_mode = 2
+
+[node name="UseSurfaceNormals" type="CheckButton" parent="Settings/Options/Top"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Use surface normal"
+
+[node name="UseMultiMeshInstance" type="CheckButton" parent="Settings/Options/Top"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Add to MultiMeshInstance"
+
+[node name="Middle" type="HBoxContainer" parent="Settings/Options"]
+layout_mode = 2
+
+[node name="MultiSelect" type="CheckButton" parent="Settings/Options/Middle"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Multi select"
+
+[node name="Bottom" type="HBoxContainer" parent="Settings/Options"]
+layout_mode = 2
+
+[node name="FindWorld3D" type="Button" parent="Settings/Options/Bottom"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme = ExtResource("1_ew6id")
+text = "Find world 3d"
+
+[node name="Collections" type="ScrollContainer" parent="Settings"]
+visible = false
+custom_minimum_size = Vector2(0, 164)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Settings/Collections"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Icons" type="HBoxContainer" parent="Settings/Collections/VBox"]
+layout_mode = 2
+
+[node name="GenerateNewIcons" type="Button" parent="Settings/Collections/VBox/Icons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Generate new icons"
+
+[node name="RegenAllIcons" type="Button" parent="Settings/Collections/VBox/Icons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "Regen all Icons"
+
+[node name="HSeparator" type="HSeparator" parent="Settings/Collections/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="Settings/Collections/VBox"]
+layout_mode = 2
+
+[node name="Left" type="VBoxContainer" parent="Settings/Collections/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="1" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "1"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="2" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "2"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="3" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "3"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="4" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "4"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="5" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "5"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="6" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/6"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "6"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/6"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="Right" type="VBoxContainer" parent="Settings/Collections/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="7" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/7"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "7"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/7"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="8" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/8"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "8"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/8"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="9" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/9"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "9"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/9"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="10" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/10"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "10"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/10"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="11" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/11"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "11"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/11"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="12" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/12"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "12"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/12"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7

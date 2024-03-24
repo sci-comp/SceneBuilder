@@ -11,6 +11,20 @@ offset_bottom = -392.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Collection" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Collection"]
+layout_mode = 2
+theme = ExtResource("1_638o8")
+text = "Collection:"
+
+[node name="LineEdit" type="LineEdit" parent="Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Temporary"
+alignment = 1
+
 [node name="Boolean" type="HBoxContainer" parent="."]
 layout_mode = 2
 

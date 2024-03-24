@@ -6,18 +6,19 @@ var reusable_instance
 
 enum SceneCommands 
 {
-	alphabetize_nodes = 0,
-	instantiate_at_cursor = 10,
-	instantiate_from_json = 11,
-	instantiate_in_a_row = 12,
-	make_local = 20,
-	reset_node_name = 30,
-	reset_transform = 31,
-	reset_transform_rotation = 32,
-	select_children = 50,
-	select_parents = 51,
-	swap_nodes = 60,
-	swap_nodes_in_scene = 61
+	alphabetize_nodes = 1,
+	create_scene_builder_items = 10,
+	instantiate_at_cursor = 30,
+	instantiate_from_json = 31,
+	instantiate_in_a_row = 32,
+	make_local = 40,
+	reset_node_name = 50,
+	reset_transform = 61,
+	reset_transform_rotation = 62,
+	select_children = 70,
+	select_parents = 71,
+	swap_nodes = 80,
+	swap_nodes_in_scene = 81
 }
 
 func _input(event: InputEvent):
@@ -39,6 +40,14 @@ func _input(event: InputEvent):
 					reset_transform_rotation()
 				elif event.keycode == KEY_X:
 					swap_nodes_in_scene()
+				elif event.keycode == KEY_J:
+					instantiate_from_json()
+				elif event.keycode == KEY_L:
+					instantiate_in_a_row(1)
+				elif event.keycode == KEY_SEMICOLON:
+					instantiate_in_a_row(2)
+				elif event.keycode == KEY_APOSTROPHE:
+					instantiate_in_a_row(5)
 					
 			elif event.ctrl_pressed:
 				
@@ -54,6 +63,10 @@ func _enter_tree():
 	add_tool_submenu_item("Scene Builder", submenu_scene)
 	
 	submenu_scene.add_item("Alphabetize nodes (Alt+A)", SceneCommands.alphabetize_nodes)
+	
+	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
+	submenu_scene.add_item("Instantiate at cursor", SceneCommands.instantiate_at_cursor)
+	
 	submenu_scene.add_item("Make local (Alt+L)", SceneCommands.make_local)
 	submenu_scene.add_item("Reset node names (Alt+N)", SceneCommands.reset_node_name)
 	submenu_scene.add_item("Reset transform (Alt+T)", SceneCommands.reset_transform)
@@ -70,6 +83,10 @@ func _on_scene_submenu_item_selected(id: int):
 	match id:
 		SceneCommands.alphabetize_nodes:
 			alphabetize_nodes()
+			
+		SceneCommands.create_scene_builder_items:
+			create_scene_builder_items()
+		
 		SceneCommands.make_local:
 			make_local()
 		SceneCommands.reset_node_name:
@@ -91,6 +108,24 @@ func alphabetize_nodes():
 	var _instance = preload("res://addons/SceneBuilder/Commands/alphabetize_nodes.gd").new()
 	_instance.execute()
 
+func create_scene_builder_items():
+	var reusable_instance = preload("res://addons/SceneBuilder/Commands/create_scene_builder_items.gd").new()
+	add_child(reusable_instance)
+	reusable_instance.done.connect(_on_reusable_instance_done)
+	reusable_instance.execute()
+
+func instantiate_at_cursor():
+	var _instance = preload("res://addons/SceneBuilder/Commands/instantiate_at_cursor.gd").new()
+	_instance.execute()
+
+func instantiate_from_json():
+	var _instance = preload("res://addons/SceneBuilder/Commands/instantiate_from_json.gd").new()
+	_instance.execute()
+
+func instantiate_in_a_row(_space):
+	var _instance = preload("res://addons/SceneBuilder/Commands/instantiate_in_a_row.gd").new()
+	_instance.execute(_space)
+
 func make_local():
 	var _instance = preload("res://addons/SceneBuilder/Commands/make_local.gd").new()
 	_instance.execute()
@@ -99,20 +134,20 @@ func reset_node_name():
 	var _instance = preload("res://addons/SceneBuilder/Commands/reset_node_name.gd").new()
 	_instance.execute()
 
-func select_children():
-	var _instance = preload("res://addons/SceneBuilder/Commands/select_children.gd").new()
-	_instance.execute()
-	
-func select_parents():
-	var _instance = preload("res://addons/SceneBuilder/Commands/select_parents.gd").new()
-	_instance.execute()
-
 func reset_transform():
 	var _instance = preload("res://addons/SceneBuilder/Commands/reset_transform.gd").new()
 	_instance.execute()
 
 func reset_transform_rotation():
 	var _instance = preload("res://addons/SceneBuilder/Commands/reset_transform_rotation.gd").new()
+	_instance.execute()
+
+func select_children():
+	var _instance = preload("res://addons/SceneBuilder/Commands/select_children.gd").new()
+	_instance.execute()
+	
+func select_parents():
+	var _instance = preload("res://addons/SceneBuilder/Commands/select_parents.gd").new()
 	_instance.execute()
 
 func swap_nodes():
@@ -126,5 +161,8 @@ func swap_nodes_in_scene():
 # ------------------------------------------------------------------------------
 
 func _on_reusable_instance_done():
-	print("Freeing instance")
-	reusable_instance.queue_free()
+	if reusable_instance != null:
+		print("Freeing reusable instance")
+		reusable_instance.queue_free()
+
+
