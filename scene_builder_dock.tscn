@@ -20,96 +20,84 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "1"
+clip_text = true
 
 [node name="2" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "2"
+clip_text = true
 
 [node name="3" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "3"
+clip_text = true
 
 [node name="4" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "4"
+clip_text = true
 
 [node name="5" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "5"
+clip_text = true
 
 [node name="6" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "6"
+clip_text = true
 
 [node name="7" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "7"
+clip_text = true
 
 [node name="8" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "8"
+clip_text = true
 
 [node name="9" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "9"
+clip_text = true
 
 [node name="10" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "10"
+clip_text = true
 
 [node name="11" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "11"
+clip_text = true
 
 [node name="12" type="Button" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "12"
-
-[node name="13" type="Button" parent="Collection"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "13"
-
-[node name="14" type="Button" parent="Collection"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "14"
-
-[node name="15" type="Button" parent="Collection"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "15"
-
-[node name="16" type="Button" parent="Collection"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "16"
+clip_text = true
 
 [node name="HSeparator1" type="HSeparator" parent="."]
 layout_mode = 2
@@ -128,61 +116,60 @@ columns = 4
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Options" type="VBoxContainer" parent="."]
+[node name="Tabs" type="TabContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="Top" type="HBoxContainer" parent="Options"]
+[node name="Options" type="VBoxContainer" parent="Tabs"]
+custom_minimum_size = Vector2(0, 164)
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Top" type="HBoxContainer" parent="Tabs/Options"]
 layout_mode = 2
 
-[node name="UseSurfaceNormals" type="CheckButton" parent="Options/Top"]
+[node name="UseSurfaceNormals" type="CheckButton" parent="Tabs/Options/Top"]
 layout_mode = 2
 theme = ExtResource("1_ew6id")
 text = "Use surface normal"
 
-[node name="UseMultiMeshInstance" type="CheckButton" parent="Options/Top"]
+[node name="UseMultiMeshInstance" type="CheckButton" parent="Tabs/Options/Top"]
 layout_mode = 2
 theme = ExtResource("1_ew6id")
 text = "Add to MultiMeshInstance"
 
-[node name="Middle" type="HBoxContainer" parent="Options"]
+[node name="Middle" type="HBoxContainer" parent="Tabs/Options"]
 layout_mode = 2
 
-[node name="MultiSelect" type="CheckButton" parent="Options/Middle"]
+[node name="MultiSelect" type="CheckButton" parent="Tabs/Options/Middle"]
 layout_mode = 2
 theme = ExtResource("1_ew6id")
 text = "Multi select"
 
-[node name="Bottom" type="HBoxContainer" parent="Options"]
+[node name="Bottom" type="HBoxContainer" parent="Tabs/Options"]
 layout_mode = 2
 
-[node name="GenerateNewIcons2" type="Button" parent="Options/Bottom"]
+[node name="GenerateNewIcons2" type="Button" parent="Tabs/Options/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Find world 3d"
 
-[node name="GenerateNewIcons" type="Button" parent="Options/Bottom"]
+[node name="GenerateNewIcons" type="Button" parent="Tabs/Options/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Generate new icons"
 
-[node name="RegenAllIcons" type="Button" parent="Options/Bottom"]
+[node name="RegenAllIcons" type="Button" parent="Tabs/Options/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Regen all Icons"
 
-[node name="HSeparator3" type="HSeparator" parent="."]
-layout_mode = 2
-size_flags_vertical = 8
-
-[node name="Tabs" type="TabContainer" parent="."]
-layout_mode = 2
-size_flags_vertical = 8
-
 [node name="Placement" type="VBoxContainer" parent="Tabs"]
+visible = false
+custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 size_flags_vertical = 10
 
@@ -199,7 +186,7 @@ text = "Randomize"
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
-text = "Rot"
+text = "Rotation"
 
 [node name="Scale" type="CheckButton" parent="Tabs/Placement/Boolean"]
 layout_mode = 2
@@ -257,70 +244,85 @@ layout_mode = 2
 size_flags_horizontal = 3
 max_value = 360.0
 
-[node name="HSeparator" type="HSeparator" parent="Tabs/Placement"]
+[node name="ScaleMin" type="HBoxContainer" parent="Tabs/Placement"]
 layout_mode = 2
 
-[node name="Scale" type="HBoxContainer" parent="Tabs/Placement"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Tabs/Placement/Scale"]
+[node name="Label" type="Label" parent="Tabs/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Scale"
 
-[node name="x" type="SpinBox" parent="Tabs/Placement/Scale"]
+[node name="x" type="SpinBox" parent="Tabs/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 min_value = 0.01
-value = 1.01
+step = 0.01
+value = 0.9
 custom_arrow_step = 0.02
 
-[node name="y" type="SpinBox" parent="Tabs/Placement/Scale"]
+[node name="y" type="SpinBox" parent="Tabs/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 min_value = 0.01
-value = 1.01
+step = 0.01
+value = 0.9
 custom_arrow_step = 0.02
 
-[node name="z" type="SpinBox" parent="Tabs/Placement/Scale"]
+[node name="z" type="SpinBox" parent="Tabs/Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 min_value = 0.01
-value = 1.01
+step = 0.01
+value = 0.9
 custom_arrow_step = 0.02
 
-[node name="Scale2" type="HBoxContainer" parent="Tabs/Placement"]
+[node name="Label2" type="Label" parent="Tabs/Placement/ScaleMin"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "min"
+
+[node name="ScaleMax" type="HBoxContainer" parent="Tabs/Placement"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Tabs/Placement/Scale2"]
+[node name="Label" type="Label" parent="Tabs/Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 
-[node name="x" type="SpinBox" parent="Tabs/Placement/Scale2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-min_value = 0.02
-value = 1.02
-custom_arrow_step = 0.02
-
-[node name="y" type="SpinBox" parent="Tabs/Placement/Scale2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-min_value = 0.02
-value = 1.02
-custom_arrow_step = 0.02
-
-[node name="z" type="SpinBox" parent="Tabs/Placement/Scale2"]
+[node name="x" type="SpinBox" parent="Tabs/Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 min_value = 0.02
-value = 1.02
+step = 0.01
+value = 1.1
 custom_arrow_step = 0.02
+
+[node name="y" type="SpinBox" parent="Tabs/Placement/ScaleMax"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.02
+step = 0.01
+value = 1.1
+custom_arrow_step = 0.02
+
+[node name="z" type="SpinBox" parent="Tabs/Placement/ScaleMax"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+min_value = 0.02
+step = 0.01
+value = 1.1
+custom_arrow_step = 0.02
+
+[node name="Label2" type="Label" parent="Tabs/Placement/ScaleMax"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ew6id")
+text = "max"
