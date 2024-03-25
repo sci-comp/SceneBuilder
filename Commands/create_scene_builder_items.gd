@@ -1,6 +1,8 @@
 @tool
 extends EditorPlugin
 
+var path_root = "res://Data/SceneBuilderCollections/"
+
 var editor : EditorInterface
 var popup_instance: PopupPanel
 
@@ -74,11 +76,10 @@ func _create_resource(path: String):
 	var resource : SceneBuilderItem = load("res://addons/SceneBuilder/scene_builder_item.gd").new()
 	
 	if ResourceLoader.exists(path) and load(path) is PackedScene:
-		#var scene = load(file_path) as PackedScene
 		
 		resource.scene_path = path
 		resource.item_name = path.get_file().get_basename()
-		resource.collection = collection_line_edit.text
+		resource.collection_name = collection_line_edit.text
 		
 		# icon
 		resource.icon = load("res://addons/SceneBuilder/icon_tmp.png")
@@ -97,17 +98,63 @@ func _create_resource(path: String):
 		resource.random_scale_y_max = scaley_spin_box_max.value
 		resource.random_scale_z_max = scalez_spin_box_max.value
 		
-		var save_path = "res://Data/SceneBuilder/Collection/%s/%s.tres" % [resource.collection, resource.item_name]
+		var path_to_collection_folder = path_root + resource.collection_name
+		var path_to_item_folder = path_to_collection_folder + "/Item"
+		var path_to_thumbnail_folder = path_to_collection_folder + "/Thumbnail"
 		
-		var dir = DirAccess.open(save_path)
-		if not dir:
-			dir.make_dir(save_path)
+		create_directory_if_not_exists(path_to_collection_folder)
+		create_directory_if_not_exists(path_to_item_folder)
+		create_directory_if_not_exists(path_to_thumbnail_folder)
 
+		create_icon(resource.scene_path, resource.collection_name)
+		
+		var save_path = path_to_item_folder + "/%s.tres" % resource.item_name
 		ResourceSaver.save(resource, save_path)
+		print("Resource saved: " + save_path)
+
+func create_directory_if_not_exists(path_to_directory: String) -> void:
+	var dir = DirAccess.open(path_to_directory)
+	if not dir:
+		print("Creating directory: " + path_to_directory)
+		dir.make_dir_recursive(path_to_directory)
 		
-		print("Resource created: " + resource.item_name)
-
-
+func create_icon(scene_path : String, collection_name : String) -> void:
+	# Validate the path and load the scene.
+	if not scene_path.ends_with(".glb") and not scene_path.ends_with(".tscn"):
+		print("Invalid scene file. Must end with .glb or .tscn")
+		return
+	var packed_scene = load(scene_path) as PackedScene
+	if packed_scene == null:
+		print("Failed to load the scene.")
+		return
+	var object_name = scene_path.get_file().get_basename()
+	
+	# Instantiate icon_studio.tscn
+	var icon_studio_scene = load("res://addons/SceneBuilder/icon_studio.tscn") as PackedScene
+	if icon_studio_scene == null:
+		print("Failed to load icon studio.")
+		return
+	var studio_instance : SubViewport = icon_studio_scene.instantiate()
+	var studio_camera : Camera3D = studio_instance.get_node("CameraRoot/Pitch/Camera3D") as Camera3D
+	if studio_camera == null:
+		print("Camera3D not found in icon studio.")
+		return
+	
+	# Add subject to studio scene
+	var scene_instance : Node3D = packed_scene.instantiate()
+	studio_instance.add_child(scene_instance)
+	
+	#await get_tree().create_timer(1)
+	#await RenderingServer.frame_post_draw
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	# Bug! https://github.com/godotengine/godot/issues/81754
+	# Todo: Fix after bug is patched
+	var img = studio_instance.get_texture().get_image()
+	var save_path = path_root + "%s/Thumbnail/%s.png" % [collection_name, object_name]
+	print("Saving icon to: ", save_path)
+	img.save_png(save_path)
 
 
 

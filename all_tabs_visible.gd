@@ -1,4 +1,5 @@
 extends Node
+class_name AllTabsVisible
 
 var collection_01 : Button = $"Tab/1"
 var collection_02 : Button = $"Tab/2"
@@ -15,7 +16,8 @@ var collection_12 : Button = $"Tab/12"
 
 var tab_container : TabContainer = $"TabContainer"
 
-func _ready():
+func initialize():
+	print("initializing tab manager")
 	collection_01.pressed.connect(on_button_pressed(1))
 	collection_02.pressed.connect(on_button_pressed(2))
 	collection_03.pressed.connect(on_button_pressed(3))
@@ -30,4 +32,5 @@ func _ready():
 	collection_12.pressed.connect(on_button_pressed(12))
 
 func on_button_pressed(tab_index: int):
-	tab_container.current_tab = tab_index
+	print("Changing to tab: ", tab_index-1)
+	tab_container.current_tab = tab_index-1

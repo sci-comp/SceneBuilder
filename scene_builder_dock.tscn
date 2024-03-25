@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
+[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
 
 [ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_ew6id"]
-[ext_resource type="Script" path="res://addons/SceneBuilder/all_tabs_visible.gd" id="1_i3re5"]
 
 [node name="Scene Builder" type="VBoxContainer"]
 anchors_preset = 15
@@ -13,7 +12,6 @@ grow_vertical = 2
 
 [node name="Collection" type="Control" parent="."]
 layout_mode = 2
-script = ExtResource("1_i3re5")
 
 [node name="Tab" type="GridContainer" parent="Collection"]
 layout_mode = 2
@@ -95,12 +93,14 @@ text = "12"
 
 [node name="TabContainer" type="TabContainer" parent="Collection"]
 layout_mode = 2
-offset_top = 72.0
+offset_top = 80.0
 offset_right = 320.0
-offset_bottom = 72.0
+offset_bottom = 448.0
+current_tab = 1
 tabs_visible = false
 
 [node name="1" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -110,7 +110,6 @@ size_flags_horizontal = 3
 columns = 4
 
 [node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -218,6 +217,13 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
+
+[node name="HSeparator3" type="HSeparator" parent="Collection"]
+layout_mode = 2
+offset_top = 445.0
+offset_right = 321.0
+offset_bottom = 449.0
+size_flags_vertical = 10
 
 [node name="HSeparator2" type="HSeparator" parent="."]
 layout_mode = 2
@@ -423,221 +429,18 @@ size_flags_horizontal = 10
 theme = ExtResource("1_ew6id")
 text = "Find world 3d"
 
-[node name="Collections" type="ScrollContainer" parent="Settings"]
+[node name="Icons" type="HBoxContainer" parent="Settings"]
 visible = false
-custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="Settings/Collections"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Icons" type="HBoxContainer" parent="Settings/Collections/VBox"]
-layout_mode = 2
-
-[node name="GenerateNewIcons" type="Button" parent="Settings/Collections/VBox/Icons"]
+[node name="GenerateNewIcons" type="Button" parent="Settings/Icons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Generate new icons"
 
-[node name="RegenAllIcons" type="Button" parent="Settings/Collections/VBox/Icons"]
+[node name="RegenAllIcons" type="Button" parent="Settings/Icons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "Regen all Icons"
-
-[node name="HSeparator" type="HSeparator" parent="Settings/Collections/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="Settings/Collections/VBox"]
-layout_mode = 2
-
-[node name="Left" type="VBoxContainer" parent="Settings/Collections/VBox/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="1" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/1"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "1"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/1"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="2" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/2"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "2"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/2"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="3" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/3"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "3"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/3"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="4" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/4"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "4"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/4"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="5" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/5"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "5"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/5"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="6" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Left"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Left/6"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "6"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Left/6"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="Right" type="VBoxContainer" parent="Settings/Collections/VBox/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="7" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/7"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "7"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/7"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="8" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/8"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "8"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/8"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="9" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/9"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "9"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/9"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="10" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/10"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "10"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/10"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="11" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/11"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "11"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/11"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-
-[node name="12" type="HBoxContainer" parent="Settings/Collections/VBox/HBox/Right"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Settings/Collections/VBox/HBox/Right/12"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text = "12"
-horizontal_alignment = 1
-
-[node name="Name" type="LineEdit" parent="Settings/Collections/VBox/HBox/Right/12"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7

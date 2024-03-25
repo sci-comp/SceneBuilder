@@ -1,6 +1,42 @@
-[gd_scene format=3 uid="uid://gea6yaqoucvf"]
+[gd_scene load_steps=6 format=3 uid="uid://gea6yaqoucvf"]
 
-[node name="IconStudio" type="Node3D"]
+[ext_resource type="Material" uid="uid://bfsxgx82pww2m" path="res://addons/StandardAssets/Material/Common/MI_Grid_Light_Gray.tres" id="1_2fiuv"]
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.905553, 0.161649, -0.39223, 0, 0.92456, 0.381036, 0.424234, -0.345048, 0.837238, -33.3717, 34.5057, 85.6875)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_21plb"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_s53tn"]
+sky_material = SubResource("ProceduralSkyMaterial_21plb")
+
+[sub_resource type="Environment" id="Environment_tc7kr"]
+background_mode = 2
+sky = SubResource("Sky_s53tn")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_uuy4a"]
+
+[node name="IconStudio" type="SubViewport"]
+render_target_update_mode = 3
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tc7kr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -2, 0)
+material_override = ExtResource("1_2fiuv")
+mesh = SubResource("BoxMesh_uuy4a")
+
+[node name="CameraRoot" type="Node3D" parent="."]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 0, 0, 0)
+
+[node name="Pitch" type="Node3D" parent="CameraRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.5, 1)
+
+[node name="Camera3D" type="Camera3D" parent="CameraRoot/Pitch"]
+fov = 60.0

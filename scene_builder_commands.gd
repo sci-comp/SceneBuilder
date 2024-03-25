@@ -26,6 +26,8 @@ func _input(event: InputEvent):
 		if event.is_pressed() and !event.is_echo():
 			
 			if event.alt_pressed:
+				if event.keycode == KEY_SLASH:
+					create_scene_builder_items()
 				if event.keycode == KEY_A:
 					alphabetize_nodes()
 				elif event.keycode == KEY_L:
@@ -64,7 +66,7 @@ func _enter_tree():
 	
 	submenu_scene.add_item("Alphabetize nodes (Alt+A)", SceneCommands.alphabetize_nodes)
 	
-	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
+	submenu_scene.add_item("Create scene builder items (Alt+/)", SceneCommands.create_scene_builder_items)
 	submenu_scene.add_item("Instantiate at cursor", SceneCommands.instantiate_at_cursor)
 	
 	submenu_scene.add_item("Make local (Alt+L)", SceneCommands.make_local)

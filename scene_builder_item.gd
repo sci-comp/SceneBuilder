@@ -2,9 +2,9 @@ extends Resource
 class_name SceneBuilderItem
 
 @export var icon : Texture
-@export var item_name : String = "Temporary"
+@export var item_name : String = "TempItemName"
 @export var scene_path : String = ""
-@export var collection : String = "Temporary"
+@export var collection_name : String = "Temporary"
 
 # Boolean
 @export var use_random_rotation : bool = false
