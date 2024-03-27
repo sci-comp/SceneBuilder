@@ -17,7 +17,6 @@ var scene_root
 # Dock controls
 var scene_builder_dock : VBoxContainer
 var tab_container : TabContainer
-
 # Tab buttons
 var btn_collection_01 : Button
 var btn_collection_02 : Button
@@ -31,14 +30,28 @@ var btn_collection_09 : Button
 var btn_collection_10 : Button
 var btn_collection_11 : Button
 var btn_collection_12 : Button
-
+var tab_collection_buttons : Array
+var current_tab : int = 1
 # User input - Placement
-
+var btn_use_random_roatation : CheckButton
+var btn_use_random_scale : CheckButton
+var hslider_random_x_rotation : HSlider
+var hslider_random_y_rotation : HSlider
+var hslider_random_z_rotation : HSlider
+var spinbox_min_x_scale : SpinBox
+var spinbox_min_y_scale : SpinBox
+var spinbox_min_z_scale : SpinBox
+var spinbox_max_x_scale : SpinBox
+var spinbox_max_y_scale : SpinBox
+var spinbox_max_z_scale : SpinBox
 # User input - Options
-
-# User input - Collections
+var btn_use_surface_normal : CheckButton
+var btn_add_to_multi_mesh_instance : CheckButton
+var btn_multi_select : CheckButton
+# User input - Icons
 var btn_generate_new_icons : Button
 var btn_regen_all_icons : Button
+
 var collection_names : Array
 var collections : Dictionary
 
@@ -57,35 +70,33 @@ func _enter_tree():
 	
 	#region Tab buttons
 	
-	btn_collection_01 = scene_builder_dock.get_node("Collection/Tab/1")
-	btn_collection_02 = scene_builder_dock.get_node("Collection/Tab/2")
-	btn_collection_03 = scene_builder_dock.get_node("Collection/Tab/3")
-	btn_collection_04 = scene_builder_dock.get_node("Collection/Tab/4")
-	btn_collection_05 = scene_builder_dock.get_node("Collection/Tab/5")
-	btn_collection_06 = scene_builder_dock.get_node("Collection/Tab/6")
-	btn_collection_07 = scene_builder_dock.get_node("Collection/Tab/7")
-	btn_collection_08 = scene_builder_dock.get_node("Collection/Tab/8")
-	btn_collection_09 = scene_builder_dock.get_node("Collection/Tab/9")
-	btn_collection_10 = scene_builder_dock.get_node("Collection/Tab/10")
-	btn_collection_11 = scene_builder_dock.get_node("Collection/Tab/11")
-	btn_collection_12 = scene_builder_dock.get_node("Collection/Tab/12")
+	populate_collection_names_from_resource()
 	
-	btn_collection_01.pressed.connect(on_custom_tab_button_pressed.bind(1))
-	btn_collection_02.pressed.connect(on_custom_tab_button_pressed.bind(2))
-	btn_collection_03.pressed.connect(on_custom_tab_button_pressed.bind(3))
-	btn_collection_04.pressed.connect(on_custom_tab_button_pressed.bind(4))
-	btn_collection_05.pressed.connect(on_custom_tab_button_pressed.bind(5))
-	btn_collection_06.pressed.connect(on_custom_tab_button_pressed.bind(6))
-	btn_collection_07.pressed.connect(on_custom_tab_button_pressed.bind(7))
-	btn_collection_08.pressed.connect(on_custom_tab_button_pressed.bind(8))
-	btn_collection_09.pressed.connect(on_custom_tab_button_pressed.bind(9))
-	btn_collection_10.pressed.connect(on_custom_tab_button_pressed.bind(10))
-	btn_collection_11.pressed.connect(on_custom_tab_button_pressed.bind(11))
-	btn_collection_12.pressed.connect(on_custom_tab_button_pressed.bind(12))
+	tab_collection_buttons = [
+		btn_collection_01, 
+		btn_collection_02,
+		btn_collection_03,
+		btn_collection_04,
+		btn_collection_05,
+		btn_collection_06,
+		btn_collection_07,
+		btn_collection_08,
+		btn_collection_09,
+		btn_collection_10,
+		btn_collection_11,
+		btn_collection_12]
+	
+	var k : int = 0
+	for tab_button : Button in tab_collection_buttons:
+		k += 1
+		tab_button = scene_builder_dock.get_node("Collection/Tab/%s" % k)
+		tab_button.pressed.connect(on_custom_tab_button_pressed.bind(k))
+		var collection_name = collection_names[k-1]
+		if collection_name == "":
+			collection_name = " "
+		tab_button.text = collection_name
 
 	#endregion
-
-	populate_collection_names_from_resource()
 	
 	var i = 0
 	for _collection_name in collection_names:
@@ -102,7 +113,7 @@ func _enter_tree():
 			print("Populating grid with icons")
 			for item : SceneBuilderItem in items:
 				var texture_button : TextureButton = TextureButton.new()
-				texture_button.texture_normal = load(path_to_tmp_icon)
+				texture_button.texture_normal = item.icon  #load(path_to_tmp_icon)
 				texture_button.pressed.connect(on_item_icon_clicked.bind(item.item_name))
 				grid_container.add_child(texture_button)
 
@@ -170,7 +181,6 @@ func instantiate_at_cursor(path):
 		if loaded is PackedScene:
 			var scene : PackedScene = loaded
 			
-			
 			var instance = scene.instantiate()
 			
 			var origin = camera.project_ray_origin(mouse_pos)
@@ -200,8 +210,10 @@ func update_world_3d():
 	camera = viewport.get_camera_3d()
 
 func on_custom_tab_button_pressed(tab_index: int):
-	print("Changing to tab: ", tab_index-1)
 	tab_container.current_tab = tab_index-1
+
+func reload_all_items():
+	print("Loading items from all collections...")
 
 func _exit_tree():
 	remove_control_from_docks(scene_builder_dock)

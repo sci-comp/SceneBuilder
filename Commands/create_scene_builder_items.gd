@@ -27,6 +27,9 @@ var scalez_spin_box_max : SpinBox
 
 var ok_button: Button
 
+var max_diameter : float
+var icon_studio : SubViewport
+
 signal done
 
 func execute():
@@ -62,11 +65,24 @@ func _on_ok_pressed():
 	
 	print("User input has been set")
 	
-	var selected_paths = editor.get_selected_paths()
-	
-	print("Selected paths: " + str(selected_paths.size()))
-	for path in selected_paths:
-		_create_resource(path)
+	var path_to_icon_studio : String = "res://addons/SceneBuilder/icon_studio.tscn"
+	if FileAccess.file_exists(path_to_icon_studio):
+		
+		editor.open_scene_from_path(path_to_icon_studio)
+		
+		icon_studio = editor.get_edited_scene_root() as SubViewport
+		if icon_studio == null:
+			print("Failed to load icon studio")
+			return
+		
+		var selected_paths = editor.get_selected_paths()
+		print("Selected paths: " + str(selected_paths.size()))
+		for path in selected_paths:
+			await _create_resource(path)
+		
+	else:
+		print("Path to icon studio not found")
+		return 
 	
 	popup_instance.queue_free()
 	emit_signal("done")
@@ -77,12 +93,11 @@ func _create_resource(path: String):
 	
 	if ResourceLoader.exists(path) and load(path) is PackedScene:
 		
+		#region Populate resource
+		
 		resource.scene_path = path
 		resource.item_name = path.get_file().get_basename()
 		resource.collection_name = collection_line_edit.text
-		
-		# icon
-		resource.icon = load("res://addons/SceneBuilder/icon_tmp.png")
 		
 		resource.use_random_rotation = randomize_rotation_checkbox.button_pressed
 		resource.use_random_scale = randomize_scale_checkbox.button_pressed
@@ -98,17 +113,68 @@ func _create_resource(path: String):
 		resource.random_scale_y_max = scaley_spin_box_max.value
 		resource.random_scale_z_max = scalez_spin_box_max.value
 		
+		#endregion
+		
+		#region Create directories
+		
 		var path_to_collection_folder = path_root + resource.collection_name
 		var path_to_item_folder = path_to_collection_folder + "/Item"
 		var path_to_thumbnail_folder = path_to_collection_folder + "/Thumbnail"
 		
+		print("coll: " + path_to_collection_folder)
 		create_directory_if_not_exists(path_to_collection_folder)
+		print("item")
 		create_directory_if_not_exists(path_to_item_folder)
+		print("thumbnail")
 		create_directory_if_not_exists(path_to_thumbnail_folder)
 
-		create_icon(resource.scene_path, resource.collection_name)
+		#endregion
+
+		#region Create icon
 		
-		var save_path = path_to_item_folder + "/%s.tres" % resource.item_name
+		# Validate
+		if not resource.scene_path.ends_with(".glb") and not resource.scene_path.ends_with(".tscn"):
+			print("Invalid scene file. Must end with .glb or .tscn")
+			return
+		var packed_scene = load(resource.scene_path) as PackedScene
+		if packed_scene == null:
+			print("Failed to load the item scene.")
+			return
+
+		var object_name = resource.scene_path.get_file().get_basename()
+		
+		# Add packed_scene to studio scene
+		var subject : Node3D = packed_scene.instantiate()
+		icon_studio.add_child(subject)
+		subject.owner = icon_studio
+		
+		var studio_camera : Camera3D = icon_studio.get_node("CameraRoot/Pitch/Camera3D") as Camera3D
+		
+		max_diameter = 0.0
+		search_for_mesh_instance_3d(subject)
+		print("max_diameter: ", max_diameter)
+		studio_camera.position = Vector3(0, 0, max_diameter)
+		
+		await get_tree().process_frame
+		await get_tree().process_frame
+		
+		var viewport_tex : Texture = icon_studio.get_texture()
+		var img : Image = viewport_tex.get_image()
+		var tex : Texture = ImageTexture.create_from_image(img)
+		
+		resource.icon = tex
+		
+		var save_path = path_root + "%s/Thumbnail/%s.png" % [resource.collection_name, object_name]
+		print("Saving icon to: ", save_path)
+		img.save_png(save_path)
+		
+		await get_tree().process_frame
+		
+		subject.queue_free()
+	
+		#endregion
+		
+		save_path = path_to_item_folder + "/%s.tres" % resource.item_name
 		ResourceSaver.save(resource, save_path)
 		print("Resource saved: " + save_path)
 
@@ -116,45 +182,22 @@ func create_directory_if_not_exists(path_to_directory: String) -> void:
 	var dir = DirAccess.open(path_to_directory)
 	if not dir:
 		print("Creating directory: " + path_to_directory)
-		dir.make_dir_recursive(path_to_directory)
-		
-func create_icon(scene_path : String, collection_name : String) -> void:
-	# Validate the path and load the scene.
-	if not scene_path.ends_with(".glb") and not scene_path.ends_with(".tscn"):
-		print("Invalid scene file. Must end with .glb or .tscn")
-		return
-	var packed_scene = load(scene_path) as PackedScene
-	if packed_scene == null:
-		print("Failed to load the scene.")
-		return
-	var object_name = scene_path.get_file().get_basename()
+		DirAccess.make_dir_recursive_absolute(path_to_directory)
+
+func search_for_mesh_instance_3d(node : Node):
 	
-	# Instantiate icon_studio.tscn
-	var icon_studio_scene = load("res://addons/SceneBuilder/icon_studio.tscn") as PackedScene
-	if icon_studio_scene == null:
-		print("Failed to load icon studio.")
-		return
-	var studio_instance : SubViewport = icon_studio_scene.instantiate()
-	var studio_camera : Camera3D = studio_instance.get_node("CameraRoot/Pitch/Camera3D") as Camera3D
-	if studio_camera == null:
-		print("Camera3D not found in icon studio.")
-		return
-	
-	# Add subject to studio scene
-	var scene_instance : Node3D = packed_scene.instantiate()
-	studio_instance.add_child(scene_instance)
-	
-	#await get_tree().create_timer(1)
-	#await RenderingServer.frame_post_draw
-	await get_tree().process_frame
-	await get_tree().process_frame
-	
-	# Bug! https://github.com/godotengine/godot/issues/81754
-	# Todo: Fix after bug is patched
-	var img = studio_instance.get_texture().get_image()
-	var save_path = path_root + "%s/Thumbnail/%s.png" % [collection_name, object_name]
-	print("Saving icon to: ", save_path)
-	img.save_png(save_path)
+	if node is MeshInstance3D:
+		var aabb = node.get_mesh().get_aabb()
+		var diameter = aabb.size.length()
+		print("node name w/ diameter: ", node.name, ", ", diameter)
+		max_diameter = max(max_diameter, diameter)
+	for child in node.get_children():
+		search_for_mesh_instance_3d(child)
 
 
 
+'''var img_tmp_icon : Image
+var tex_tmp_icon : Texture
+icon_tmp = load("res://addons/SceneBuilder/icon_tmp.png") as Image
+var img_icon : Image = icon_tmp
+var tex_icon : Texture = ImageTexture.create_from_image(img_icon)'''

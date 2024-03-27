@@ -3,20 +3,20 @@
 [ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_ew6id"]
 
 [node name="Scene Builder" type="VBoxContainer"]
+custom_minimum_size = Vector2(352, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -832.0
+offset_right = -800.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Collection" type="Control" parent="."]
+[node name="Collection" type="VBoxContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Tab" type="GridContainer" parent="Collection"]
 layout_mode = 2
-offset_right = 320.0
-offset_bottom = 68.0
 columns = 4
 
 [node name="1" type="Button" parent="Collection/Tab"]
@@ -91,11 +91,13 @@ size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "12"
 
+[node name="HSeparator3" type="HSeparator" parent="Collection"]
+layout_mode = 2
+size_flags_vertical = 8
+
 [node name="TabContainer" type="TabContainer" parent="Collection"]
 layout_mode = 2
-offset_top = 80.0
-offset_right = 320.0
-offset_bottom = 448.0
+size_flags_vertical = 3
 current_tab = 1
 tabs_visible = false
 
@@ -103,6 +105,7 @@ tabs_visible = false
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/1"]
 layout_mode = 2
@@ -112,6 +115,7 @@ columns = 4
 [node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/2"]
 layout_mode = 2
@@ -122,6 +126,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/3"]
 layout_mode = 2
@@ -132,6 +137,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/4"]
 layout_mode = 2
@@ -142,6 +148,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/5"]
 layout_mode = 2
@@ -152,6 +159,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/6"]
 layout_mode = 2
@@ -162,6 +170,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/7"]
 layout_mode = 2
@@ -172,6 +181,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/8"]
 layout_mode = 2
@@ -182,6 +192,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/9"]
 layout_mode = 2
@@ -192,6 +203,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/10"]
 layout_mode = 2
@@ -202,6 +214,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/11"]
 layout_mode = 2
@@ -212,27 +225,18 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/12"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
-[node name="HSeparator3" type="HSeparator" parent="Collection"]
-layout_mode = 2
-offset_top = 445.0
-offset_right = 321.0
-offset_bottom = 449.0
-size_flags_vertical = 10
-
-[node name="HSeparator2" type="HSeparator" parent="."]
-layout_mode = 2
-size_flags_vertical = 10
-
 [node name="Settings" type="TabContainer" parent="."]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_vertical = 8
-current_tab = 1
+current_tab = 2
 
 [node name="Placement" type="VBoxContainer" parent="Settings"]
 visible = false
@@ -395,6 +399,7 @@ theme = ExtResource("1_ew6id")
 text = "max"
 
 [node name="Options" type="VBoxContainer" parent="Settings"]
+visible = false
 custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 size_flags_vertical = 8
@@ -407,11 +412,6 @@ layout_mode = 2
 theme = ExtResource("1_ew6id")
 text = "Use surface normal"
 
-[node name="UseMultiMeshInstance" type="CheckButton" parent="Settings/Options/Top"]
-layout_mode = 2
-theme = ExtResource("1_ew6id")
-text = "Add to MultiMeshInstance"
-
 [node name="Middle" type="HBoxContainer" parent="Settings/Options"]
 layout_mode = 2
 
@@ -419,6 +419,11 @@ layout_mode = 2
 layout_mode = 2
 theme = ExtResource("1_ew6id")
 text = "Multi select"
+
+[node name="UseMultiMeshInstance" type="CheckButton" parent="Settings/Options/Middle"]
+layout_mode = 2
+theme = ExtResource("1_ew6id")
+text = "Add to MultiMeshInstance"
 
 [node name="Bottom" type="HBoxContainer" parent="Settings/Options"]
 layout_mode = 2
@@ -429,18 +434,13 @@ size_flags_horizontal = 10
 theme = ExtResource("1_ew6id")
 text = "Find world 3d"
 
-[node name="Icons" type="HBoxContainer" parent="Settings"]
-visible = false
+[node name="Item" type="HBoxContainer" parent="Settings"]
+custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 
-[node name="GenerateNewIcons" type="Button" parent="Settings/Icons"]
+[node name="ReloadAllItems" type="Button" parent="Settings/Item"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 theme = ExtResource("1_ew6id")
-text = "Generate new icons"
-
-[node name="RegenAllIcons" type="Button" parent="Settings/Icons"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
-text = "Regen all Icons"
+text = "Reload all items"
