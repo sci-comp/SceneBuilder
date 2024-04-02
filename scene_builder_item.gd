@@ -5,6 +5,8 @@ class_name SceneBuilderItem
 @export var item_name : String = "TempItemName"
 @export var scene_path : String = ""
 @export var collection_name : String = "Temporary"
+@export var item : PackedScene
+@export var index : int
 
 # Boolean
 @export var use_random_rotation : bool = false
@@ -22,4 +24,3 @@ class_name SceneBuilderItem
 @export var random_scale_x_max : float = 1.1
 @export var random_scale_y_max : float = 1.1
 @export var random_scale_z_max : float = 1.1
-
