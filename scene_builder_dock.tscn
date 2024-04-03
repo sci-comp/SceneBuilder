@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
 
-[ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_ew6id"]
+[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/scene_builder_ui_theme.tres" id="2_vl512"]
 
 [node name="Scene Builder" type="VBoxContainer"]
 custom_minimum_size = Vector2(352, 0)
@@ -10,94 +10,99 @@ anchor_bottom = 1.0
 offset_right = -800.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_vl512")
 
 [node name="Collection" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 
 [node name="Tab" type="GridContainer" parent="Collection"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="1" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "1"
 
 [node name="2" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "2"
 
 [node name="3" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "3"
 
 [node name="4" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "4"
 
 [node name="5" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "5"
 
 [node name="6" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "6"
 
 [node name="7" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "7"
 
 [node name="8" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "8"
 
 [node name="9" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "9"
 
 [node name="10" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "10"
 
 [node name="11" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "11"
 
 [node name="12" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "12"
 
 [node name="HSeparator3" type="HSeparator" parent="Collection"]
 layout_mode = 2
 size_flags_vertical = 8
+theme = ExtResource("2_vl512")
 
 [node name="TabContainer" type="TabContainer" parent="Collection"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 current_tab = 1
 tabs_visible = false
 
@@ -105,172 +110,200 @@ tabs_visible = false
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/1"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="3" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/3"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="4" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/4"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="5" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/5"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="6" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/6"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="7" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/7"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="8" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/8"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="9" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/9"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="10" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/10"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="11" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/11"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="12" type="ScrollContainer" parent="Collection/TabContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_vl512")
 horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/12"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 columns = 4
 
 [node name="Settings" type="TabContainer" parent="."]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_vertical = 8
+theme = ExtResource("2_vl512")
 
 [node name="Options" type="VBoxContainer" parent="Settings"]
 custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 size_flags_vertical = 8
+theme = ExtResource("2_vl512")
 
 [node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Options"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Use surface normal"
 
 [node name="UseMultiMeshInstance" type="CheckButton" parent="Settings/Options"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Add to MultiMeshInstance"
 
 [node name="EmptySpace" type="Label" parent="Settings/Options"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="FindWorld3D" type="Button" parent="Settings/Options"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Find world 3d"
 
 [node name="EmptySpace2" type="Label" parent="Settings/Options"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="ReloadAllItems" type="Button" parent="Settings/Options"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Reload all items"
 
 [node name="NotYetImplemented_Placement" type="VBoxContainer" parent="."]
@@ -278,96 +311,104 @@ visible = false
 custom_minimum_size = Vector2(0, 164)
 layout_mode = 2
 size_flags_vertical = 10
+theme = ExtResource("2_vl512")
 
 [node name="Boolean" type="HBoxContainer" parent="NotYetImplemented_Placement"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="Label" type="Label" parent="NotYetImplemented_Placement/Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Randomize"
 
 [node name="Rotation" type="CheckButton" parent="NotYetImplemented_Placement/Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 disabled = true
 text = "Rotation"
 
 [node name="Scale" type="CheckButton" parent="NotYetImplemented_Placement/Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 disabled = true
 text = "Scale"
 
 [node name="Headers" type="HBoxContainer" parent="NotYetImplemented_Placement"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="Label" type="Label" parent="NotYetImplemented_Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 
 [node name="x" type="Label" parent="NotYetImplemented_Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "x"
 
 [node name="y" type="Label" parent="NotYetImplemented_Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "y"
 
 [node name="z" type="Label" parent="NotYetImplemented_Placement/Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "z"
 
 [node name="Rotation" type="HBoxContainer" parent="NotYetImplemented_Placement"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="Label" type="Label" parent="NotYetImplemented_Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Rotation"
 
 [node name="x" type="HSlider" parent="NotYetImplemented_Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 max_value = 360.0
 editable = false
 
 [node name="y" type="HSlider" parent="NotYetImplemented_Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 max_value = 360.0
 editable = false
 
 [node name="z" type="HSlider" parent="NotYetImplemented_Placement/Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 max_value = 360.0
 editable = false
 
 [node name="ScaleMin" type="HBoxContainer" parent="NotYetImplemented_Placement"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="Label" type="Label" parent="NotYetImplemented_Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "Scale"
 
 [node name="x" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 min_value = 0.01
 step = 0.01
 value = 0.9
@@ -377,7 +418,7 @@ custom_arrow_step = 0.02
 [node name="y" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 min_value = 0.01
 step = 0.01
 value = 0.9
@@ -387,7 +428,7 @@ custom_arrow_step = 0.02
 [node name="z" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 min_value = 0.01
 step = 0.01
 value = 0.9
@@ -397,21 +438,22 @@ custom_arrow_step = 0.02
 [node name="Label2" type="Label" parent="NotYetImplemented_Placement/ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "min"
 
 [node name="ScaleMax" type="HBoxContainer" parent="NotYetImplemented_Placement"]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="Label" type="Label" parent="NotYetImplemented_Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 
 [node name="x" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 min_value = 0.02
 step = 0.01
 value = 1.1
@@ -421,7 +463,7 @@ custom_arrow_step = 0.02
 [node name="y" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 min_value = 0.02
 step = 0.01
 value = 1.1
@@ -431,7 +473,7 @@ custom_arrow_step = 0.02
 [node name="z" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 min_value = 0.02
 step = 0.01
 value = 1.1
@@ -441,5 +483,5 @@ custom_arrow_step = 0.02
 [node name="Label2" type="Label" parent="NotYetImplemented_Placement/ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ew6id")
+theme = ExtResource("2_vl512")
 text = "max"

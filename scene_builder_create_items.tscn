@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://x8g21udghd81"]
 
-[ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_638o8"]
+[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/scene_builder_ui_theme.tres" id="1_vnax4"]
 
 [node name="SceneBuilderCreateItems" type="VBoxContainer"]
 anchors_preset = 15
@@ -10,105 +10,115 @@ offset_right = -834.0
 offset_bottom = -392.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Collection" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Label" type="Label" parent="Collection"]
 layout_mode = 2
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "Collection:"
 
 [node name="LineEdit" type="LineEdit" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_vnax4")
 text = "Temporary"
 alignment = 1
 
 [node name="Boolean" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Label" type="Label" parent="Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "Randomize"
 
 [node name="Rotation" type="CheckButton" parent="Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "Rotation"
 
 [node name="Scale" type="CheckButton" parent="Boolean"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "Scale"
 
 [node name="Headers" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Label" type="Label" parent="Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 
 [node name="x" type="Label" parent="Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "x"
 
 [node name="y" type="Label" parent="Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "y"
 
 [node name="z" type="Label" parent="Headers"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "z"
 
 [node name="Rotation" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Label" type="Label" parent="Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "Rotation"
 
 [node name="x" type="HSlider" parent="Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_vnax4")
 max_value = 360.0
 
 [node name="y" type="HSlider" parent="Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_vnax4")
 max_value = 360.0
 
 [node name="z" type="HSlider" parent="Rotation"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_vnax4")
 max_value = 360.0
 
 [node name="ScaleMin" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Label" type="Label" parent="ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "Scale"
 
 [node name="x" type="SpinBox" parent="ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 min_value = 0.01
 step = 0.01
 value = 0.9
@@ -117,7 +127,7 @@ custom_arrow_step = 0.02
 [node name="y" type="SpinBox" parent="ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 min_value = 0.01
 step = 0.01
 value = 0.9
@@ -126,7 +136,7 @@ custom_arrow_step = 0.02
 [node name="z" type="SpinBox" parent="ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 min_value = 0.01
 step = 0.01
 value = 0.9
@@ -135,21 +145,22 @@ custom_arrow_step = 0.02
 [node name="Label2" type="Label" parent="ScaleMin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "min"
 
 [node name="ScaleMax" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Label" type="Label" parent="ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 
 [node name="x" type="SpinBox" parent="ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 min_value = 0.02
 step = 0.01
 value = 1.1
@@ -158,7 +169,7 @@ custom_arrow_step = 0.02
 [node name="y" type="SpinBox" parent="ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 min_value = 0.02
 step = 0.01
 value = 1.1
@@ -167,7 +178,7 @@ custom_arrow_step = 0.02
 [node name="z" type="SpinBox" parent="ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 min_value = 0.02
 step = 0.01
 value = 1.1
@@ -176,13 +187,15 @@ custom_arrow_step = 0.02
 [node name="Label2" type="Label" parent="ScaleMax"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_638o8")
+theme = ExtResource("1_vnax4")
 text = "max"
 
 [node name="HSeparator" type="HSeparator" parent="."]
 layout_mode = 2
+theme = ExtResource("1_vnax4")
 
 [node name="Okay" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
+theme = ExtResource("1_vnax4")
 text = "Okay"
