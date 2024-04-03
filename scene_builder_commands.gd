@@ -21,7 +21,7 @@ enum SceneCommands
 	swap_nodes_in_scene = 81
 }
 
-func _input(event: InputEvent):
+'''func _unhandled_input(event: InputEvent):
 	if event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
 			
@@ -57,7 +57,7 @@ func _input(event: InputEvent):
 					select_children()
 				elif event.keycode == KEY_LEFT:
 					select_parents()
-
+'''
 func _enter_tree():
 	
 	submenu_scene = PopupMenu.new()

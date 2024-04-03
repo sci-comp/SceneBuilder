@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
+[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
 
 [ext_resource type="Theme" uid="uid://x87r5gxs7pdd" path="res://addons/StandardAssets/Default/default_ui_theme.tres" id="1_ew6id"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_myjve"]
 
 [node name="Scene Builder" type="VBoxContainer"]
 custom_minimum_size = Vector2(352, 0)
@@ -445,20 +443,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ew6id")
 text = "max"
-
-[node name="Highlighter" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(76, 76)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-color = Color(0.627451, 1, 0.32549, 0.360784)
-
-[node name="NinePatchRect" type="NinePatchRect" parent="Highlighter"]
-modulate = Color(0.415686, 0.615686, 0.180392, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("CanvasTexture_myjve")

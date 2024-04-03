@@ -43,7 +43,7 @@ var space : PhysicsDirectSpaceState3D
 var world3d : World3D
 var viewport : Viewport
 var camera : Camera3D
-var scene_root
+var scene_root : Node3D
 
 # Updated when reloading all collections
 var collection_names : Array[String] = []
@@ -56,6 +56,7 @@ var current_item : SceneBuilderItem = null
 var current_item_name : String = ""
 var current_instance : Node3D = null
 var current_instance_rid_array : Array[RID] = []
+var current_selection : Node3D
 
 # Assorted variables
 var placement_mode_enabled : bool = false
@@ -67,6 +68,7 @@ func _enter_tree():
 	#
 	editor = get_editor_interface()
 	toolbox = SceneBuilderToolbox.new()
+
 	
 	#
 	update_world_3d()
@@ -142,8 +144,14 @@ func reload_all_items():
 				grid_container.add_child(texture_button)
 				
 				var nine_patch : NinePatchRect = NinePatchRect.new()
-				
+				nine_patch.texture = CanvasTexture.new()
+				nine_patch.draw_center = false
 				nine_patch.set_anchors_preset(Control.PRESET_FULL_RECT)
+				nine_patch.patch_margin_left = 4
+				nine_patch.patch_margin_top = 4
+				nine_patch.patch_margin_right = 4
+				nine_patch.patch_margin_bottom = 4
+				nine_patch.self_modulate = Color("000000")  # black  # 6a9d2e green
 
 func update_world_3d():
 	scene_root = editor.get_edited_scene_root()
@@ -211,13 +219,43 @@ func _process(delta: float) -> void:
 	if placement_mode_enabled:
 		update_temporary_item_position()
 
-func _input(event: InputEvent):
+func _handles(object):
+	return object == null
+
+func _forward_3d_draw_over_viewport(overlay):
+	print("ever here?")
+	overlay.draw_circle(overlay.get_local_mouse_position(), 32, Color.RED)
+
+func _forward_3d_gui_input(_camera : Camera3D, event : InputEvent):
+	print("1) Inside _forward_3d_gui_input")
+	
 	if event is InputEventMouseButton and placement_mode_enabled:
-		if event.is_pressed() and !event.is_echo():
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				instantiate_current_item_at_position()
-			if event.button_index == MOUSE_BUTTON_RIGHT:
-				toggle_placement_mode()
+		
+		var scene_builder_temp : Node3D = scene_root.get_node("SceneBuilderTemp")
+		if scene_builder_temp != null:
+			var child : Node3D = scene_builder_temp.get_child(0)
+			if child != null:
+				editor.get_selection().clear()
+				editor.get_selection().add_node(child)
+				
+				print("2) Mouse button event detected")
+				if event.is_pressed() and !event.is_echo():
+					print("3) Not an echo")
+					
+					var mouse_pos = viewport.get_mouse_position()
+					if mouse_pos.x >= 0 and mouse_pos.y >= 0: 
+						if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
+							
+							print("get_current_editor_name, ")
+							
+							# if mouse is within the viewport, then,
+							if event.button_index == MOUSE_BUTTON_LEFT:
+								instantiate_current_item_at_position()
+							if event.button_index == MOUSE_BUTTON_RIGHT:
+								toggle_placement_mode()
+	
+	print("Stopping input")
+	return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 func update_temporary_item_position() -> void:
 	if current_instance != null:
