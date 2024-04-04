@@ -7,18 +7,18 @@ Scene builder is logically divided into two main parts: scene builder commands a
 
 ## Scene builder commands
 
-In Godot's main bar, click `Project > Tools > Scene Builder` to see a list of productivity command with their associated keyboard shortcuts.
+In Godot's main bar, click `Project > Tools > Scene Builder` to see a list of productivity commands with their associated keyboard shortcuts.
 
-If you would like to know more about how these commands work, please see the command's respective gdscript file for more information, which is located,
+If you would like to know more about how these commands work, please see the command's respective GDScript file for more information, which is located,
 
 	`res://addons/SceneBuilder/Commands/`
 
-Implementation details: The script `scene_builder_commands.gd` is loaded by `scene_builder_plugin.gd`, which is the class registed to EditorPlugin via `plugin.cfg`. The script `scene_builder_commands.gd` adds commands to the Godot toolbar and also listens for keyboard shortcuts. Each command's implementation is contained within the command's respective gdscript file.
+Implementation details: The script `scene_builder_commands.gd` is loaded by `scene_builder_plugin.gd`, which is the class registered to EditorPlugin via `plugin.cfg`. The script `scene_builder_commands.gd` adds commands to the Godot toolbar and also listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file.
 
 
 ## The scene builder dock
 
-The scene builder dock requires manual set up. This isn't an ideal user experience, but doing things this way leads to very simple and stable solutions, please bear with us!
+The scene builder dock requires manual setup. This isn't an ideal user experience, but doing things this way leads to very simple and stable solutions, please bear with us!
 
 In order to set-up the scene builder dock, follow these steps,
 
@@ -77,9 +77,7 @@ By convention, the SceneBuilderItem resource should have the same name as the co
 
 	`res://Data/SceneBuilderCollections/Furniture/Thumbnail/Chair.png`
 
-by convention, a png file with a name matching the item name should be placed in the Thumbnail folder, though the location and name does not actually matter. Icons are not resized, so they should be around 78x78 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration.
-
-In the next step, we automatically generate icons instead.
+by convention, a png file with a name matching the item name should be placed in the Thumbnail folder, though the location and name does not actually matter. Icons are not resized, so they should be around 78x78 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration. In the next section, we automatically generate icons instead.
 
 5. Fill out fields in the SceneBuilderItem resource (Chair.tres for this example),
 
@@ -90,9 +88,9 @@ In the next step, we automatically generate icons instead.
 
 Our chair item is now ready!
 
-Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PatckedScene will no longer be found by SceneBuilder. Todo: How can we update paths when moving PackedScene files? For now, we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
+Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PackedScene will no longer be found by SceneBuilder. Todo: How can we update paths when moving PackedScene files? For now, we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
 
-Although we demonstrate how to automatically generate items and icons in the next section, once SceneBuilderItem are made, they must be edited by hand for any further changes.
+Although we demonstrate how to automatically generate items and icons in the next section, once a SceneBuilderItem is made, it must be edited by hand for any further changes.
 
 ### Batch create items
 
@@ -104,7 +102,7 @@ Although we demonstrate how to automatically generate items and icons in the nex
 
 ### Update the scene builder dock
 
-#### Update World3D
+#### World3D
 
 The scene builder dock needs to know which scene it should be placing items into. This is not done automatically. 
 
@@ -112,37 +110,35 @@ When the plugin first loads, it will attempt to use the currently active scene.
 
 We can change the scene used by the scene builder dock by clicking on that scene's tab, then clicking on the "Find world 3d" button in the scene builder dock.
 
-#### Update items
+#### Scene builder items
 
 Whenever we make changes to SceneBuilderItem resources or collection names, we must then press the "Reload all items" button on the scene builder dock.
 
-### Placing items
+### Placement mode
 
 When an icon is highlighted green in the scene builder dock, then placement mode has been enabled.
 
 To exit placement mode, we may: press the highlighted icon, (Todo: also end placement mode on Esc? On Right-click?)
 
-#### Placement mode
-
-When placement mode is active, then there will be a item preview in the scene. 
+When placement mode is active, then there will be an item preview in the current edited scene. 
 
 Note that a "SceneBuilderTemp" of type Node will be created in the current edited scene. We may safely delete this node when we are done.
 
-##### Use surface normal
+#### Use surface normal
 
 Instantiated items will use the surface normal instead of their original orientation.
 
 (Todo: shortcut? add other normal types?)
 
-##### MultiMeshInstance3D mode
+#### MultiMeshInstance3D mode
 
 An item must be selected before "Add to MultiMeshInstance" is clicked. If no item is selected, then "Add to MultiMeshInstance" will simply toggle back off.
 
-When "Add to MultiMeshInstance" is first clicked, and an item is selected, a new MultiMeshInstance3D node is created. All subsequent instantiatiations of the selected item will be added to the MultiMeshInstance3D node.
+When "Add to MultiMeshInstance" is first clicked, and an item is selected, a new MultiMeshInstance3D node will be created. All subsequent instances of the selected item will be added to the MultiMeshInstance3D node.
 
 To exit MultiMeshInstance mode, click again on the "Add to MultiMeshInstance" button, or press (Todo: shortcut?)
 
-##### Rotation mode
+#### Rotation mode
 
 Press z, x, or c to enter rotation mode, where c represents the y-axis. Rotation will be applied in local or world space according to the editor's "Use Local Space" setting.
 
@@ -150,10 +146,11 @@ While rotation mode is active, mouse movement will rotate the preview item aroun
 
 To exit rotation mode: left click to apply the rotation or right-click to cancel and restore the original rotation.
 
-##### Scale
+#### Scale
 
 Press v to enter scale mode. While scale mode is active, mouse movement will increase or decrease the scale of the preview item.
 
 To exit scale mode: left click to apply or right-click to cancel and restore the original values.
+
 
 
