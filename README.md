@@ -56,7 +56,7 @@ Usually, we will want to create `SceneBuilderItem` resources in bulk. However, f
 
 Continuing with the furniture example, we assume in this section that you have already added "Furniture" to collection names, and have created an empty "Furniture" folder,
 
-1. Create a `PackedScene` that we will use as an item to place. For this example, I will assume that you already have "Chair.glb" or "Chair.gltf" somewhere in your project files. It doesn't matter where your chair scene is located in FileSystem.
+1. Create a `PackedScene` that we will use as an item to place. For this example, I will assume that you already have "Chair.glb" or "Chair.tscn" somewhere in your project files. It doesn't matter where your chair scene is located in FileSystem.
 
 Note that the scene builder dock will only work with files ending in .glb or .tscn.
 
@@ -83,7 +83,7 @@ by convention, a png file with a name matching the item name should be placed in
 
 - Collection name would be "Furniture" in this example
 - Item name can be anything, but by convention is the same as the base of the path name. The item name would be "Chair" in this example.
-- Scene path is the path to Chair.glb (or Chair.gltf).
+- Scene path is the path to Chair.glb (or Chair.tscn).
 - Do not edit fields in the Hidden group. (Todo: does Godot have @export_hidden yet?)
 
 Our chair item is now ready!
@@ -146,7 +146,7 @@ While rotation mode is active, mouse movement will rotate the preview item aroun
 
 To exit rotation mode: left click to apply the rotation or right-click to cancel and restore the original rotation.
 
-#### Scale
+#### Scale mode
 
 Press v to enter scale mode. While scale mode is active, mouse movement will increase or decrease the scale of the preview item.
 
