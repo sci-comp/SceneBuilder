@@ -43,7 +43,7 @@ var space : PhysicsDirectSpaceState3D
 var world3d : World3D
 var viewport : Viewport
 var camera : Camera3D
-var scene_root : Node3D
+var scene_root  # : Quack
 
 # Updated when reloading all collections
 var collection_names : Array[String] = []
@@ -220,6 +220,10 @@ func reload_all_items():
 
 func update_world_3d():
 	scene_root = editor.get_edited_scene_root()
+	if not scene_root or not scene_root is Node3D:
+		printerr("Scene root is not of type Node3D")
+		return
+	
 	viewport = editor.get_editor_viewport_3d()
 	world3d = viewport.find_world_3d()
 	space = world3d.direct_space_state

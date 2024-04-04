@@ -18,7 +18,7 @@ glow_enabled = true
 [sub_resource type="BoxMesh" id="BoxMesh_uuy4a"]
 
 [node name="IconStudio" type="SubViewport"]
-size = Vector2i(76, 76)
+size = Vector2i(78, 78)
 render_target_update_mode = 4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -41,5 +41,5 @@ transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 0, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.5, 1)
 
 [node name="Camera3D" type="Camera3D" parent="CameraRoot/Pitch"]
-transform = Transform3D(1, -2.23517e-08, 2.98023e-08, 0, 1, 4.47035e-08, 0, -2.38419e-07, 1, 0, 0, 11.4468)
+transform = Transform3D(1, -2.23517e-08, 2.98023e-08, 0, 1, 4.47035e-08, 0, -2.38419e-07, 1, 0, 0, 1.76109)
 fov = 60.0
