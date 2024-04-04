@@ -138,7 +138,11 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent):
 func on_custom_tab_button_pressed(tab_index: int):
 	tab_container.current_tab = tab_index-1
 	current_collection_name = collection_names[tab_index-1]
-	current_collection = items_by_collection[current_collection_name]
+	
+	if current_collection_name == "" or current_collection_name == " ":
+		current_collection = {}
+	else:
+		current_collection = items_by_collection[current_collection_name]
 	
 	placement_mode_enabled = false
 	current_item_name = ""
