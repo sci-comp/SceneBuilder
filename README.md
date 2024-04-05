@@ -29,8 +29,6 @@ Implementation details: The script `scene_builder_commands.gd` is loaded by `sce
 
 ## The scene builder dock
 
-The scene builder dock comes with a few implicit shortcuts. 
-
 The scene builder dock requires manual setup. This isn't an ideal user experience, but doing things this way leads to very simple and stable solutions, please bear with us!
 
 ![scene_builder_dock](./Documentation/Image/scene_builder_dock.png)
