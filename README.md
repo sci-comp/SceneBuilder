@@ -13,12 +13,16 @@ If you would like to know more about how these commands work, please see the com
 
 	`res://addons/SceneBuilder/Commands/`
 
+![scene_builder_commands](./Documentation/Image/scene_builder_commands.png)
+
 Implementation details: The script `scene_builder_commands.gd` is loaded by `scene_builder_plugin.gd`, which is the class registered to EditorPlugin via `plugin.cfg`. The script `scene_builder_commands.gd` adds commands to the Godot toolbar and also listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file.
 
 
 ## The scene builder dock
 
 The scene builder dock requires manual setup. This isn't an ideal user experience, but doing things this way leads to very simple and stable solutions, please bear with us!
+
+![scene_builder_dock](./Documentation/Image/scene_builder_dock.png)
 
 In order to set-up the scene builder dock, follow these steps,
 
@@ -34,6 +38,8 @@ Note: This folder path is hard coded into the scene builder dock.
 
 	`res://Data/SceneBuilderCollections/collection_names.tres`
 
+![scene_builder_collection_names_resource](./Documentation/Image/scene_builder_collection_names_resource.png)
+
 This resource path is hard coded into the scene builder dock.
 
 3. Enter your desired collection names into the CollectionNames resource, then create empty folders with matching names.
@@ -41,6 +47,8 @@ This resource path is hard coded into the scene builder dock.
 For example, if you would like a collection named "Furniture," then write "Furniture" in the CollectionNames resource. Next, create an empty folder "Furniture" at location, 
 
 	`res://Data/SceneBuilderCollections/Furniture/`
+
+![scene_builder_file_system](./Documentation/Image/scene_builder_file_system.png)
 
 Your data folder is now initialized.
 
@@ -86,6 +94,8 @@ by convention, a png file with a name matching the item name should be placed in
 - Scene path is the path to Chair.glb (or Chair.tscn).
 - Do not edit fields in the Hidden group. (Todo: does Godot have @export_hidden yet?)
 
+![scene_builder_item](./Documentation/Image/scene_builder_item.png)
+
 Our chair item is now ready!
 
 Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PackedScene will no longer be found by SceneBuilder. Todo: How can we update paths when moving PackedScene files? For now, we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
@@ -99,6 +109,8 @@ Although we demonstrate how to automatically generate items and icons in the nex
 3. Fill out the fields in the popup window, then hit okay.
 4. When the command "Create scene builder items" is run, the scene icon_studio will be opened. Please close the scene when it's done without saving any changes to icon_studio.tscn
 5. In the scene builder dock, click the button "Reload all items"
+
+![scene_builder_create_items](./Documentation/Image/scene_builder_create_items.png)
 
 ### Update the scene builder dock
 

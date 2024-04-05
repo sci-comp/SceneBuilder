@@ -6,8 +6,8 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -834.0
-offset_bottom = -392.0
+offset_right = -818.0
+offset_bottom = -424.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_vnax4")
