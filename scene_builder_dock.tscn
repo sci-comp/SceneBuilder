@@ -312,38 +312,38 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Z" type="Label" parent="Settings/Indicators"]
+[node name="1" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
 size_flags_vertical = 6
 theme = ExtResource("2_vl512")
 theme_override_font_sizes/font_size = 28
-text = "Z"
+text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="X" type="Label" parent="Settings/Indicators"]
+[node name="2" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
 size_flags_vertical = 6
 theme = ExtResource("2_vl512")
 theme_override_font_sizes/font_size = 28
-text = "X"
+text = "2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="C" type="Label" parent="Settings/Indicators"]
+[node name="3" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
 size_flags_vertical = 6
 theme = ExtResource("2_vl512")
 theme_override_font_sizes/font_size = 28
-text = "C"
+text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="V" type="Label" parent="Settings/Indicators"]
+[node name="4" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
 size_flags_vertical = 6
 theme = ExtResource("2_vl512")
 theme_override_font_sizes/font_size = 28
-text = "V"
+text = "4"
 horizontal_alignment = 1
 vertical_alignment = 1

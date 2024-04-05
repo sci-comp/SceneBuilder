@@ -35,10 +35,10 @@ var btn_find_world_3d : Button
 var btn_reload_all_items : Button
 
 # Indicators
-var indicator_z : Label
 var indicator_x : Label
-var indicator_c : Label
-var indicator_v : Label
+var indicator_y : Label
+var indicator_z : Label
+var indicator_scale : Label
 
 #endregion
 
@@ -56,35 +56,33 @@ var collection_names : Array[String] = []
 var items_by_collection : Dictionary = {}
 var item_highlighters_by_collection : Dictionary = {}
 # Also updated on tab button click
-var current_collection : Dictionary = {}
-var current_collection_name : String = ""
+var selected_collection : Dictionary = {}
+var selected_collection_name : String = ""
 # Also updated on item click
-var current_item : SceneBuilderItem = null
-var current_item_name : String = ""
-var current_instance : Node3D = null
-var current_instance_rid_array : Array[RID] = []
-var current_multi_mesh_instance : MultiMeshInstance3D
+var selected_item : SceneBuilderItem = null
+var selected_item_name : String = ""
+var preview_instance : Node3D = null
+var preview_instance_rid_array : Array[RID] = []
 
 # Assorted variables
 var placement_mode_enabled : bool = false
-var rotation_mode_z_enabled : bool = false
 var rotation_mode_x_enabled : bool = false
-var rotation_mode_c_enabled : bool = false
+var rotation_mode_y_enabled : bool = false
+var rotation_mode_z_enabled : bool = false
 var scale_mode_enabled : bool = false
 
-var preview_node : Node3D
 
-var original_preview_rotation : Vector3 = Vector3.ZERO
+var original_preview_basis : Basis = Basis.IDENTITY
+var original_mouse_position : Vector2 = Vector2.ONE
 var original_preview_scale : Vector3 = Vector3.ONE
-var originial_preview_look_target : Vector3 = Vector3.ZERO
-var preview_basis : Basis
-var preview_scale : Vector3 = Vector3.ONE
+
+var scene_builder_temp : Node
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 # ---- Notifications -----------------------------------------------------------
 
-func _enter_tree():
+func _enter_tree() -> void:
 	
 	#
 	editor = get_editor_interface()
@@ -114,15 +112,14 @@ func _enter_tree():
 	btn_use_surface_normal = scene_builder_dock.get_node("Settings/Tab/Options/UseSurfaceNormal")
 	btn_find_world_3d = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/FindWorld3D")
 	btn_reload_all_items = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/ReloadAllItems")
-	btn_use_surface_normal.pressed.connect(on_use_surface_normal_clicked)
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
 	
 	# Indicators
-	indicator_z = scene_builder_dock.get_node("Settings/Indicators/Z")
-	indicator_x = scene_builder_dock.get_node("Settings/Indicators/X")
-	indicator_c = scene_builder_dock.get_node("Settings/Indicators/C")
-	indicator_v = scene_builder_dock.get_node("Settings/Indicators/V")
+	indicator_x = scene_builder_dock.get_node("Settings/Indicators/1")
+	indicator_y = scene_builder_dock.get_node("Settings/Indicators/2")
+	indicator_z = scene_builder_dock.get_node("Settings/Indicators/3")
+	indicator_scale = scene_builder_dock.get_node("Settings/Indicators/4")
 	
 	#endregion
 	
@@ -132,107 +129,162 @@ func _enter_tree():
 	#
 	reload_all_items()
 
-func _exit_tree():
+func _exit_tree() -> void:
 	remove_control_from_docks(scene_builder_dock)
 	scene_builder_dock.queue_free()
 
 func _process(delta: float) -> void:
 	# Update preview item position
 	if placement_mode_enabled:
-		if current_instance != null:
-			populate_current_instance_rid_array(current_instance)
-		var result = perform_raycast_with_exclusion(current_instance_rid_array)
-		if result and result.collider:
-			var _preview_item = scene_root.get_node_or_null("SceneBuilderTemp")
-			if _preview_item and _preview_item.get_child_count() > 0:
-				var _instance = _preview_item.get_child(0)
-				_instance.global_transform.origin = result.position
-				
-				if btn_use_surface_normal.button_pressed:
-					preview_basis = align_up(_instance.global_transform.basis, result.normal)
-					_instance.global_transform.basis = preview_basis
-
-func forward_3d_gui_input(_camera : Camera3D, event : InputEvent):
-	
-	if placement_mode_enabled:
-	
-		if event is InputEventMouseButton:
-			if event.is_pressed() and !event.is_echo():
-				
-				var mouse_pos = viewport.get_mouse_position()
-				if mouse_pos.x >= 0 and mouse_pos.y >= 0: 
-					if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
-						
-						if event.button_index == MOUSE_BUTTON_LEFT:
-							instantiate_current_item_at_position()
-						
-						if event.button_index == MOUSE_BUTTON_RIGHT:
-							toggle_placement_mode()
-						
-					else:
-						printerr("Mouse position is out of bounds, not possible?")
-				else:
-					printerr("Mouse position is out of bounds, not possible?")
-			
-			return EditorPlugin.AFTER_GUI_INPUT_STOP
 		
-		elif event is InputEventKey:
-			if event.is_pressed() and !event.is_echo():
+		if !is_transform_mode_enabled():
+			if preview_instance != null:
+				populate_preview_instance_rid_array(preview_instance)
+			var result = perform_raycast_with_exclusion(preview_instance_rid_array)
+			if result and result.collider:
+				var _preview_item = scene_root.get_node_or_null("SceneBuilderTemp")
+				if _preview_item and _preview_item.get_child_count() > 0:
+					var _instance = _preview_item.get_child(0)
+					_instance.global_transform.origin = result.position
+					
+					if btn_use_surface_normal.button_pressed:
+						_instance.global_transform.basis = align_up(_instance.global_transform.basis, result.normal)
+
+func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInput:
+	
+	if event is InputEventMouseMotion:
+		if placement_mode_enabled:
+			var relative_motion : float
+			if abs(event.relative.x) > abs(event.relative.y):
+				relative_motion = event.relative.x
+			else:
+				relative_motion = -event.relative.y
+			relative_motion *= 0.01  # Sensitivity
+			
+			if rotation_mode_x_enabled:
+				preview_instance.rotate_x(relative_motion)
+			elif rotation_mode_y_enabled:
+				preview_instance.rotate_y(relative_motion)
+			elif rotation_mode_z_enabled:
+				preview_instance.rotate_z(relative_motion)
+			elif scale_mode_enabled:
+				var new_scale : Vector3 = preview_instance.scale * (1 + relative_motion)
+				if is_zero_approx(new_scale.x) or is_zero_approx(new_scale.y) or is_zero_approx(new_scale.z):
+					new_scale = original_preview_scale
+				preview_instance.scale = new_scale
+	
+	if event is InputEventMouseButton and placement_mode_enabled:
+		if event.is_pressed() and !event.is_echo():
+			
+			var mouse_pos = viewport.get_mouse_position()
+			if mouse_pos.x >= 0 and mouse_pos.y >= 0: 
+				if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
+					
+					if event.button_index == MOUSE_BUTTON_LEFT:
+						
+						if is_transform_mode_enabled():
+							# Confirm changes
+							original_preview_basis = preview_instance.basis
+							original_preview_scale = preview_instance.scale
+							end_transform_mode()
+							viewport.warp_mouse(original_mouse_position)
+						else:
+							instantiate_selected_item_at_position()
+					
+					if event.button_index == MOUSE_BUTTON_RIGHT:
+					
+						if is_transform_mode_enabled():
+							# Revert preview transformations
+							print("warping to: ", original_mouse_position)
+							preview_instance.basis = original_preview_basis
+							preview_instance.scale = original_preview_scale
+							end_transform_mode()
+							viewport.warp_mouse(original_mouse_position)
+			
+			else:
+				printerr("Mouse position is out of bounds, not possible?")
+		
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+		
+	elif event is InputEventKey:
+		if event.is_pressed() and !event.is_echo():
+			
+			if placement_mode_enabled:
 				
-				if event.keycode == KEY_Z:
-					print("todo z")
-				elif event.keycode == KEY_X:
-					print("todo x")
-				elif event.keycode == KEY_C:
-					print("todo c")
-				elif event.keycode == KEY_V:
-					print("todo v")
+				if event.alt_pressed:
+					if event.keycode == KEY_Q:
+						end_placement_mode()
+				
+				else:
+					
+					if event.keycode == KEY_1:
+						if is_transform_mode_enabled():
+							if rotation_mode_x_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_rotation_mode_x()
+						else:
+							start_rotation_mode_x()
+					
+					elif event.keycode == KEY_2:
+						if is_transform_mode_enabled():
+							if rotation_mode_y_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_rotation_mode_y()
+						else:
+							start_rotation_mode_y()
+					
+					elif event.keycode == KEY_3:
+						if is_transform_mode_enabled():
+							if rotation_mode_z_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_rotation_mode_z()
+						else:
+							start_rotation_mode_z()
+					
+					elif event.keycode == KEY_4:
+						if is_transform_mode_enabled():
+							if scale_mode_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_scale_mode()
+						else:
+							start_scale_mode()
 	
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 # ---- Buttons -----------------------------------------------------------------
 
-func on_custom_tab_button_pressed(tab_index: int):
+func on_custom_tab_button_pressed(tab_index: int) -> void:
+	
+	end_placement_mode()
+	
 	tab_container.current_tab = tab_index-1
-	current_collection_name = collection_names[tab_index-1]
+	selected_collection_name = collection_names[tab_index-1]
 	
-	if current_collection_name == "" or current_collection_name == " ":
-		current_collection = {}
+	if selected_collection_name == "" or selected_collection_name == " ":
+		selected_collection = {}
 	else:
-		current_collection = items_by_collection[current_collection_name]
-	
-	placement_mode_enabled = false
-	current_item_name = ""
-	current_item = null
+		selected_collection = items_by_collection[selected_collection_name]
 
 func on_item_icon_clicked(_button_name: String) -> void:
 	
-	var item_highlighters : Dictionary = item_highlighters_by_collection[current_collection_name]
+	var item_highlighters : Dictionary = item_highlighters_by_collection[selected_collection_name]
 	
+	var previously_selected_item_name = selected_item_name 
 	if placement_mode_enabled:
-		# De-highlight current
-		var current_nine_path : NinePatchRect = item_highlighters[current_item_name]
-		current_nine_path.self_modulate = Color.BLACK
+		end_placement_mode()
 	
-	if current_item_name != _button_name:
-		placement_mode_enabled = true
-		
-		# Highlight
-		var nine_path : NinePatchRect = item_highlighters[_button_name]
-		nine_path.self_modulate = Color.GREEN
-		
-		current_item_name = _button_name
-		current_item = current_collection[current_item_name]
-		
-		create_preview_item_instance()
-	
-	else:
-		toggle_placement_mode()
+	if previously_selected_item_name != _button_name:
+		select_item(selected_collection_name, _button_name)
 
-func on_use_surface_normal_clicked():
-	print("Todo: on_use_surface_normal_clicked")
-
-func reload_all_items():
+func reload_all_items() -> void:
 	
 	print("Freeing all texture buttons")
 	for i in range(1, 13):
@@ -275,7 +327,7 @@ func reload_all_items():
 				item_highlighters_by_collection[collection_name][key] = nine_patch
 				texture_button.add_child(nine_patch)
 
-func update_world_3d():
+func update_world_3d() -> void:
 	scene_root = editor.get_edited_scene_root()
 	if not scene_root or not scene_root is Node3D:
 		printerr("Scene root is not of type Node3D")
@@ -291,13 +343,13 @@ func update_world_3d():
 
 # ---- Helpers -----------------------------------------------------------------
 
-func align_up(node_basis, normal):
-	var result = Basis()
-	var scale = node_basis.get_scale()
+func align_up(node_basis, normal) -> Basis:
+	var result : Basis = Basis()
+	var scale : Vector3 = node_basis.get_scale()
 
 	# Choose an arbitrary vector that is not parallel to the normal.
 	# This helps in avoiding degenerate cross products.
-	var arbitrary_vector = Vector3(1, 0, 0) if abs(normal.dot(Vector3(1, 0, 0))) < 0.999 else Vector3(0, 1, 0)
+	var arbitrary_vector : Vector3 = Vector3(1, 0, 0) if abs(normal.dot(Vector3(1, 0, 0))) < 0.999 else Vector3(0, 1, 0)
 
 	# Calculate the cross product of the normal and the node's Z axis.
 	# If the result is nearly zero (indicating parallelism), use the arbitrary vector instead.
@@ -318,56 +370,90 @@ func align_up(node_basis, normal):
 
 	return result
 
-func clear_preview_item() -> void:
+func clear_preview_instance() -> void:
 	
 	if scene_root == null:
 		printerr("scene_root is null inside clear_preview_item")
 		return
+	
+	preview_instance = null
+	preview_instance_rid_array = []
 	
 	var temp_node = scene_root.get_node_or_null("SceneBuilderTemp")
 	if temp_node:
 		for child in temp_node.get_children():
 			child.queue_free()
 
-func create_preview_item_instance() -> void:
+func create_preview_instance() -> void:
 	
 	if scene_root == null:
 		printerr("scene_root is null inside create_preview_item_instance")
 		return
 	
-	clear_preview_item() 
+	clear_preview_instance() 
 	
-	preview_node = scene_root.get_node_or_null("SceneBuilderTemp")
+	scene_builder_temp = scene_root.get_node_or_null("SceneBuilderTemp")
+	if not scene_builder_temp:
+		scene_builder_temp = Node.new()
+		scene_builder_temp.name = "SceneBuilderTemp"
+		scene_root.add_child(scene_builder_temp)
+		scene_builder_temp.owner = scene_root
 	
-	if not preview_node:
-		preview_node = Node.new()
-		preview_node.name = "SceneBuilderTemp"
-		scene_root.add_child(preview_node)
-		preview_node.owner = scene_root
+	preview_instance = selected_item.item.instantiate()
+	scene_builder_temp.add_child(preview_instance)
+	preview_instance.owner = scene_root
 	
-	current_instance = current_item.item.instantiate()
-	preview_node.add_child(current_instance)
-	current_instance.owner = scene_root
-	
-	var x_scale : float = rng.randf_range(current_item.random_scale_x_min, current_item.random_scale_x_max)
-	var y_scale : float = rng.randf_range(current_item.random_scale_y_min, current_item.random_scale_y_max)
-	var z_scale : float = rng.randf_range(current_item.random_scale_z_min, current_item.random_scale_z_max)
+	var x_scale : float = rng.randf_range(selected_item.random_scale_x_min, selected_item.random_scale_x_max)
+	var y_scale : float = rng.randf_range(selected_item.random_scale_y_min, selected_item.random_scale_y_max)
+	var z_scale : float = rng.randf_range(selected_item.random_scale_z_min, selected_item.random_scale_z_max)
 	original_preview_scale = Vector3(x_scale, y_scale, z_scale)
-	current_instance.scale = original_preview_scale
-	preview_scale = original_preview_scale
+	preview_instance.scale = original_preview_scale
 	
-	var x_rot : float = rng.randf_range(0, current_item.random_rot_x)
-	var y_rot : float = rng.randf_range(0, current_item.random_rot_y)
-	var z_rot : float = rng.randf_range(0, current_item.random_rot_z)
-	original_preview_rotation = Vector3(deg_to_rad(x_rot), deg_to_rad(y_rot), deg_to_rad(z_rot))
-	current_instance.rotation = original_preview_rotation
-
-	preview_basis = current_instance.global_transform.basis
-
+	var x_rot : float = rng.randf_range(0, selected_item.random_rot_x)
+	var y_rot : float = rng.randf_range(0, selected_item.random_rot_y)
+	var z_rot : float = rng.randf_range(0, selected_item.random_rot_z)
+	
+	preview_instance.rotation = Vector3(deg_to_rad(x_rot), deg_to_rad(y_rot), deg_to_rad(z_rot))
+	original_preview_basis = preview_instance.basis
+	
 	# Instantiating a node automatically selects it, which is annoying.
 	# Let's re-select scene_root instead,
 	editor.get_selection().clear()
 	editor.get_selection().add_node(scene_root)
+
+func end_transform_mode() -> void:
+	rotation_mode_x_enabled = false
+	rotation_mode_y_enabled = false
+	rotation_mode_z_enabled = false
+	scale_mode_enabled = false
+	indicator_x.self_modulate = Color.WHITE
+	indicator_y.self_modulate = Color.WHITE
+	indicator_z.self_modulate = Color.WHITE
+	indicator_scale.self_modulate = Color.WHITE
+
+func end_placement_mode() -> void:
+	
+	clear_preview_instance()
+	end_transform_mode()
+	
+	placement_mode_enabled = false
+	
+	if selected_item_name != "":
+		if item_highlighters_by_collection.has(selected_collection_name):
+			var item_highlighters : Dictionary = item_highlighters_by_collection[selected_collection_name]
+			if item_highlighters.has(selected_item_name):
+				var selected_nine_path : NinePatchRect = item_highlighters[selected_item_name]
+				if selected_nine_path:
+					selected_nine_path.self_modulate = Color.BLACK
+				else:
+					print("NinePatchRect is null for selected_item_name: ", selected_item_name)
+			else:
+				print("Key missing from highlighter collection, key: ", selected_item_name, ", from collection: ", selected_collection_name)
+		else:
+			print("Highlighter collection missing for collection: ", selected_collection_name)
+
+	selected_item = null
+	selected_item_name = ""
 
 func get_items_from_collection_folder(_collection_name : String) -> Dictionary:
 	print("Collecting items from collection folder")
@@ -403,7 +489,7 @@ func get_items_from_collection_folder(_collection_name : String) -> Dictionary:
 
 	return _items
 
-func get_all_node_names(_node):
+func get_all_node_names(_node) -> Array[String]:
 	var _all_node_names = []
 	for _child in _node.get_children():
 		_all_node_names.append(_child.name)
@@ -413,49 +499,37 @@ func get_all_node_names(_node):
 				_all_node_names.append(_item)
 	return _all_node_names
 
-func instantiate_current_item_at_position() -> void:
+func instantiate_selected_item_at_position() -> void:
 	
-	if current_instance != null:
-		populate_current_instance_rid_array(current_instance)
+	if preview_instance != null:
+		populate_preview_instance_rid_array(preview_instance)
 	
-	var result = perform_raycast_with_exclusion(current_instance_rid_array)
+	var result = perform_raycast_with_exclusion(preview_instance_rid_array)
 	
 	if result and result.collider:
 		
-		if btn_add_to_multi_mesh_instance.button_pressed:
-			
-			if current_multi_mesh_instance and current_multi_mesh_instance.multimesh:
-				print("todo")
-				#var transform = Transform.IDENTITY
-				#transform.origin = result.position
-				
-				# Add the new transform to the MultiMesh
-				#var instance_count = current_multi_mesh_instance.multimesh.instance_count
-				#current_multi_mesh_instance.multimesh.instance_count += 1  # Increase the instance count
-				#current_multi_mesh_instance.multimesh.set_instance_transform(instance_count, transform)
-				
-				#print("Added to MultiMeshInstance at position: ", transform.origin)
-			else:
-				print("todo")
-
-		else:
-			
-			var instance = current_item.item.instantiate()
-			scene_root.add_child(instance)
-			instance.owner = scene_root
-			initialize_node_name(instance, current_item.item_name)
-			
-			instance.global_transform.origin = result.position
-			instance.global_transform.basis = preview_basis
-			
-			print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
+		var instance = selected_item.item.instantiate()
+		scene_root.add_child(instance)
+		instance.owner = scene_root
+		initialize_node_name(instance, selected_item.item_name)
+		
+		instance.global_transform.origin = result.position
+		instance.basis = preview_instance.basis
+		
+		print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
 	
 	else:
 		printerr("Failed to instantiate item, raycast missed")
 
-func initialize_node_name(node : Node3D, new_name : String):
+func initialize_node_name(node : Node3D, new_name : String) -> void:
 	var all_names = toolbox.get_all_node_names(scene_root)
 	node.name = toolbox.increment_name_until_unique(new_name, all_names)
+
+func is_transform_mode_enabled() -> bool:
+	if rotation_mode_x_enabled or rotation_mode_y_enabled or rotation_mode_z_enabled or scale_mode_enabled:
+		return true;
+	else: 
+		return false
 
 func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	var mouse_pos = viewport.get_mouse_position()
@@ -467,15 +541,15 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	query.exclude = exclude_rids
 	return space.intersect_ray(query)
 
-func populate_current_instance_rid_array(instance: Node):
+func populate_preview_instance_rid_array(instance: Node) -> void:
 	
 	if instance is PhysicsBody3D:
-		current_instance_rid_array.append(instance.get_rid())
+		preview_instance_rid_array.append(instance.get_rid())
 	
 	for child in instance.get_children():
-		populate_current_instance_rid_array(child)
+		populate_preview_instance_rid_array(child)
 
-func refresh_collection_names():
+func refresh_collection_names() -> void:
 	print("Refreshing collection names")
 	
 	var _names : CollectionNames = load(path_to_resource)
@@ -523,19 +597,41 @@ func refresh_collection_names():
 			collection_name = " "
 		tab_button.text = collection_name
 
-func toggle_placement_mode() -> void:
-	placement_mode_enabled = !placement_mode_enabled
-	if not placement_mode_enabled:
-		
-		# De-highlight current
-		var item_highlighters : Dictionary = item_highlighters_by_collection[current_collection_name]
-		var current_nine_path : NinePatchRect = item_highlighters[current_item_name]
-		current_nine_path.self_modulate = Color.BLACK
-		
-		current_item = null
-		current_item_name = ""
-		
-		clear_preview_item()
+func select_item(collection_name : String, item_name : String) -> void:
+	end_placement_mode()
+	var nine_path : NinePatchRect = item_highlighters_by_collection[collection_name][item_name]
+	nine_path.self_modulate = Color.GREEN
+	selected_item_name = item_name
+	selected_item = selected_collection[selected_item_name]
+	create_preview_instance()
+	placement_mode_enabled = true;
+
+func start_rotation_mode_x() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_basis = preview_instance.basis
+	rotation_mode_x_enabled = true
+	indicator_x.self_modulate = Color.GREEN
+
+func start_rotation_mode_y() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_basis = preview_instance.basis
+	rotation_mode_y_enabled = true
+	indicator_y.self_modulate = Color.GREEN
+
+func start_rotation_mode_z() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_basis = preview_instance.basis
+	rotation_mode_z_enabled = true
+	indicator_z.self_modulate = Color.GREEN
+
+func start_scale_mode() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_scale = preview_instance.scale
+	scale_mode_enabled = true
+	indicator_scale.self_modulate = Color.GREEN
+
+
+
 
 
 

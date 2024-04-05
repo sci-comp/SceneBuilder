@@ -15,7 +15,6 @@ func _exit_tree():
 func _handles(object):
 	return object is Node3D
 
-func _forward_3d_gui_input(camera : Camera3D, event : InputEvent):
-	scene_builder_dock.forward_3d_gui_input(camera, event)
-
-
+func _forward_3d_gui_input(camera : Camera3D, event : InputEvent) -> AfterGUIInput:
+	var _return : AfterGUIInput = scene_builder_dock.forward_3d_gui_input(camera, event)
+	return _return
