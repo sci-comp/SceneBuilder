@@ -34,6 +34,12 @@ var btn_add_to_multi_mesh_instance : CheckButton
 var btn_find_world_3d : Button
 var btn_reload_all_items : Button
 
+# Indicators
+var indicator_z : Label
+var indicator_x : Label
+var indicator_c : Label
+var indicator_v : Label
+
 #endregion
 
 # Updated by update_world_3d()
@@ -61,7 +67,12 @@ var current_multi_mesh_instance : MultiMeshInstance3D
 
 # Assorted variables
 var placement_mode_enabled : bool = false
-var scene_builder_temp_node : Node
+var rotation_mode_z_enabled : bool = false
+var rotation_mode_x_enabled : bool = false
+var rotation_mode_c_enabled : bool = false
+var scale_mode_enabled : bool = false
+
+var preview_node : Node3D
 
 var original_preview_rotation : Vector3 = Vector3.ZERO
 var original_preview_scale : Vector3 = Vector3.ONE
@@ -82,9 +93,12 @@ func _enter_tree():
 	#
 	update_world_3d()
 	
-	# Initialize controls
+	#region Initialize controls
+	
 	scene_builder_dock = load("res://addons/SceneBuilder/scene_builder_dock.tscn").instantiate()
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_RIGHT_UL, scene_builder_dock)
+	
+	# Tabs
 	tab_container = scene_builder_dock.get_node("Collection/TabContainer")
 	btns_collection_tabs = [btn_collection_01, btn_collection_02, btn_collection_03, 
 							btn_collection_04, btn_collection_05, btn_collection_06, 
@@ -95,14 +109,22 @@ func _enter_tree():
 		k += 1
 		tab_button = scene_builder_dock.get_node("Collection/Tab/%s" % k)
 		tab_button.pressed.connect(on_custom_tab_button_pressed.bind(k))
-	btn_use_surface_normal = scene_builder_dock.get_node("Settings/Options/UseSurfaceNormal")
-	btn_add_to_multi_mesh_instance = scene_builder_dock.get_node("Settings/Options/UseMultiMeshInstance")
-	btn_find_world_3d = scene_builder_dock.get_node("Settings/Options/FindWorld3D")
-	btn_reload_all_items = scene_builder_dock.get_node("Settings/Options/ReloadAllItems")
+		
+	# Options
+	btn_use_surface_normal = scene_builder_dock.get_node("Settings/Tab/Options/UseSurfaceNormal")
+	btn_find_world_3d = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/FindWorld3D")
+	btn_reload_all_items = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/ReloadAllItems")
 	btn_use_surface_normal.pressed.connect(on_use_surface_normal_clicked)
-	btn_add_to_multi_mesh_instance.pressed.connect(on_use_multi_mesh_instance_clicked)
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
+	
+	# Indicators
+	indicator_z = scene_builder_dock.get_node("Settings/Indicators/Z")
+	indicator_x = scene_builder_dock.get_node("Settings/Indicators/X")
+	indicator_c = scene_builder_dock.get_node("Settings/Indicators/C")
+	indicator_v = scene_builder_dock.get_node("Settings/Indicators/V")
+	
+	#endregion
 	
 	#
 	refresh_collection_names()
@@ -132,25 +154,39 @@ func _process(delta: float) -> void:
 
 func forward_3d_gui_input(_camera : Camera3D, event : InputEvent):
 	
-	if event is InputEventMouseButton and placement_mode_enabled:
-		if event.is_pressed() and !event.is_echo():
-			
-			var mouse_pos = viewport.get_mouse_position()
-			if mouse_pos.x >= 0 and mouse_pos.y >= 0: 
-				if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
-					
-					if event.button_index == MOUSE_BUTTON_LEFT:
-						instantiate_current_item_at_position()
-					
-					if event.button_index == MOUSE_BUTTON_RIGHT:
-						toggle_placement_mode()
-					
+	if placement_mode_enabled:
+	
+		if event is InputEventMouseButton:
+			if event.is_pressed() and !event.is_echo():
+				
+				var mouse_pos = viewport.get_mouse_position()
+				if mouse_pos.x >= 0 and mouse_pos.y >= 0: 
+					if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
+						
+						if event.button_index == MOUSE_BUTTON_LEFT:
+							instantiate_current_item_at_position()
+						
+						if event.button_index == MOUSE_BUTTON_RIGHT:
+							toggle_placement_mode()
+						
+					else:
+						printerr("Mouse position is out of bounds, not possible?")
 				else:
 					printerr("Mouse position is out of bounds, not possible?")
-			else:
-				printerr("Mouse position is out of bounds, not possible?")
+			
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
 		
-		return EditorPlugin.AFTER_GUI_INPUT_STOP
+		elif event is InputEventKey:
+			if event.is_pressed() and !event.is_echo():
+				
+				if event.keycode == KEY_Z:
+					print("todo z")
+				elif event.keycode == KEY_X:
+					print("todo x")
+				elif event.keycode == KEY_C:
+					print("todo c")
+				elif event.keycode == KEY_V:
+					print("todo v")
 	
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
 
@@ -195,9 +231,6 @@ func on_item_icon_clicked(_button_name: String) -> void:
 
 func on_use_surface_normal_clicked():
 	print("Todo: on_use_surface_normal_clicked")
-
-func on_use_multi_mesh_instance_clicked():
-	print("Todo: on_use_multi_mesh_instance_clicked")
 
 func reload_all_items():
 	
@@ -304,16 +337,16 @@ func create_preview_item_instance() -> void:
 	
 	clear_preview_item() 
 	
-	scene_builder_temp_node = scene_root.get_node_or_null("SceneBuilderTemp")
+	preview_node = scene_root.get_node_or_null("SceneBuilderTemp")
 	
-	if not scene_builder_temp_node:
-		scene_builder_temp_node = Node.new()
-		scene_builder_temp_node.name = "SceneBuilderTemp"
-		scene_root.add_child(scene_builder_temp_node)
-		scene_builder_temp_node.owner = scene_root
+	if not preview_node:
+		preview_node = Node.new()
+		preview_node.name = "SceneBuilderTemp"
+		scene_root.add_child(preview_node)
+		preview_node.owner = scene_root
 	
 	current_instance = current_item.item.instantiate()
-	scene_builder_temp_node.add_child(current_instance)
+	preview_node.add_child(current_instance)
 	current_instance.owner = scene_root
 	
 	var x_scale : float = rng.randf_range(current_item.random_scale_x_min, current_item.random_scale_x_max)
@@ -503,6 +536,8 @@ func toggle_placement_mode() -> void:
 		current_item_name = ""
 		
 		clear_preview_item()
+
+
 
 
 

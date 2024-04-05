@@ -261,227 +261,89 @@ size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
 columns = 4
 
-[node name="Settings" type="TabContainer" parent="."]
+[node name="Settings" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-size_flags_vertical = 8
 theme = ExtResource("2_vl512")
 
-[node name="Options" type="VBoxContainer" parent="Settings"]
-custom_minimum_size = Vector2(0, 164)
+[node name="Options" type="VBoxContainer" parent="Settings/Tab"]
 layout_mode = 2
-size_flags_vertical = 8
-theme = ExtResource("2_vl512")
 
-[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Options"]
+[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options"]
 layout_mode = 2
 size_flags_horizontal = 0
+size_flags_vertical = 2
 theme = ExtResource("2_vl512")
 text = "Use surface normal"
 
-[node name="UseMultiMeshInstance" type="CheckButton" parent="Settings/Options"]
+[node name="EmptySpace" type="Label" parent="Settings/Tab/Options"]
 layout_mode = 2
-size_flags_horizontal = 0
-theme = ExtResource("2_vl512")
-text = "Add to MultiMeshInstance"
-
-[node name="EmptySpace" type="Label" parent="Settings/Options"]
-layout_mode = 2
+size_flags_vertical = 2
 theme = ExtResource("2_vl512")
 
-[node name="FindWorld3D" type="Button" parent="Settings/Options"]
+[node name="Bottom" type="HBoxContainer" parent="Settings/Tab/Options"]
+layout_mode = 2
+
+[node name="FindWorld3D" type="Button" parent="Settings/Tab/Options/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 0
+size_flags_vertical = 2
 theme = ExtResource("2_vl512")
 text = "Find world 3d"
 
-[node name="EmptySpace2" type="Label" parent="Settings/Options"]
+[node name="EmptySpace2" type="Label" parent="Settings/Tab/Options/Bottom"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
 
-[node name="ReloadAllItems" type="Button" parent="Settings/Options"]
+[node name="ReloadAllItems" type="Button" parent="Settings/Tab/Options/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
 theme = ExtResource("2_vl512")
 text = "Reload all items"
 
-[node name="NotYetImplemented_Placement" type="VBoxContainer" parent="."]
-visible = false
-custom_minimum_size = Vector2(0, 164)
+[node name="VSeparator" type="VSeparator" parent="Settings"]
 layout_mode = 2
-size_flags_vertical = 10
-theme = ExtResource("2_vl512")
 
-[node name="Boolean" type="HBoxContainer" parent="NotYetImplemented_Placement"]
+[node name="Indicators" type="VBoxContainer" parent="Settings"]
 layout_mode = 2
-theme = ExtResource("2_vl512")
+size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="NotYetImplemented_Placement/Boolean"]
+[node name="Z" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_vertical = 6
 theme = ExtResource("2_vl512")
-text = "Randomize"
+theme_override_font_sizes/font_size = 28
+text = "Z"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Rotation" type="CheckButton" parent="NotYetImplemented_Placement/Boolean"]
+[node name="X" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_vertical = 6
 theme = ExtResource("2_vl512")
-disabled = true
-text = "Rotation"
+theme_override_font_sizes/font_size = 28
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Scale" type="CheckButton" parent="NotYetImplemented_Placement/Boolean"]
+[node name="C" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_vertical = 6
 theme = ExtResource("2_vl512")
-disabled = true
-text = "Scale"
+theme_override_font_sizes/font_size = 28
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Headers" type="HBoxContainer" parent="NotYetImplemented_Placement"]
+[node name="V" type="Label" parent="Settings/Indicators"]
 layout_mode = 2
+size_flags_vertical = 6
 theme = ExtResource("2_vl512")
-
-[node name="Label" type="Label" parent="NotYetImplemented_Placement/Headers"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-
-[node name="x" type="Label" parent="NotYetImplemented_Placement/Headers"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "x"
-
-[node name="y" type="Label" parent="NotYetImplemented_Placement/Headers"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "y"
-
-[node name="z" type="Label" parent="NotYetImplemented_Placement/Headers"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "z"
-
-[node name="Rotation" type="HBoxContainer" parent="NotYetImplemented_Placement"]
-layout_mode = 2
-theme = ExtResource("2_vl512")
-
-[node name="Label" type="Label" parent="NotYetImplemented_Placement/Rotation"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "Rotation"
-
-[node name="x" type="HSlider" parent="NotYetImplemented_Placement/Rotation"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-max_value = 360.0
-editable = false
-
-[node name="y" type="HSlider" parent="NotYetImplemented_Placement/Rotation"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-max_value = 360.0
-editable = false
-
-[node name="z" type="HSlider" parent="NotYetImplemented_Placement/Rotation"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-max_value = 360.0
-editable = false
-
-[node name="ScaleMin" type="HBoxContainer" parent="NotYetImplemented_Placement"]
-layout_mode = 2
-theme = ExtResource("2_vl512")
-
-[node name="Label" type="Label" parent="NotYetImplemented_Placement/ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "Scale"
-
-[node name="x" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-min_value = 0.01
-step = 0.01
-value = 0.9
-editable = false
-custom_arrow_step = 0.02
-
-[node name="y" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-min_value = 0.01
-step = 0.01
-value = 0.9
-editable = false
-custom_arrow_step = 0.02
-
-[node name="z" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-min_value = 0.01
-step = 0.01
-value = 0.9
-editable = false
-custom_arrow_step = 0.02
-
-[node name="Label2" type="Label" parent="NotYetImplemented_Placement/ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "min"
-
-[node name="ScaleMax" type="HBoxContainer" parent="NotYetImplemented_Placement"]
-layout_mode = 2
-theme = ExtResource("2_vl512")
-
-[node name="Label" type="Label" parent="NotYetImplemented_Placement/ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-
-[node name="x" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-min_value = 0.02
-step = 0.01
-value = 1.1
-editable = false
-custom_arrow_step = 0.02
-
-[node name="y" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-min_value = 0.02
-step = 0.01
-value = 1.1
-editable = false
-custom_arrow_step = 0.02
-
-[node name="z" type="SpinBox" parent="NotYetImplemented_Placement/ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-min_value = 0.02
-step = 0.01
-value = 1.1
-editable = false
-custom_arrow_step = 0.02
-
-[node name="Label2" type="Label" parent="NotYetImplemented_Placement/ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
-text = "max"
+theme_override_font_sizes/font_size = 28
+text = "V"
+horizontal_alignment = 1
+vertical_alignment = 1

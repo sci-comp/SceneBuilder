@@ -4,6 +4,15 @@ SceneBuilder is a system for efficiently building 3D scenes in Godot.
 
 Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock.
 
+## Shortcuts
+
+Shortcuts are hardcoded into SceneBuilder.
+
+Mosts shortcuts require a combination of `Alt` and another key, though in some cases we use `Shift` or `Ctrl`. 
+
+Although SceneBuilder does conflict with some of Godot's less-useful shortcuts, we try to stay out of Godot's way. For the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
+
+Please see sections "Scene builder commands" and "The scene builder dock" for specific shortcut information.
 
 ## Scene builder commands
 
@@ -19,6 +28,8 @@ Implementation details: The script `scene_builder_commands.gd` is loaded by `sce
 
 
 ## The scene builder dock
+
+The scene builder dock comes with a few implicit shortcuts. 
 
 The scene builder dock requires manual setup. This isn't an ideal user experience, but doing things this way leads to very simple and stable solutions, please bear with us!
 
@@ -38,11 +49,11 @@ Note: This folder path is hard coded into the scene builder dock.
 
 	`res://Data/SceneBuilderCollections/collection_names.tres`
 
-![scene_builder_collection_names_resource](./Documentation/Image/scene_builder_collection_names_resource.png)
-
 This resource path is hard coded into the scene builder dock.
 
 3. Enter your desired collection names into the CollectionNames resource, then create empty folders with matching names.
+
+![scene_builder_collection_names_resource](./Documentation/Image/scene_builder_collection_names_resource.png)
 
 For example, if you would like a collection named "Furniture," then write "Furniture" in the CollectionNames resource. Next, create an empty folder "Furniture" at location, 
 
@@ -107,10 +118,11 @@ Although we demonstrate how to automatically generate items and icons in the nex
 1. Select paths in FileSystem that contain an imported scene with a root node that derives from type Node3D. These paths must end in either .glb or .tscn.
 2. Run the "Create scene builder items" command by going to Project > Tools > Scene Builder > Create scene builder items, or by pressing the keyboard shortcut Alt + /
 3. Fill out the fields in the popup window, then hit okay.
-4. When the command "Create scene builder items" is run, the scene icon_studio will be opened. Please close the scene when it's done without saving any changes to icon_studio.tscn
-5. In the scene builder dock, click the button "Reload all items"
 
 ![scene_builder_create_items](./Documentation/Image/scene_builder_create_items.png)
+
+4. When the command "Create scene builder items" is run, the scene icon_studio will be opened. Please close the scene when it's done without saving any changes to icon_studio.tscn
+5. In the scene builder dock, click the button "Reload all items"
 
 ### Update the scene builder dock
 
@@ -141,14 +153,6 @@ Note that a "SceneBuilderTemp" of type Node will be created in the current edite
 Instantiated items will use the surface normal instead of their original orientation.
 
 (Todo: shortcut? add other normal types?)
-
-#### MultiMeshInstance3D mode
-
-An item must be selected before "Add to MultiMeshInstance" is clicked. If no item is selected, then "Add to MultiMeshInstance" will simply toggle back off.
-
-When "Add to MultiMeshInstance" is first clicked, and an item is selected, a new MultiMeshInstance3D node will be created. All subsequent instances of the selected item will be added to the MultiMeshInstance3D node.
-
-To exit MultiMeshInstance mode, click again on the "Add to MultiMeshInstance" button, or press (Todo: shortcut?)
 
 #### Rotation mode
 
