@@ -77,7 +77,7 @@ By convention, the SceneBuilderItem resource should have the same name as the co
 
 	`res://Data/SceneBuilderCollections/Furniture/Thumbnail/Chair.png`
 
-by convention, a png file with a name matching the item name should be placed in the Thumbnail folder, though the location and name does not actually matter. Icons are not resized, so they should be around 78x78 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration. In the next section, we automatically generate icons instead.
+by convention, a png file with a name matching the item name should be placed in the Thumbnail folder, though the location and name does not actually matter. Icons are not resized, so they should be around 79x79 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration. In the next section, we automatically generate icons instead.
 
 5. Fill out fields in the SceneBuilderItem resource (Chair.tres for this example),
 

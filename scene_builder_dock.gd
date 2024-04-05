@@ -57,10 +57,19 @@ var current_item : SceneBuilderItem = null
 var current_item_name : String = ""
 var current_instance : Node3D = null
 var current_instance_rid_array : Array[RID] = []
+var current_multi_mesh_instance : MultiMeshInstance3D
 
 # Assorted variables
 var placement_mode_enabled : bool = false
 var scene_builder_temp_node : Node
+
+var original_preview_rotation : Vector3 = Vector3.ZERO
+var original_preview_scale : Vector3 = Vector3.ONE
+var originial_preview_look_target : Vector3 = Vector3.ZERO
+var preview_basis : Basis
+var preview_scale : Vector3 = Vector3.ONE
+
+var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 # ---- Notifications -----------------------------------------------------------
 
@@ -106,8 +115,20 @@ func _exit_tree():
 	scene_builder_dock.queue_free()
 
 func _process(delta: float) -> void:
+	# Update preview item position
 	if placement_mode_enabled:
-		update_temporary_item_position()
+		if current_instance != null:
+			populate_current_instance_rid_array(current_instance)
+		var result = perform_raycast_with_exclusion(current_instance_rid_array)
+		if result and result.collider:
+			var _preview_item = scene_root.get_node_or_null("SceneBuilderTemp")
+			if _preview_item and _preview_item.get_child_count() > 0:
+				var _instance = _preview_item.get_child(0)
+				_instance.global_transform.origin = result.position
+				
+				if btn_use_surface_normal.button_pressed:
+					preview_basis = align_up(_instance.global_transform.basis, result.normal)
+					_instance.global_transform.basis = preview_basis
 
 func forward_3d_gui_input(_camera : Camera3D, event : InputEvent):
 	
@@ -158,14 +179,17 @@ func on_item_icon_clicked(_button_name: String) -> void:
 		current_nine_path.self_modulate = Color.BLACK
 	
 	if current_item_name != _button_name:
-		# Highlight next
+		placement_mode_enabled = true
+		
+		# Highlight
 		var nine_path : NinePatchRect = item_highlighters[_button_name]
 		nine_path.self_modulate = Color.GREEN
 		
 		current_item_name = _button_name
-		placement_mode_enabled = true
 		current_item = current_collection[current_item_name]
-		create_temporary_item_instance()
+		
+		create_preview_item_instance()
+	
 	else:
 		toggle_placement_mode()
 
@@ -234,10 +258,37 @@ func update_world_3d():
 
 # ---- Helpers -----------------------------------------------------------------
 
-func clear_scene_builder_temp() -> void:
+func align_up(node_basis, normal):
+	var result = Basis()
+	var scale = node_basis.get_scale()
+
+	# Choose an arbitrary vector that is not parallel to the normal.
+	# This helps in avoiding degenerate cross products.
+	var arbitrary_vector = Vector3(1, 0, 0) if abs(normal.dot(Vector3(1, 0, 0))) < 0.999 else Vector3(0, 1, 0)
+
+	# Calculate the cross product of the normal and the node's Z axis.
+	# If the result is nearly zero (indicating parallelism), use the arbitrary vector instead.
+	var crossX = normal.cross(node_basis.z).normalized()
+	if crossX.length_squared() < 0.001:
+		crossX = normal.cross(arbitrary_vector).normalized()
+
+	var crossZ = crossX.cross(normal).normalized()
+
+	result.x = crossX
+	result.y = normal
+	result.z = crossZ
+
+	result = result.orthonormalized()
+	result.x *= scale.x
+	result.y *= scale.y
+	result.z *= scale.z
+
+	return result
+
+func clear_preview_item() -> void:
 	
 	if scene_root == null:
-		printerr("scene_root is null inside clear_scene_builder_temp")
+		printerr("scene_root is null inside clear_preview_item")
 		return
 	
 	var temp_node = scene_root.get_node_or_null("SceneBuilderTemp")
@@ -245,22 +296,45 @@ func clear_scene_builder_temp() -> void:
 		for child in temp_node.get_children():
 			child.queue_free()
 
-func create_temporary_item_instance() -> void:
+func create_preview_item_instance() -> void:
 	
 	if scene_root == null:
-		printerr("scene_root is null inside create_temporary_item_instance")
+		printerr("scene_root is null inside create_preview_item_instance")
 		return
 	
-	clear_scene_builder_temp() 
+	clear_preview_item() 
+	
 	scene_builder_temp_node = scene_root.get_node_or_null("SceneBuilderTemp")
+	
 	if not scene_builder_temp_node:
 		scene_builder_temp_node = Node.new()
 		scene_builder_temp_node.name = "SceneBuilderTemp"
 		scene_root.add_child(scene_builder_temp_node)
 		scene_builder_temp_node.owner = scene_root
+	
 	current_instance = current_item.item.instantiate()
 	scene_builder_temp_node.add_child(current_instance)
 	current_instance.owner = scene_root
+	
+	var x_scale : float = rng.randf_range(current_item.random_scale_x_min, current_item.random_scale_x_max)
+	var y_scale : float = rng.randf_range(current_item.random_scale_y_min, current_item.random_scale_y_max)
+	var z_scale : float = rng.randf_range(current_item.random_scale_z_min, current_item.random_scale_z_max)
+	original_preview_scale = Vector3(x_scale, y_scale, z_scale)
+	current_instance.scale = original_preview_scale
+	preview_scale = original_preview_scale
+	
+	var x_rot : float = rng.randf_range(0, current_item.random_rot_x)
+	var y_rot : float = rng.randf_range(0, current_item.random_rot_y)
+	var z_rot : float = rng.randf_range(0, current_item.random_rot_z)
+	original_preview_rotation = Vector3(deg_to_rad(x_rot), deg_to_rad(y_rot), deg_to_rad(z_rot))
+	current_instance.rotation = original_preview_rotation
+
+	preview_basis = current_instance.global_transform.basis
+
+	# Instantiating a node automatically selects it, which is annoying.
+	# Let's re-select scene_root instead,
+	editor.get_selection().clear()
+	editor.get_selection().add_node(scene_root)
 
 func get_items_from_collection_folder(_collection_name : String) -> Dictionary:
 	print("Collecting items from collection folder")
@@ -307,16 +381,42 @@ func get_all_node_names(_node):
 	return _all_node_names
 
 func instantiate_current_item_at_position() -> void:
+	
 	if current_instance != null:
 		populate_current_instance_rid_array(current_instance)
+	
 	var result = perform_raycast_with_exclusion(current_instance_rid_array)
+	
 	if result and result.collider:
-		var instance = current_item.item.instantiate()
-		scene_root.add_child(instance)
-		instance.owner = scene_root
-		initialize_node_name(instance, current_item.item_name)
-		instance.global_transform.origin = result.position
-		print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
+		
+		if btn_add_to_multi_mesh_instance.button_pressed:
+			
+			if current_multi_mesh_instance and current_multi_mesh_instance.multimesh:
+				print("todo")
+				#var transform = Transform.IDENTITY
+				#transform.origin = result.position
+				
+				# Add the new transform to the MultiMesh
+				#var instance_count = current_multi_mesh_instance.multimesh.instance_count
+				#current_multi_mesh_instance.multimesh.instance_count += 1  # Increase the instance count
+				#current_multi_mesh_instance.multimesh.set_instance_transform(instance_count, transform)
+				
+				#print("Added to MultiMeshInstance at position: ", transform.origin)
+			else:
+				print("todo")
+
+		else:
+			
+			var instance = current_item.item.instantiate()
+			scene_root.add_child(instance)
+			instance.owner = scene_root
+			initialize_node_name(instance, current_item.item_name)
+			
+			instance.global_transform.origin = result.position
+			instance.global_transform.basis = preview_basis
+			
+			print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
+	
 	else:
 		printerr("Failed to instantiate item, raycast missed")
 
@@ -393,19 +493,16 @@ func refresh_collection_names():
 func toggle_placement_mode() -> void:
 	placement_mode_enabled = !placement_mode_enabled
 	if not placement_mode_enabled:
+		
+		# De-highlight current
+		var item_highlighters : Dictionary = item_highlighters_by_collection[current_collection_name]
+		var current_nine_path : NinePatchRect = item_highlighters[current_item_name]
+		current_nine_path.self_modulate = Color.BLACK
+		
 		current_item = null
 		current_item_name = ""
-		clear_scene_builder_temp()
-
-func update_temporary_item_position() -> void:
-	if current_instance != null:
-		populate_current_instance_rid_array(current_instance)
-	var result = perform_raycast_with_exclusion(current_instance_rid_array)
-	if result and result.collider:
-		var temp_node = scene_root.get_node_or_null("SceneBuilderTemp")
-		if temp_node and temp_node.get_child_count() > 0:
-			var temp_instance = temp_node.get_child(0)
-			temp_instance.global_transform.origin = result.position
+		
+		clear_preview_item()
 
 
 
