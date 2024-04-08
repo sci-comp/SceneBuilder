@@ -131,6 +131,7 @@ func _enter_tree() -> void:
 	#
 	reload_all_items()
 	
+	#
 	select_collection(0)
 
 func _exit_tree() -> void:
@@ -352,6 +353,8 @@ func on_item_icon_clicked(_button_name: String) -> void:
 	if previously_selected_item_name != _button_name:
 		select_item(selected_collection_name, _button_name)
 
+
+
 func reload_all_items() -> void:
 	
 	print("Freeing all texture buttons")
@@ -383,7 +386,7 @@ func reload_all_items() -> void:
 				var item : SceneBuilderItem = item_dict[key]
 				var texture_button : TextureButton = TextureButton.new()
 				texture_button.toggle_mode = true
-				texture_button.texture_normal = item.icon
+				texture_button.texture_normal = get_icon(collection_name, item.item_name)
 				texture_button.tooltip_text = item.item_name
 				texture_button.pressed.connect(on_item_icon_clicked.bind(item.item_name))
 				grid_container.add_child(texture_button)
@@ -501,7 +504,7 @@ func create_preview_instance() -> void:
 		scene_root.add_child(scene_builder_temp)
 		scene_builder_temp.owner = scene_root
 	
-	preview_instance = selected_item.item.instantiate()
+	preview_instance = get_instance_of_selected_item()
 	scene_builder_temp.add_child(preview_instance)
 	preview_instance.owner = scene_root
 	
@@ -562,15 +565,6 @@ func get_items_from_collection_folder(_collection_name : String) -> Array:
 				var resource = load(item_path)
 				if resource and resource is SceneBuilderItem:
 					var scene_builder_item : SceneBuilderItem = resource
-					if ResourceLoader.exists(scene_builder_item.scene_path):
-						var loaded = load(scene_builder_item.scene_path)
-						if loaded is PackedScene:
-							var _packed_scene : PackedScene = loaded
-							scene_builder_item.item = _packed_scene
-						else:
-							printerr("Failed to instantiate packed scene: ", loaded.name)
-					else:
-						printerr("Path does not exist: ", scene_builder_item.scene_path)
 					
 					print("Loaded item: ", item_filename)
 					
@@ -594,6 +588,9 @@ func get_all_node_names(_node) -> Array[String]:
 
 func instantiate_selected_item_at_position() -> void:
 	
+	var undo_redo : EditorUndoRedoManager = get_undo_redo()
+	undo_redo.create_action("Instantiate selected item")
+	
 	if preview_instance != null:
 		populate_preview_instance_rid_array(preview_instance)
 	
@@ -601,24 +598,27 @@ func instantiate_selected_item_at_position() -> void:
 	
 	if result and result.collider:
 		
-		var instance = selected_item.item.instantiate()
+		var instance = get_instance_of_selected_item()
 		scene_root.add_child(instance)
 		instance.owner = scene_root
 		initialize_node_name(instance, selected_item.item_name)
 		
-		var new_position : Vector3
+		var new_position : Vector3 = result.position
 		if selected_item.use_random_vertical_offset:
-			new_position = Vector3(result.position.x, result.position.y + random_offset_y, result.position.z)
-		else:
-			new_position = Vector3(result.position.x, result.position.y, result.position.z)
+			new_position.y += random_offset_y
 		
 		instance.global_transform.origin = new_position
 		instance.basis = preview_instance.basis
+
+		undo_redo.add_undo_method(scene_root, "remove_child", instance)
+		undo_redo.add_do_reference(instance)  # Ensure instance is not freed when undoing
 		
 		print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
 	
 	else:
 		printerr("Failed to instantiate item, raycast missed")
+	
+	undo_redo.commit_action()
 
 func initialize_node_name(node : Node3D, new_name : String) -> void:
 	var all_names = toolbox.get_all_node_names(scene_root)
@@ -786,6 +786,28 @@ func start_scale_mode() -> void:
 	scale_mode_enabled = true
 	indicator_scale.self_modulate = Color.GREEN
 
+func get_icon(collection_name : String, item_name : String) -> Texture:
+	var icon_path : String = "res://Data/SceneBuilderCollections/%s/Thumbnail/%s.png" % [collection_name, item_name]
+	var tex : Texture = load(icon_path) as Texture
+	if tex == null:
+		printerr("Icon not found: ", icon_path)
+		return null
+	return tex
+
+func get_instance_of_selected_item() -> Node3D:
+	if ResourceLoader.exists(selected_item.scene_path):
+		var loaded = load(selected_item.scene_path)
+		if loaded is PackedScene:
+			var instance = loaded.instantiate()
+			if instance is Node3D:
+				return instance
+			else:
+				printerr("The instantiated scene's root is not a Node3D: ", loaded.name)
+		else:
+			printerr("Loaded resource is not a PackedScene: ", selected_item.scene_path)
+	else:
+		printerr("Path does not exist: ", selected_item.scene_path)
+	return null
 
 '''
 var print_slowdown_mode_counter : int = 0
@@ -793,7 +815,6 @@ func print_slowdown_mode(message) -> void:
 	print_slowdown_mode_counter += 1
 	if print_slowdown_mode_counter % 180 == 0:
 		print(message)
-
 
 
 

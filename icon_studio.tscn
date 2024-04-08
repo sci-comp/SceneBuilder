@@ -45,5 +45,5 @@ transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 0, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.5, 1)
 
 [node name="Camera3D" type="Camera3D" parent="CameraRoot/Pitch"]
-transform = Transform3D(1, -2.23517e-08, 2.98023e-08, 0, 1, 4.47035e-08, 0, -2.38419e-07, 1, 0, 0, 1.34519)
+transform = Transform3D(1, -2.23517e-08, 2.98023e-08, 0, 1, 4.47035e-08, 0, -2.38419e-07, 1, 0, 0, 10.6067)
 fov = 60.0

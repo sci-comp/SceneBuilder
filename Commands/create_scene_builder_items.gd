@@ -161,8 +161,6 @@ func _create_resource(path: String):
 		var img : Image = viewport_tex.get_image()
 		var tex : Texture = ImageTexture.create_from_image(img)
 		
-		resource.icon = tex
-		
 		var save_path = path_root + "%s/Thumbnail/%s.png" % [resource.collection_name, object_name]
 		print("Saving icon to: ", save_path)
 		img.save_png(save_path)

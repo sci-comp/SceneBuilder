@@ -2,7 +2,6 @@ extends Resource
 class_name SceneBuilderItem
 
 @export var collection_name : String = "Temporary"
-@export var icon : Texture
 @export var item_name : String = "TempItemName"
 @export var scene_path : String = ""
 
@@ -24,7 +23,3 @@ class_name SceneBuilderItem
 @export var random_scale_min : float = 0.9
 @export var random_scale_max : float = 1.1
 
-@export_group("Hidden")
-
-#@export var index : int
-@export var item : PackedScene

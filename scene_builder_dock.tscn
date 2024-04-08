@@ -66,6 +66,7 @@ toggle_mode = true
 text = "6"
 
 [node name="7" type="Button" parent="Collection/Tab"]
+self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
@@ -73,6 +74,7 @@ toggle_mode = true
 text = "7"
 
 [node name="8" type="Button" parent="Collection/Tab"]
+self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
@@ -94,6 +96,7 @@ toggle_mode = true
 text = "10"
 
 [node name="11" type="Button" parent="Collection/Tab"]
+self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
@@ -101,6 +104,7 @@ toggle_mode = true
 text = "11"
 
 [node name="12" type="Button" parent="Collection/Tab"]
+self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
