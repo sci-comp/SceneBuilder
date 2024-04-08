@@ -14,6 +14,11 @@ Although SceneBuilder does conflict with some of Godot's less-useful shortcuts, 
 
 Please see sections "Scene builder commands" and "The scene builder dock" for specific shortcut information.
 
+Note: I recommend unbinding the default shortcuts: 
+	
+	* Quit, Ctrl + Q
+	* (todo)
+
 ## Scene builder commands
 
 In Godot's main bar, click `Project > Tools > Scene Builder` to see a list of productivity commands with their associated keyboard shortcuts.
@@ -119,7 +124,10 @@ Although we demonstrate how to automatically generate items and icons in the nex
 
 ![scene_builder_create_items](./Documentation/Image/scene_builder_create_items.png)
 
-4. When the command "Create scene builder items" is run, the scene icon_studio will be opened. Please close the scene when it's done without saving any changes to icon_studio.tscn
+4. When the command "Create scene builder items" is run, the scene icon_studio will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn.
+
+However, if you would like to make changes to icon_studio.tscn, then that's a great way to customize your icons.
+
 5. In the scene builder dock, click the button "Reload all items"
 
 ### Update the scene builder dock

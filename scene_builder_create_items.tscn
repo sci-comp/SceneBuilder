@@ -6,8 +6,8 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -818.0
-offset_bottom = -424.0
+offset_right = -768.0
+offset_bottom = -439.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_vnax4")
@@ -25,7 +25,7 @@ text = "Collection:"
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_vnax4")
-text = "Temporary"
+placeholder_text = "Furniture"
 alignment = 1
 
 [node name="Boolean" type="HBoxContainer" parent="."]
@@ -49,6 +49,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_vnax4")
 text = "Scale"
+
+[node name="VerticalOffset" type="CheckButton" parent="Boolean"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_vnax4")
+text = "Vertical Offset"
 
 [node name="Headers" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -105,97 +111,76 @@ size_flags_horizontal = 3
 theme = ExtResource("1_vnax4")
 max_value = 360.0
 
-[node name="ScaleMin" type="HBoxContainer" parent="."]
+[node name="Scale" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme = ExtResource("1_vnax4")
 
-[node name="Label" type="Label" parent="ScaleMin"]
+[node name="lbl_Scale" type="Label" parent="Scale"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 theme = ExtResource("1_vnax4")
 text = "Scale"
 
-[node name="x" type="SpinBox" parent="ScaleMin"]
+[node name="min" type="SpinBox" parent="Scale"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 theme = ExtResource("1_vnax4")
 min_value = 0.01
 step = 0.01
 value = 0.9
 custom_arrow_step = 0.02
 
-[node name="y" type="SpinBox" parent="ScaleMin"]
+[node name="lbl_to" type="Label" parent="Scale"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
+theme = ExtResource("1_vnax4")
+text = "to"
+
+[node name="max" type="SpinBox" parent="Scale"]
+layout_mode = 2
+size_flags_horizontal = 6
 theme = ExtResource("1_vnax4")
 min_value = 0.01
 step = 0.01
-value = 0.9
-custom_arrow_step = 0.02
-
-[node name="z" type="SpinBox" parent="ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_vnax4")
-min_value = 0.01
-step = 0.01
-value = 0.9
-custom_arrow_step = 0.02
-
-[node name="Label2" type="Label" parent="ScaleMin"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_vnax4")
-text = "min"
-
-[node name="ScaleMax" type="HBoxContainer" parent="."]
-layout_mode = 2
-theme = ExtResource("1_vnax4")
-
-[node name="Label" type="Label" parent="ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_vnax4")
-
-[node name="x" type="SpinBox" parent="ScaleMax"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_vnax4")
-min_value = 0.02
-step = 0.01
 value = 1.1
 custom_arrow_step = 0.02
 
-[node name="y" type="SpinBox" parent="ScaleMax"]
+[node name="VerticalOffset" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("1_vnax4")
-min_value = 0.02
-step = 0.01
-value = 1.1
-custom_arrow_step = 0.02
 
-[node name="z" type="SpinBox" parent="ScaleMax"]
+[node name="lbl_offset" type="Label" parent="VerticalOffset"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 theme = ExtResource("1_vnax4")
-min_value = 0.02
-step = 0.01
-value = 1.1
-custom_arrow_step = 0.02
+text = "Vertical offset"
 
-[node name="Label2" type="Label" parent="ScaleMax"]
+[node name="min" type="SpinBox" parent="VerticalOffset"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 theme = ExtResource("1_vnax4")
-text = "max"
+step = 0.001
+value = 0.02
+custom_arrow_step = 0.001
 
-[node name="HSeparator" type="HSeparator" parent="."]
+[node name="lbl_to" type="Label" parent="VerticalOffset"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("1_vnax4")
+text = "to"
+
+[node name="max" type="SpinBox" parent="VerticalOffset"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("1_vnax4")
+min_value = 0.001
+step = 0.001
+value = 0.05
+custom_arrow_step = 0.001
 
 [node name="Okay" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_vnax4")
-text = "Okay"
+text = "Create scene builder items with icons"

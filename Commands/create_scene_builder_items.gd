@@ -11,19 +11,19 @@ var create_items : VBoxContainer
 
 var collection_line_edit : LineEdit
 
+var randomize_vertical_offset_checkbox : CheckButton
 var randomize_rotation_checkbox : CheckButton
 var randomize_scale_checkbox : CheckButton
+
+var vertical_offset_spin_box_min : SpinBox
+var vertical_offset_spin_box_max : SpinBox
 
 var rotx_slider : HSlider
 var roty_slider : HSlider
 var rotz_slider : HSlider
 
-var scalex_spin_box_min : SpinBox
-var scalex_spin_box_max : SpinBox
-var scaley_spin_box_min : SpinBox
-var scaley_spin_box_max : SpinBox
-var scalez_spin_box_min : SpinBox
-var scalez_spin_box_max : SpinBox
+var scale_spin_box_min : SpinBox
+var scale_spin_box_max : SpinBox
 
 var ok_button: Button
 
@@ -46,17 +46,16 @@ func execute():
 	popup_instance.add_child(create_items)
 	
 	collection_line_edit = create_items.get_node("Collection/LineEdit")
+	randomize_vertical_offset_checkbox = create_items.get_node("Boolean/VerticalOffset")
 	randomize_rotation_checkbox = create_items.get_node("Boolean/Rotation")
 	randomize_scale_checkbox = create_items.get_node("Boolean/Scale")
+	vertical_offset_spin_box_min = create_items.get_node("VerticalOffset/min")
+	vertical_offset_spin_box_max = create_items.get_node("VerticalOffset/max")
 	rotx_slider = create_items.get_node("Rotation/x")
 	roty_slider = create_items.get_node("Rotation/y")
 	rotz_slider = create_items.get_node("Rotation/z")
-	scalex_spin_box_min = create_items.get_node("ScaleMin/x")
-	scalex_spin_box_max = create_items.get_node("ScaleMax/x")
-	scaley_spin_box_min = create_items.get_node("ScaleMin/y")
-	scaley_spin_box_max = create_items.get_node("ScaleMax/y")
-	scalez_spin_box_min = create_items.get_node("ScaleMin/z")
-	scalez_spin_box_max = create_items.get_node("ScaleMax/z")
+	scale_spin_box_min = create_items.get_node("Scale/min")
+	scale_spin_box_max = create_items.get_node("Scale/max")
 	ok_button = create_items.get_node("Okay")
 	
 	ok_button.pressed.connect(_on_ok_pressed)
@@ -99,19 +98,19 @@ func _create_resource(path: String):
 		resource.item_name = path.get_file().get_basename()
 		resource.collection_name = collection_line_edit.text
 		
+		resource.use_random_vertical_offset = randomize_vertical_offset_checkbox.button_pressed
 		resource.use_random_rotation = randomize_rotation_checkbox.button_pressed
 		resource.use_random_scale = randomize_scale_checkbox.button_pressed
+		
+		resource.random_offset_y_min = vertical_offset_spin_box_min.value
+		resource.random_offset_y_max = vertical_offset_spin_box_max.value
 		
 		resource.random_rot_x = rotx_slider.value
 		resource.random_rot_y = roty_slider.value
 		resource.random_rot_z = rotz_slider.value
 		
-		resource.random_scale_x_min = scalex_spin_box_min.value
-		resource.random_scale_y_min = scaley_spin_box_min.value
-		resource.random_scale_z_min = scalez_spin_box_min.value
-		resource.random_scale_x_max = scalex_spin_box_max.value
-		resource.random_scale_y_max = scaley_spin_box_max.value
-		resource.random_scale_z_max = scalez_spin_box_max.value
+		resource.random_scale_min = scale_spin_box_min.value
+		resource.random_scale_min = scale_spin_box_min.value
 		
 		#endregion
 		

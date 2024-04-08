@@ -26,72 +26,85 @@ columns = 4
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
+button_pressed = true
 text = "1"
 
 [node name="2" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "2"
 
 [node name="3" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "3"
 
 [node name="4" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "4"
 
 [node name="5" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "5"
 
 [node name="6" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "6"
 
 [node name="7" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "7"
 
 [node name="8" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "8"
 
 [node name="9" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "9"
 
 [node name="10" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "10"
 
 [node name="11" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "11"
 
 [node name="12" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
+toggle_mode = true
 text = "12"
 
 [node name="HSeparator3" type="HSeparator" parent="Collection"]
@@ -272,16 +285,51 @@ theme = ExtResource("2_vl512")
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
 layout_mode = 2
 
-[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options"]
+[node name="SurfaceNormal" type="HBoxContainer" parent="Settings/Tab/Options"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 2
+
+[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options/SurfaceNormal"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("2_vl512")
-text = "Use surface normal"
+text = "Surface normal"
+
+[node name="Oritentation" type="VBoxContainer" parent="Settings/Tab/Options/SurfaceNormal"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Lbl" type="Label" parent="Settings/Tab/Options/SurfaceNormal/Oritentation"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_vl512")
+text = "Orientation"
+vertical_alignment = 1
+
+[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/SurfaceNormal/Oritentation"]
+layout_mode = 2
+
+[node name="X" type="CheckBox" parent="Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "X"
+
+[node name="Y" type="CheckBox" parent="Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup"]
+layout_mode = 2
+size_flags_horizontal = 6
+button_pressed = true
+text = "Y"
+
+[node name="Z" type="CheckBox" parent="Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "-Z"
+
+[node name="HSeparator" type="HSeparator" parent="Settings/Tab/Options"]
+layout_mode = 2
 
 [node name="EmptySpace" type="Label" parent="Settings/Tab/Options"]
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 3
 theme = ExtResource("2_vl512")
 
 [node name="Bottom" type="HBoxContainer" parent="Settings/Tab/Options"]
