@@ -4,17 +4,21 @@ SceneBuilder is a system for efficiently building 3D scenes in Godot.
 
 Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock.
 
+![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)
+
+### Notes 
+
+**Bug reports: ** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us on Discord, or make a post in Github's Issues section.
+
 ## Shortcuts
 
-Shortcuts are hardcoded into SceneBuilder.
+Shortcuts are hardcoded into scene builder. This keeps things simple for, but maybe another day, we can add a preferences class that stores the user's preferred hotkeys.
 
-Mosts shortcuts require a combination of `Alt` and another key, though in some cases we use `Shift` or `Ctrl`. 
-
-Although SceneBuilder does conflict with some of Godot's less-useful shortcuts, we try to stay out of Godot's way. For the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
+Although Scene builder does conflict with some of Godot's less-useful shortcuts, we try to stay out of Godot's way. For the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
 
 Please see sections "Scene builder commands" and "The scene builder dock" for specific shortcut information.
 
-Note: I recommend unbinding the default shortcuts: 
+Note: I'd recommend manually unbinding the following default shortcuts in Editor > Editor Settings: 
 	
 	* Quit, Ctrl + Q
 	* (todo)
@@ -46,7 +50,7 @@ In order to set-up the scene builder dock, follow these steps,
 
 	`res://Data/SceneBuilderCollections`
 
-Note: This folder path is hard coded into the scene builder dock.
+This folder path is hard coded into the scene builder dock.
 
 2. Create a CollectionNames resource at the following location by first creating a new Resource, then by attaching the script: `scene_builder_collections.gd`,
 
@@ -93,20 +97,21 @@ Also note that the root node of imported scenes must derive from Node3D.
 
 	`res://Data/SceneBuilderCollections/Furniture/Item/Chair.tres`
 
-By convention, the SceneBuilderItem resource should have the same name as the corresponding PackedScene, though it does not matter.
+The SceneBuilderItem resource must have the same name as the corresponding PackedScene.
 
 4. Create an icon at the following location,
 
 	`res://Data/SceneBuilderCollections/Furniture/Thumbnail/Chair.png`
 
-by convention, a png file with a name matching the item name should be placed in the Thumbnail folder, though the location and name does not actually matter. Icons are not resized, so they should be around 79x79 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration. In the next section, we automatically generate icons instead.
+The png file must have the same name as the corresponding PackedScene and must be placed in the Thumbnail folder. 
+
+Icons are not resized, so they should be around 79x79 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration.
 
 5. Fill out fields in the SceneBuilderItem resource (Chair.tres for this example),
 
 - Collection name would be "Furniture" in this example
-- Item name can be anything, but by convention is the same as the base of the path name. The item name would be "Chair" in this example.
-- Scene path is the path to Chair.glb (or Chair.tscn).
-- Do not edit fields in the Hidden group. (Todo: does Godot have @export_hidden yet?)
+- The item name must be the same as the base of the path name, "Chair" in this example.
+- Scene path is the path to Chair.glb (or Chair.tscn)
 
 ![scene_builder_item](./Documentation/Image/scene_builder_item.png)
 
@@ -114,7 +119,7 @@ Our chair item is now ready!
 
 Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PackedScene will no longer be found by SceneBuilder. Todo: How can we update paths when moving PackedScene files? For now, we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
 
-Although we demonstrate how to automatically generate items and icons in the next section, once a SceneBuilderItem is made, it must be edited by hand for any further changes.
+Although we demonstrate how to automatically generate items and icons in the next section, once a SceneBuilderItem is made, it must be edited by hand for any further changes. (todo: create a script to update SceneBuilderItem resources in bulk?)
 
 ### Batch create items
 
@@ -134,11 +139,9 @@ However, if you would like to make changes to icon_studio.tscn, then that's a gr
 
 #### World3D
 
-The scene builder dock needs to know which scene it should be placing items into. This is not done automatically. 
+The scene builder dock needs to know which scene it should be placing items into. This is typically done automatically, though, the process will fail if a scene is currently selected in the Editor that does not inherit from type Node3D.
 
-When the plugin first loads, it will attempt to use the currently active scene. 
-
-We can change the scene used by the scene builder dock by clicking on that scene's tab, then clicking on the "Find world 3d" button in the scene builder dock.
+We can refresh the root scene used by the scene builder dock by clicking on that scene's tab, then clicking on the "Find world 3d" button in the scene builder dock.
 
 #### Scene builder items
 
@@ -156,21 +159,23 @@ Note that a "SceneBuilderTemp" of type Node will be created in the current edite
 
 #### Use surface normal
 
-Instantiated items will use the surface normal instead of their original orientation.
+Instantiated items will align their respective Y axis with the specified orientation when the checkbox "Surface normal" is toggled on.
 
-(Todo: shortcut? add other normal types?)
+Due to gimbal lock, you may notice that the preview item will often acquire orientations with undesired offsets. Press `5` to reset the item preview's orientation
 
 #### Rotation mode
 
-Press z, x, or c to enter rotation mode, where c represents the y-axis. Rotation will be applied in local or world space according to the editor's "Use Local Space" setting.
+Press `1`, `2`, or, `3` to enter rotation mode, where these digits  represents the x, y, and z-axis respectively. When rotation mode is enabled, the corresponding digit will be highlighted in the bottom right of the scene builder dock.
 
-While rotation mode is active, mouse movement will rotate the preview item around the x, y, or z axis, depending on which key was pressed.
+Rotation is applied through mouse movement (proportional to the mouse motion's greatest relative value in the x or y axis), and is only applied as a world space rotation. (todo: Rotation will be applied in local or world space according to the editor's "Use Local Space" setting.)
 
 To exit rotation mode: left click to apply the rotation or right-click to cancel and restore the original rotation.
 
 #### Scale mode
 
-Press v to enter scale mode. While scale mode is active, mouse movement will increase or decrease the scale of the preview item.
+Press `4` to enter scale mode.
+
+Scale mode works similarly to rotation mode: 
 
 To exit scale mode: left click to apply or right-click to cancel and restore the original values.
 
