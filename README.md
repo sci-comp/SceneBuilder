@@ -1,14 +1,14 @@
+![scene_builder_demo](./Documentation/Image/scene_builder_demo.png)
+
 # Introduction
 
 SceneBuilder is a system for efficiently building 3D scenes in Godot.
 
 Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock.
 
+**Bugs** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us in Discord, or make a post in Github's Issues section.
+
 ![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)
-
-### Notes 
-
-**Bug reports: ** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us on Discord, or make a post in Github's Issues section.
 
 ## Shortcuts
 
@@ -112,6 +112,7 @@ Icons are not resized, so they should be around 79x79 pixels in order to fit in 
 - Collection name would be "Furniture" in this example
 - The item name must be the same as the base of the path name, "Chair" in this example.
 - Scene path is the path to Chair.glb (or Chair.tscn)
+- Random vertical offset is often used with decals as a way to avoid z fighting. The default values work well for this purpose.
 
 ![scene_builder_item](./Documentation/Image/scene_builder_item.png)
 
@@ -180,4 +181,6 @@ Scale mode works similarly to rotation mode:
 To exit scale mode: left click to apply or right-click to cancel and restore the original values.
 
 
+## License
 
+Licensed under the MIT license, see `LICENSE` for more information.

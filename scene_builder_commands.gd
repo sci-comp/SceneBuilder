@@ -76,7 +76,7 @@ func _enter_tree():
 	submenu_scene.add_item("Select children (Crtl+Right)", SceneCommands.select_children)
 	submenu_scene.add_item("Select parents (Crtl+Left)", SceneCommands.select_parents)
 	submenu_scene.add_item("Swap nodes (Alt+S)", SceneCommands.swap_nodes)
-	submenu_scene.add_item("Swap nodes in scene (Alt+S)", SceneCommands.swap_nodes_in_scene)
+	submenu_scene.add_item("Swap nodes in scene (Alt+X)", SceneCommands.swap_nodes_in_scene)
 
 func _exit_tree():
 	remove_tool_menu_item("Scene Builder")
