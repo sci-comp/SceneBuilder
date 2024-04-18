@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://x8g21udghd81"]
 
-[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/scene_builder_ui_theme.tres" id="1_vnax4"]
+[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_ui_theme.tres" id="1_vnax4"]
+
 
 [node name="SceneBuilderCreateItems" type="VBoxContainer"]
 anchors_preset = 15

@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
 
-[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/scene_builder_ui_theme.tres" id="2_vl512"]
+[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_ui_theme.tres" id="2_vl512"]
+
 
 [node name="Scene Builder" type="VBoxContainer"]
 custom_minimum_size = Vector2(352, 0)
