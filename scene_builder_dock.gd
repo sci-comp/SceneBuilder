@@ -89,15 +89,7 @@ func _enter_tree() -> void:
 	
 	#region Initialize controls
 	
-	if FileAccess.file_exists("res://addons/SceneBuilder/scene_builder_dock.tscn"):
-		scene_builder_dock = load("res://addons/SceneBuilder/scene_builder_dock.tscn").instantiate()
-	elif FileAccess.file_exists("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn"):
-		# Recursive directories will exist when installing from a submodule
-		scene_builder_dock = load("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn").instantiate()
-	else:
-		printerr("scene_builder_dock.tscn was not found")
-		return
-	
+	scene_builder_dock = load("res://addons/SceneBuilder/scene_builder_dock.tscn").instantiate()
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_RIGHT_UL, scene_builder_dock)
 	
 	# Tabs

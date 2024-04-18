@@ -107,57 +107,57 @@ func _on_scene_submenu_item_selected(id: int):
 			swap_nodes_in_scene()
 	
 func alphabetize_nodes():
-	var _instance = preload("res://addons/SceneBuilder/Commands/alphabetize_nodes.gd").new()
+	var _instance = preload("./Commands/alphabetize_nodes.gd").new()
 	_instance.execute()
 
 func create_scene_builder_items():
-	var reusable_instance = preload("res://addons/SceneBuilder/Commands/create_scene_builder_items.gd").new()
+	var reusable_instance = preload("./Commands/create_scene_builder_items.gd").new()
 	add_child(reusable_instance)
 	reusable_instance.done.connect(_on_reusable_instance_done)
 	reusable_instance.execute()
 
 func instantiate_at_cursor():
-	var _instance = preload("res://addons/SceneBuilder/Commands/instantiate_at_cursor.gd").new()
+	var _instance = preload("./Commands/instantiate_at_cursor.gd").new()
 	_instance.execute()
 
 func instantiate_from_json():
-	var _instance = preload("res://addons/SceneBuilder/Commands/instantiate_from_json.gd").new()
+	var _instance = preload("./Commands/instantiate_from_json.gd").new()
 	_instance.execute()
 
 func instantiate_in_a_row(_space):
-	var _instance = preload("res://addons/SceneBuilder/Commands/instantiate_in_a_row.gd").new()
+	var _instance = preload("./Commands/instantiate_in_a_row.gd").new()
 	_instance.execute(_space)
 
 func make_local():
-	var _instance = preload("res://addons/SceneBuilder/Commands/make_local.gd").new()
+	var _instance = preload("./Commands/make_local.gd").new()
 	_instance.execute()
 
 func reset_node_name():
-	var _instance = preload("res://addons/SceneBuilder/Commands/reset_node_name.gd").new()
+	var _instance = preload("./Commands/reset_node_name.gd").new()
 	_instance.execute()
 
 func reset_transform():
-	var _instance = preload("res://addons/SceneBuilder/Commands/reset_transform.gd").new()
+	var _instance = preload("./Commands/reset_transform.gd").new()
 	_instance.execute()
 
 func reset_transform_rotation():
-	var _instance = preload("res://addons/SceneBuilder/Commands/reset_transform_rotation.gd").new()
+	var _instance = preload("./Commands/reset_transform_rotation.gd").new()
 	_instance.execute()
 
 func select_children():
-	var _instance = preload("res://addons/SceneBuilder/Commands/select_children.gd").new()
+	var _instance = preload("./Commands/select_children.gd").new()
 	_instance.execute()
 	
 func select_parents():
-	var _instance = preload("res://addons/SceneBuilder/Commands/select_parents.gd").new()
+	var _instance = preload("./Commands/select_parents.gd").new()
 	_instance.execute()
 
 func swap_nodes():
-	var _instance = preload("res://addons/SceneBuilder/Commands/swap_nodes.gd").new()
+	var _instance = preload("./Commands/swap_nodes.gd").new()
 	_instance.execute()
 
 func swap_nodes_in_scene():
-	var _instance = preload("res://addons/SceneBuilder/Commands/swap_nodes_in_scene.gd").new()
+	var _instance = preload("./Commands/swap_nodes_in_scene.gd").new()
 	_instance.execute()
 
 # ------------------------------------------------------------------------------
