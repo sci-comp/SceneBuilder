@@ -415,7 +415,7 @@ func update_world_3d() -> bool:
 		camera = viewport.get_camera_3d()
 		return true
 	else:
-		print("Failed to update world 3d, new scene root: ", new_scene_root.name)
+		print("Failed to update world 3d")
 		scene_root = null
 		viewport = null
 		world3d = null
