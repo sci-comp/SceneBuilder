@@ -817,16 +817,4 @@ func get_instance_of_selected_item() -> Node3D:
 		printerr("Path does not exist: ", selected_item.scene_path)
 	return null
 
-'''
-var print_slowdown_mode_counter : int = 0
-func print_slowdown_mode(message) -> void:
-	print_slowdown_mode_counter += 1
-	if print_slowdown_mode_counter % 180 == 0:
-		print(message)
-
-
-
-'''
-
-
 
