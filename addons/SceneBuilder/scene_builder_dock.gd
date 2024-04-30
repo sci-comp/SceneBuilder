@@ -76,6 +76,8 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 var btn_group_surface_orientation : ButtonGroup
 
+var input_map
+
 # ---- Notifications -----------------------------------------------------------
 
 func _enter_tree() -> void:
@@ -360,8 +362,6 @@ func on_item_icon_clicked(_button_name: String) -> void:
 	
 	if previously_selected_item_name != _button_name:
 		select_item(selected_collection_name, _button_name)
-
-
 
 func reload_all_items() -> void:
 	
@@ -711,6 +711,9 @@ func refresh_collection_names() -> void:
 		collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
 	
 	#endregion
+
+func update_input_map(new_input_map) -> void:
+	input_map = new_input_map
 
 # ---- Shortcut ----------------------------------------------------------------
 
