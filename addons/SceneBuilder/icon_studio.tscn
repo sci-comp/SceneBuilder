@@ -1,6 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://gea6yaqoucvf"]
-
-[ext_resource type="Material" uid="uid://bfsxgx82pww2m" path="res://addons/StandardAssets/Material/Common/MI_Grid_Light_Gray.tres" id="1_2fiuv"]
+[gd_scene load_steps=4 format=3 uid="uid://gea6yaqoucvf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5nnfa"]
 sky_top_color = Color(0.211765, 0.239216, 0.290196, 1)
@@ -19,8 +17,6 @@ ambient_light_color = Color(0.752941, 0.752941, 0.752941, 1)
 reflected_light_source = 2
 tonemap_mode = 2
 
-[sub_resource type="BoxMesh" id="BoxMesh_uuy4a"]
-
 [node name="IconStudio" type="SubViewport"]
 size = Vector2i(80, 80)
 render_target_update_mode = 4
@@ -31,12 +27,6 @@ environment = SubResource("Environment_tc7kr")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866024, 0.433016, -0.250001, 1.47562e-08, 0.499998, 0.866026, 0.500003, -0.749999, 0.43301, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Floor" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -2, 0)
-visible = false
-material_override = ExtResource("1_2fiuv")
-mesh = SubResource("BoxMesh_uuy4a")
 
 [node name="CameraRoot" type="Node3D" parent="."]
 transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 0, 0, 0)

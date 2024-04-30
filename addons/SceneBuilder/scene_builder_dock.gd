@@ -667,47 +667,51 @@ func populate_preview_instance_rid_array(instance: Node) -> void:
 func refresh_collection_names() -> void:
 	print("Refreshing collection names")
 	
-	var _names : CollectionNames = load(path_to_resource)
-	if _names != null:
-		var new_collection_names : Array[String] = []
-		new_collection_names.append(_names.collection_name_01)
-		new_collection_names.append(_names.collection_name_02)
-		new_collection_names.append(_names.collection_name_03)
-		new_collection_names.append(_names.collection_name_04)
-		new_collection_names.append(_names.collection_name_05)
-		new_collection_names.append(_names.collection_name_06)
-		new_collection_names.append(_names.collection_name_07)
-		new_collection_names.append(_names.collection_name_08)
-		new_collection_names.append(_names.collection_name_09)
-		new_collection_names.append(_names.collection_name_10)
-		new_collection_names.append(_names.collection_name_11)
-		new_collection_names.append(_names.collection_name_12)
-		
-		# Validate
-		for _name in new_collection_names:
-			if _name != "":
-				var dir = DirAccess.open(path_root + _name)
-				if dir:
-					dir.list_dir_begin()
-					var item = dir.get_next()
-					if item != "":
-						print("Collection directory is present and contains items: " + _name)
+	if ResourceLoader.exists(path_to_resource):
+		var _names : CollectionNames = load(path_to_resource)
+		if _names != null:
+			var new_collection_names : Array[String] = []
+			new_collection_names.append(_names.collection_name_01)
+			new_collection_names.append(_names.collection_name_02)
+			new_collection_names.append(_names.collection_name_03)
+			new_collection_names.append(_names.collection_name_04)
+			new_collection_names.append(_names.collection_name_05)
+			new_collection_names.append(_names.collection_name_06)
+			new_collection_names.append(_names.collection_name_07)
+			new_collection_names.append(_names.collection_name_08)
+			new_collection_names.append(_names.collection_name_09)
+			new_collection_names.append(_names.collection_name_10)
+			new_collection_names.append(_names.collection_name_11)
+			new_collection_names.append(_names.collection_name_12)
+			
+			# Validate
+			for _name in new_collection_names:
+				if _name != "":
+					var dir = DirAccess.open(path_root + _name)
+					if dir:
+						dir.list_dir_begin()
+						var item = dir.get_next()
+						if item != "":
+							print("Collection directory is present and contains items: " + _name)
+						else:
+							printerr("Directory exists, but contains no items: " + _name)
 					else:
-						printerr("Directory exists, but contains no items: " + _name)
-				else:
-					printerr("Collection directory does not exist: " + _name)
-		collection_names = new_collection_names
+						printerr("Collection directory does not exist: " + _name)
+			collection_names = new_collection_names
+			
+			for i in range(num_collections):
+				var collection_name = collection_names[i]
+				if collection_name == "":
+					collection_name = " "
+				btns_collection_tabs[i].text = collection_name
+		
 	else:
 		printerr("CollectioNames resource is null")
-		collection_names = []
+		collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
 	
 	#endregion
 	
-	for i in range(num_collections):
-		var collection_name = collection_names[i]
-		if collection_name == "":
-			collection_name = " "
-		btns_collection_tabs[i].text = collection_name
+
 
 # ---- Shortcut ----------------------------------------------------------------
 
