@@ -14,7 +14,7 @@ func execute():
 	world3d = viewport.find_world_3d()
 	space = world3d.direct_space_state
 	var mouse_pos = viewport.get_mouse_position()
-	var camera = viewport.get_camera_3d()	
+	var camera = viewport.get_camera_3d()
 	var selected_paths = editor.get_selected_paths()
 	var editor_selection = editor.get_selection()
 	var selected_nodes = editor_selection.get_selected_nodes()

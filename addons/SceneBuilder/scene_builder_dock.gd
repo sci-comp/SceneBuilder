@@ -215,7 +215,7 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 			
 			if placement_mode_enabled:
 				var mouse_pos = viewport.get_mouse_position()
-				if mouse_pos.x >= 0 and mouse_pos.y >= 0: 
+				if mouse_pos.x >= 0 and mouse_pos.y >= 0:
 					if mouse_pos.x <= viewport.size.x and mouse_pos.y <= viewport.size.y:
 						
 						if event.button_index == MOUSE_BUTTON_LEFT:
@@ -354,7 +354,7 @@ func on_item_icon_clicked(_button_name: String) -> void:
 	
 	var item_highlighters : Dictionary = item_highlighters_by_collection[selected_collection_name]
 	
-	var previously_selected_item_name = selected_item_name 
+	var previously_selected_item_name = selected_item_name
 	if placement_mode_enabled:
 		end_placement_mode()
 	
@@ -503,7 +503,7 @@ func create_preview_instance() -> void:
 		printerr("scene_root is null inside create_preview_item_instance")
 		return
 	
-	clear_preview_instance() 
+	clear_preview_instance()
 	
 	scene_builder_temp = scene_root.get_node_or_null("SceneBuilderTemp")
 	if not scene_builder_temp:
@@ -568,18 +568,19 @@ func get_items_from_collection_folder(_collection_name : String) -> Array:
 		dir.list_dir_begin()
 		var item_filename = dir.get_next()
 		while item_filename != "":
-			if item_filename.ends_with(".tres"):
-				var item_path = path_root + _collection_name + "/Item/" + item_filename
-				var resource = load(item_path)
-				if resource and resource is SceneBuilderItem:
-					var scene_builder_item : SceneBuilderItem = resource
-					
-					print("Loaded item: ", item_filename)
-					
-					_items[scene_builder_item.item_name] = scene_builder_item
-					_ordered_item_keys.append(scene_builder_item.item_name)
-				else:
-					print("The resource is not a SceneBuilderItem or failed to load: ", item_filename)
+			
+			var item_path = path_root + _collection_name + "/Item/" + item_filename
+			var resource = load(item_path)
+			if resource and resource is SceneBuilderItem:
+				var scene_builder_item : SceneBuilderItem = resource
+				
+				print("Loaded item: ", item_filename)
+				
+				_items[scene_builder_item.item_name] = scene_builder_item
+				_ordered_item_keys.append(scene_builder_item.item_name)
+			else:
+				print("The resource is not a SceneBuilderItem or failed to load: ", item_filename)
+				
 			item_filename = dir.get_next()
 
 	return [_items, _ordered_item_keys]
@@ -635,7 +636,7 @@ func initialize_node_name(node : Node3D, new_name : String) -> void:
 func is_transform_mode_enabled() -> bool:
 	if rotation_mode_x_enabled or rotation_mode_y_enabled or rotation_mode_z_enabled or scale_mode_enabled:
 		return true;
-	else: 
+	else:
 		return false
 
 func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
@@ -710,8 +711,6 @@ func refresh_collection_names() -> void:
 		collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
 	
 	#endregion
-	
-
 
 # ---- Shortcut ----------------------------------------------------------------
 
