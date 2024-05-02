@@ -132,9 +132,6 @@ func _create_resource(path: String):
 		#region Create icon
 		
 		# Validate
-		if not resource.scene_path.ends_with(".glb") and not resource.scene_path.ends_with(".tscn"):
-			print("Invalid scene file. Must end with .glb or .tscn")
-			return
 		var packed_scene = load(resource.scene_path) as PackedScene
 		if packed_scene == null:
 			print("Failed to load the item scene.")
