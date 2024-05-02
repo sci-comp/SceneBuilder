@@ -2,7 +2,7 @@
 
 # Introduction
 
-SceneBuilder is a system for efficiently building 3D scenes in Godot.
+SceneBuilder is a 3D level design tool and asset browser, together with a set of common productivity commands
 
 Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock.
 
@@ -10,22 +10,38 @@ Scene builder is logically divided into two main parts: scene builder commands a
 
 ![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)
 
+## Installation
+
+In addition to being available in the AssetLib, Scene builder may be installed by simply cloning the entire repo into,
+
+`res://addons/SceneBuilder/`
+
+meaning that there will be recursive directories such as,
+
+`res://addons/SceneBuilder/addons/SceneBuilder/`
+
+See `scene_builder_plugin.gd` for specific implmenetation.
+
 ## Shortcuts
 
-Shortcuts are hardcoded into scene builder. This keeps things simple for, but maybe another day, we can add a preferences class that stores the user's preferred hotkeys.
+Some shortcuts are hardcoded into scene builder. They are as follows,
 
-Although Scene builder does conflict with some of Godot's less-useful shortcuts, we try to stay out of Godot's way. For the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
+With an item selected,
 
-Please see sections "Scene builder commands" and "The scene builder dock" for specific shortcut information.
+- Enter x rotation mode: 1
+- Enter y rotation mode: 2
+- Enter z rotation mode: 3
+- Enter scale mode: 4
+- Reset orientation: 5
+- Select previous/next items by pressing: Shift + Left/Right Arrow
+- Select previous/next category by pressing: Alt + Left/Right Arrow
+- Exit placement mode: Alt + Q
 
-Note: I'd recommend manually unbinding the following default shortcuts in Editor > Editor Settings: 
-	
-	* Quit, Ctrl + Q
-	* (todo)
+Many other commands may be rebound by selecting new values in `scene_builder_input_map.tres`. Note that, for the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
 
 ## Scene builder commands
 
-In Godot's main bar, click `Project > Tools > Scene Builder` to see a list of productivity commands with their associated keyboard shortcuts.
+In Godot's main bar, click `Project > Tools > Scene Builder` to see a list of productivity commands.
 
 If you would like to know more about how these commands work, please see the command's respective GDScript file for more information, which is located,
 
@@ -82,9 +98,7 @@ Usually, we will want to create `SceneBuilderItem` resources in bulk. However, f
 
 Continuing with the furniture example, we assume in this section that you have already added "Furniture" to collection names, and have created an empty "Furniture" folder,
 
-1. Create a `PackedScene` that we will use as an item to place. For this example, I will assume that you already have "Chair.glb" or "Chair.tscn" somewhere in your project files. It doesn't matter where your chair scene is located in FileSystem.
-
-Note that the scene builder dock will only work with files ending in .glb or .tscn.
+1. Create a `PackedScene` that we will use as an item to place. For this example, I will assume that you already have "Chair.glb," "Chair.tscn," or other relevant PackedScene somewhere in your project files. It doesn't matter where your chair scene is located in FileSystem.
 
 Also note that the root node of imported scenes must derive from Node3D.
 
@@ -105,7 +119,7 @@ The SceneBuilderItem resource must have the same name as the corresponding Packe
 
 The png file must have the same name as the corresponding PackedScene and must be placed in the Thumbnail folder. 
 
-Icons are not resized, so they should be around 79x79 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration.
+Icons are not resized, so they should be around 80x80 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration.
 
 5. Fill out fields in the SceneBuilderItem resource (Chair.tres for this example),
 
@@ -118,9 +132,9 @@ Icons are not resized, so they should be around 79x79 pixels in order to fit in 
 
 Our chair item is now ready!
 
-Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PackedScene will no longer be found by SceneBuilder. Todo: How can we update paths when moving PackedScene files? For now, we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
+Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PackedScene will no longer be found by SceneBuilder. If we need to move a PackedScene item in FileSystem, then we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
 
-Although we demonstrate how to automatically generate items and icons in the next section, once a SceneBuilderItem is made, it must be edited by hand for any further changes. (todo: create a script to update SceneBuilderItem resources in bulk?)
+Although we demonstrate how to automatically generate items and icons in the next section, once a SceneBuilderItem is made, it must be edited by hand for any further changes.
 
 ### Batch create items
 
@@ -152,7 +166,7 @@ Whenever we make changes to SceneBuilderItem resources or collection names, we m
 
 When an icon is highlighted green in the scene builder dock, then placement mode has been enabled.
 
-To exit placement mode, we may: press the highlighted icon, (Todo: also end placement mode on Esc? On Right-click?)
+To exit placement mode, we may: press the highlighted icon, or use the assigned shotcut.
 
 When placement mode is active, then there will be an item preview in the current edited scene. 
 
