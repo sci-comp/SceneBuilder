@@ -244,86 +244,71 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 								viewport.warp_mouse(original_mouse_position)
 								
 								return EditorPlugin.AFTER_GUI_INPUT_STOP
-
-			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				
-				if event.shift_pressed or event.ctrl_pressed:
-					
-					if event.shift_pressed and placement_mode_enabled:
-						select_previous_item()
-					elif event.ctrl_pressed:
-						select_previous_collection()
-					
-					return EditorPlugin.AFTER_GUI_INPUT_STOP
-			
-			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				
-				if event.shift_pressed or event.ctrl_pressed:
-					
-					if event.shift_pressed and placement_mode_enabled:
-						select_next_item()
-					elif event.ctrl_pressed:
-						select_next_collection()
-					
-					return EditorPlugin.AFTER_GUI_INPUT_STOP
-			
 	
 	elif event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
 			
+			if !event.alt_pressed and !event.ctrl_pressed and !event.shift_pressed:
+				
+				if event.keycode == KEY_1:
+					if is_transform_mode_enabled():
+						if rotation_mode_x_enabled:
+							end_transform_mode()
+						else:
+							end_transform_mode()
+							start_rotation_mode_x()
+					else:
+						start_rotation_mode_x()
+				
+				elif event.keycode == KEY_2:
+					if is_transform_mode_enabled():
+						if rotation_mode_y_enabled:
+							end_transform_mode()
+						else:
+							end_transform_mode()
+							start_rotation_mode_y()
+					else:
+						start_rotation_mode_y()
+				
+				elif event.keycode == KEY_3:
+					if is_transform_mode_enabled():
+						if rotation_mode_z_enabled:
+							end_transform_mode()
+						else:
+							end_transform_mode()
+							start_rotation_mode_z()
+					else:
+						start_rotation_mode_z()
+				
+				elif event.keycode == KEY_4:
+					if is_transform_mode_enabled():
+						if scale_mode_enabled:
+							end_transform_mode()
+						else:
+							end_transform_mode()
+							start_scale_mode()
+					else:
+						start_scale_mode()
+				
+				elif event.keycode == KEY_5:
+					if is_transform_mode_enabled():
+						end_transform_mode()
+					reroll_preview_instance_transform()
+			
 			if placement_mode_enabled:
+				if event.shift_pressed:
+					if event.keycode == KEY_LEFT:
+						select_previous_item()
+					elif event.keycode == KEY_RIGHT:
+						select_next_item()
 				
 				if event.alt_pressed:
 					if event.keycode == KEY_Q:
 						end_placement_mode()
-				
-				else:
-					
-					if event.keycode == KEY_1:
-						if is_transform_mode_enabled():
-							if rotation_mode_x_enabled:
-								end_transform_mode()
-							else:
-								end_transform_mode()
-								start_rotation_mode_x()
-						else:
-							start_rotation_mode_x()
-					
-					elif event.keycode == KEY_2:
-						if is_transform_mode_enabled():
-							if rotation_mode_y_enabled:
-								end_transform_mode()
-							else:
-								end_transform_mode()
-								start_rotation_mode_y()
-						else:
-							start_rotation_mode_y()
-					
-					elif event.keycode == KEY_3:
-						if is_transform_mode_enabled():
-							if rotation_mode_z_enabled:
-								end_transform_mode()
-							else:
-								end_transform_mode()
-								start_rotation_mode_z()
-						else:
-							start_rotation_mode_z()
-					
-					elif event.keycode == KEY_4:
-						if is_transform_mode_enabled():
-							if scale_mode_enabled:
-								end_transform_mode()
-							else:
-								end_transform_mode()
-								start_scale_mode()
-						else:
-							start_scale_mode()
-					
-					elif event.keycode == KEY_5:
-						if is_transform_mode_enabled():
-							end_transform_mode()
-						
-						reroll_preview_instance_transform()
+					if event.keycode == KEY_LEFT:
+						select_previous_collection()
+					elif event.keycode == KEY_RIGHT:
+						select_next_collection()
 	
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
 
@@ -625,7 +610,7 @@ func instantiate_selected_item_at_position() -> void:
 		print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
 	
 	else:
-		printerr("Failed to instantiate item, raycast missed")
+		print("Raycast missed, items must be instantiated on a StaticBody with a CollisionShape")
 	
 	undo_redo.commit_action()
 
@@ -668,9 +653,18 @@ func populate_preview_instance_rid_array(instance: Node) -> void:
 func refresh_collection_names() -> void:
 	print("Refreshing collection names")
 	
-	if ResourceLoader.exists(path_to_resource):
-		var _names : CollectionNames = load(path_to_resource)
-		if _names != null:
+	if !ResourceLoader.exists(path_to_resource):
+		var _collection_names : CollectionNames = Resource.new()
+		var save_result = ResourceSaver.save(_collection_names, path_to_resource)
+		print("A CollectionNames resource has been created at location: ", path_to_resource)
+		
+		if save_result != OK:
+			printerr("We were unable to create a CollectionNames resource at location: ", path_to_resource)
+			collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
+			return
+	
+	var _names : CollectionNames = load(path_to_resource)
+	if _names != null:
 			var new_collection_names : Array[String] = []
 			new_collection_names.append(_names.collection_name_01)
 			new_collection_names.append(_names.collection_name_02)
@@ -705,9 +699,8 @@ func refresh_collection_names() -> void:
 				if collection_name == "":
 					collection_name = " "
 				btns_collection_tabs[i].text = collection_name
-		
 	else:
-		printerr("CollectioNames resource is null")
+		printerr("An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_resource))
 		collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
 	
 	#endregion
@@ -750,9 +743,15 @@ func select_item(collection_name : String, item_name : String) -> void:
 	placement_mode_enabled = true;
 	create_preview_instance()
 
+func select_first_item() -> void:
+	var _first_item : String = ordered_keys_by_collection[selected_collection_name][0]
+	print(_first_item)
+	select_item(selected_collection_name, _first_item)
+
 func select_next_collection() -> void:
 	end_placement_mode()
 	select_collection((selected_collection_index + num_collections + 1) % num_collections)
+	select_first_item()
 
 func select_next_item() -> void:
 	var ordered_keys : Array = ordered_keys_by_collection[selected_collection_name]
@@ -775,6 +774,7 @@ func select_previous_item() -> void:
 func select_previous_collection() -> void:
 	end_placement_mode()
 	select_collection((selected_collection_index + num_collections - 1) % num_collections)
+	select_first_item()
 
 func start_rotation_mode_x() -> void:
 	original_mouse_position = viewport.get_mouse_position()
