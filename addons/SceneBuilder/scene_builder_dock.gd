@@ -719,14 +719,19 @@ func reroll_preview_instance_transform() -> void:
 		if selected_item.use_random_scale:
 			var random_scale : float = rng.randf_range(selected_item.random_scale_min, selected_item.random_scale_max)
 			original_preview_scale = Vector3(random_scale, random_scale, random_scale)
+		else:
+			original_preview_scale = Vector3(1, 1, 1)
 		
-		original_preview_scale = preview_instance.scale
+		preview_instance.scale = original_preview_scale
 		
-		if selected_item.use_random_scale:
+		if selected_item.use_random_rotation:
 			var x_rot : float = rng.randf_range(0, selected_item.random_rot_x)
 			var y_rot : float = rng.randf_range(0, selected_item.random_rot_y)
 			var z_rot : float = rng.randf_range(0, selected_item.random_rot_z)
 			preview_instance.rotation = Vector3(deg_to_rad(x_rot), deg_to_rad(y_rot), deg_to_rad(z_rot))
+			original_preview_basis = preview_instance.basis
+		else:
+			preview_instance.rotation = Vector3(0, 0, 0)
 			original_preview_basis = preview_instance.basis
 		
 		original_preview_basis = preview_instance.basis
