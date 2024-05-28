@@ -13,6 +13,8 @@ enum SceneCommands
 	instantiate_from_json = 31,
 	instantiate_in_a_row = 32,
 	make_local = 40,
+	push_to_grid = 45,
+	push_parent_offset_to_child = 46,
 	reset_node_name = 50,
 	reset_transform = 61,
 	reset_transform_rotation = 62,
@@ -35,6 +37,10 @@ func _unhandled_input(event: InputEvent):
 						alphabetize_nodes()
 					input_map.make_local:
 						make_local()
+					input_map.push_to_grid:
+						push_to_grid()
+					input_map.push_parent_offset_to_child:
+						push_parent_offset_to_child()
 					input_map.reset_node_name:
 						reset_node_name()
 					input_map.swap_nodes:
@@ -70,6 +76,8 @@ func _enter_tree():
 	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
 	submenu_scene.add_item("Instantiate at cursor", SceneCommands.instantiate_at_cursor)
 	submenu_scene.add_item("Make local", SceneCommands.make_local)
+	submenu_scene.add_item("Push to grid", SceneCommands.push_to_grid)
+	submenu_scene.add_item("Push parent offset to child", SceneCommands.push_parent_offset_to_child)
 	submenu_scene.add_item("Reset node names", SceneCommands.reset_node_name)
 	submenu_scene.add_item("Reset transform", SceneCommands.reset_transform)
 	submenu_scene.add_item("Reset transform rotation", SceneCommands.reset_transform_rotation)
@@ -91,6 +99,10 @@ func _on_scene_submenu_item_selected(id: int):
 		
 		SceneCommands.make_local:
 			make_local()
+		SceneCommands.push_to_grid:
+			push_to_grid()
+		SceneCommands.push_parent_offset_to_child:
+			push_parent_offset_to_child()
 		SceneCommands.reset_node_name:
 			reset_node_name()
 		SceneCommands.reset_transform:
@@ -130,6 +142,14 @@ func instantiate_in_a_row(_space):
 
 func make_local():
 	var _instance = preload("./Commands/make_local.gd").new()
+	_instance.execute()
+
+func push_to_grid():
+	var _instance = preload("./Commands/push_to_grid.gd").new()
+	_instance.execute()
+
+func push_parent_offset_to_child():
+	var _instance = preload("./Commands/push_parent_offset_to_child.gd").new()
 	_instance.execute()
 
 func reset_node_name():
