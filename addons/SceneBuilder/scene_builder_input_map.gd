@@ -13,7 +13,6 @@ extends Resource
 @export var reset_node_name : Key = KEY_N
 
 # Node
-@export var make_local : Key = KEY_L
 @export var swap_nodes : Key = KEY_S
 @export var swap_nodes_in_scene : Key = KEY_X
 
