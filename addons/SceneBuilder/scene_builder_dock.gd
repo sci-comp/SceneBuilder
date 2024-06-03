@@ -78,6 +78,9 @@ var btn_group_surface_orientation : ButtonGroup
 
 var input_map
 
+var base_control : Control
+var btn_use_local_space : Button
+
 # ---- Notifications -----------------------------------------------------------
 
 func _enter_tree() -> void:
@@ -85,6 +88,8 @@ func _enter_tree() -> void:
 	#
 	editor = get_editor_interface()
 	toolbox = SceneBuilderToolbox.new()
+	base_control = editor.get_base_control()
+	btn_use_local_space = base_control.get_node("/root/@EditorNode@17172/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@Node3DEditor@10010/@MarginContainer@9465/@HFlowContainer@9466/@HBoxContainer@9467/@Button@9480")
 	
 	#
 	update_world_3d()
@@ -201,11 +206,20 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 			relative_motion *= 0.01  # Sensitivity
 			
 			if rotation_mode_x_enabled:
-				preview_instance.rotate_x(relative_motion)
+				if btn_use_local_space.button_pressed:
+					preview_instance.rotate_object_local(Vector3(1, 0, 0), relative_motion) 
+				else:
+					preview_instance.rotate_x(relative_motion)
 			elif rotation_mode_y_enabled:
-				preview_instance.rotate_y(relative_motion)
+				if btn_use_local_space.button_pressed:
+					preview_instance.rotate_object_local(Vector3(0, 1, 0), relative_motion) 
+				else:
+					preview_instance.rotate_y(relative_motion)
 			elif rotation_mode_z_enabled:
-				preview_instance.rotate_z(relative_motion)
+				if btn_use_local_space.button_pressed:
+					preview_instance.rotate_object_local(Vector3(0, 0, 1), relative_motion) 
+				else:
+					preview_instance.rotate_z(relative_motion)
 			elif scale_mode_enabled:
 				var new_scale : Vector3 = preview_instance.scale * (1 + relative_motion)
 				if is_zero_approx(new_scale.x) or is_zero_approx(new_scale.y) or is_zero_approx(new_scale.z):
