@@ -10,6 +10,22 @@ Scene builder is logically divided into two main parts: scene builder commands a
 
 ![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)
 
+### Scope
+
+Scene builder is made to serve as a scene browser and scene placer for scenes of type Node3D. Scene builder also aims to offer a handful of productivity commands.
+
+#### Multi-mesh Instances
+
+Scattering large numbers of objects, often with help from multi-mesh instances, is currently out of scope. Please see one of the specialized tools below,
+
+- [Scatter](https://github.com/HungryProton/scatter) is a powerful tool designed to randomly fill areas with props or other scenes.
+- [Simple Grass Textured](https://github.com/IcterusGames/SimpleGrassTextured) is the perfect tool for painting 2d textures over a collision area.
+- [Spatial Gardener](https://github.com/dreadpon/godot_spatial_gardener) is an efficient tool that uses an octree to scatter plants or props arbitrary (possibly large) surfaces. 
+
+#### Grid Snapping
+
+Grid snapping is currently out of scope due to the existence of [GridMap](https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html). GridMap is a fantastic tool built directly into Godot.
+
 ## Installation
 
 In addition to being available in the AssetLib, Scene builder may be installed by simply cloning the entire repo into,
