@@ -1,12 +1,18 @@
+''' Set selected node positions to 0,0,0 while preserving children's world positions. '''
+
 @tool
 extends EditorPlugin
 
 func execute():
-	var selection: EditorSelection = get_editor_interface().get_selection()
-	var undo_redo = get_undo_redo()
+	
+	var editor : EditorInterface = get_editor_interface()
+	var undo_redo : EditorUndoRedoManager = get_undo_redo()
 	undo_redo.create_action("Push parent offset to child")
 
-	for selected in selection.get_selected_nodes():
+	var selection : EditorSelection = editor.get_selection()
+	var selected_nodes : Array[Node] = selection.get_selected_nodes()
+	
+	for selected in selected_nodes:
 		if selected is Node3D and selected.get_child_count() > 0:
 			var parent : Node3D = selected
 			var parent_position = parent.global_position

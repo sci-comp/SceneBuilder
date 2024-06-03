@@ -188,10 +188,3 @@ func search_for_mesh_instance_3d(node : Node):
 	for child in node.get_children():
 		search_for_mesh_instance_3d(child)
 
-
-
-'''var img_tmp_icon : Image
-var tex_tmp_icon : Texture
-icon_tmp = load("res://addons/SceneBuilder/icon_tmp.png") as Image
-var img_icon : Image = icon_tmp
-var tex_icon : Texture = ImageTexture.create_from_image(img_icon)'''

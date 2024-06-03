@@ -17,3 +17,4 @@ reset_transform_rotation = 89
 push_to_grid = 80
 push_parent_offset_to_child = 79
 create_scene_builder_items = 47
+temporary_debug = 46

@@ -13,8 +13,8 @@ extends Resource
 @export var reset_node_name : Key = KEY_N
 
 # Node
+@export var change_places : Key = KEY_C
 @export var swap_nodes : Key = KEY_S
-@export var swap_nodes_in_scene : Key = KEY_X
 
 # Transform
 @export var reset_transform : Key = KEY_T
@@ -24,3 +24,6 @@ extends Resource
 
 # Resources
 @export var create_scene_builder_items : Key = KEY_SLASH
+
+# Debug
+@export var temporary_debug : Key = KEY_PERIOD
