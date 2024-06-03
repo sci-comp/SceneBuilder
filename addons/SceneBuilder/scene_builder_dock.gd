@@ -89,7 +89,14 @@ func _enter_tree() -> void:
 	editor = get_editor_interface()
 	toolbox = SceneBuilderToolbox.new()
 	base_control = editor.get_base_control()
-	btn_use_local_space = base_control.get_node("/root/@EditorNode@17172/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@Node3DEditor@10010/@MarginContainer@9465/@HFlowContainer@9466/@HBoxContainer@9467/@Button@9480")
+	
+	var main_screen : VBoxContainer = base_control.get_child(0).get_child(1).get_child(1).get_child(1).get_child(0).get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
+	if main_screen:
+		btn_use_local_space = main_screen.get_child(1).get_child(0).get_child(0).get_child(0).get_child(12)
+		if !btn_use_local_space:
+			printerr("Unable to find use local space button")
+	else:
+		printerr("Unable to find main screen")
 	
 	#
 	update_world_3d()
