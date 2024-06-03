@@ -315,6 +315,9 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 					if is_transform_mode_enabled():
 						end_transform_mode()
 					reroll_preview_instance_transform()
+				
+				elif event.keycode == KEY_ESCAPE:
+					end_placement_mode()
 			
 			if placement_mode_enabled:
 				if event.shift_pressed:
@@ -324,8 +327,6 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 						select_next_item()
 				
 				if event.alt_pressed:
-					if event.keycode == KEY_Q:
-						end_placement_mode()
 					if event.keycode == KEY_LEFT:
 						select_previous_collection()
 					elif event.keycode == KEY_RIGHT:
@@ -627,8 +628,6 @@ func instantiate_selected_item_at_position() -> void:
 
 		undo_redo.add_undo_method(scene_root, "remove_child", instance)
 		undo_redo.add_do_reference(instance)  # Ensure instance is not freed when undoing
-		
-		print("Instantiated: " + instance.name + " at " + str(instance.global_transform.origin))
 	
 	else:
 		print("Raycast missed, items must be instantiated on a StaticBody with a CollisionShape")

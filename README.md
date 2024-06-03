@@ -20,7 +20,7 @@ Scattering large numbers of objects, often with help from multi-mesh instances, 
 
 - [Scatter](https://github.com/HungryProton/scatter) is a powerful tool designed to randomly fill areas with props or other scenes.
 - [Simple Grass Textured](https://github.com/IcterusGames/SimpleGrassTextured) is the perfect tool for painting 2d textures over a collision area.
-- [Spatial Gardener](https://github.com/dreadpon/godot_spatial_gardener) is an efficient tool that uses an octree to scatter plants or props arbitrary (possibly large) surfaces. 
+- [Spatial Gardener](https://github.com/dreadpon/godot_spatial_gardener) is an efficient tool that uses an octree to scatter plants or props over arbitrary (possibly large) surfaces. 
 
 #### Grid Snapping
 
@@ -51,7 +51,7 @@ With an item selected,
 - Reset orientation: 5
 - Select previous/next items by pressing: Shift + Left/Right Arrow
 - Select previous/next category by pressing: Alt + Left/Right Arrow
-- Exit placement mode: Alt + Q
+- Exit placement mode: Escape
 
 Many other commands may be rebound by selecting new values in `scene_builder_input_map.tres`. Note that, for the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
 
