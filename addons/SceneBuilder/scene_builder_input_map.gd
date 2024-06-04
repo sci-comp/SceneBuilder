@@ -1,4 +1,5 @@
 extends Resource
+class_name SceneBuilderInputMap
 
 @export_group("For use with the Alt modifier")
 

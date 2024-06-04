@@ -1,9 +1,9 @@
 @tool
 extends EditorPlugin
 
-var scene_builder_dock
-var scene_builder_commands
-var scene_builder_input_map
+var scene_builder_dock : SceneBuilderDock
+var scene_builder_commands : SceneBuilderCommands
+var scene_builder_input_map : SceneBuilderInputMap
 
 func _enter_tree():
 	
@@ -14,7 +14,7 @@ func _enter_tree():
 		
 		scene_builder_dock = load("res://addons/SceneBuilder/scene_builder_dock.gd").new()
 		scene_builder_commands = load("res://addons/SceneBuilder/scene_builder_commands.gd").new()
-		scene_builder_input_map = load("res://addons/SceneBuilder/scene_builder_input_map.gd")
+		scene_builder_input_map = load("res://addons/SceneBuilder/scene_builder_input_map.tres")
 	
 	# Recursive directories will exist when installing from a submodule
 	elif (ResourceLoader.exists("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.gd") and 

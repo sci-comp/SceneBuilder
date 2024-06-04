@@ -1,5 +1,6 @@
 @tool
 extends EditorPlugin
+class_name SceneBuilderCommands
 
 var submenu_scene: PopupMenu
 var reusable_instance

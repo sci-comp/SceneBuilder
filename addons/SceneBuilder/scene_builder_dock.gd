@@ -1,5 +1,6 @@
 @tool
 extends EditorPlugin
+class_name SceneBuilderDock
 
 # Constant
 var path_root : String = "res://Data/SceneBuilderCollections/"
@@ -315,7 +316,7 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 					if is_transform_mode_enabled():
 						end_transform_mode()
 					reroll_preview_instance_transform()
-				
+					
 				elif event.keycode == KEY_ESCAPE:
 					end_placement_mode()
 			
@@ -337,6 +338,10 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 # ---- Buttons -----------------------------------------------------------------
 
 func select_collection(tab_index: int) -> void:
+	
+	if collection_names.size() == 0:
+		print("Unable to select collection, none exist")
+		return
 	
 	end_placement_mode()
 	
@@ -673,8 +678,13 @@ func populate_preview_instance_rid_array(instance: Node) -> void:
 func refresh_collection_names() -> void:
 	print("Refreshing collection names")
 	
+	if !DirAccess.dir_exists_absolute(path_root):
+		DirAccess.make_dir_recursive_absolute(path_root)
+		print("Creating a new data folder: ", path_root)
+	
 	if !ResourceLoader.exists(path_to_resource):
-		var _collection_names : CollectionNames = Resource.new()
+		var _collection_names : CollectionNames = CollectionNames.new()
+		print("path_to_resource: ", path_to_resource)
 		var save_result = ResourceSaver.save(_collection_names, path_to_resource)
 		print("A CollectionNames resource has been created at location: ", path_to_resource)
 		
