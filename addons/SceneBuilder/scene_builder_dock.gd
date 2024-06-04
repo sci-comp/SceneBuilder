@@ -18,12 +18,12 @@ var scene_builder_dock : VBoxContainer
 var tab_container : TabContainer
 
 # Options
+#
 var btn_use_surface_normal : CheckButton
 var btn_surface_normal_x : CheckBox
 var btn_surface_normal_y : CheckBox
 var btn_surface_normal_z : CheckBox
 
-var btn_add_to_multi_mesh_instance : CheckButton
 var btn_find_world_3d : Button
 var btn_reload_all_items : Button
 
@@ -668,7 +668,7 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	return space.intersect_ray(query)
 
 func populate_preview_instance_rid_array(instance: Node) -> void:
-	
+	''' This prevents us from trying to raycast against our preview item. '''
 	if instance is PhysicsBody3D:
 		preview_instance_rid_array.append(instance.get_rid())
 	

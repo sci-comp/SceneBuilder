@@ -2,7 +2,7 @@
 
 # Introduction
 
-SceneBuilder is a 3D level design tool and asset browser, together with a set of common productivity commands
+SceneBuilder is a 3D level design tool and asset browser, together with a set of common productivity commands.
 
 Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock.
 
@@ -12,7 +12,7 @@ Scene builder is logically divided into two main parts: scene builder commands a
 
 ### Scope
 
-Scene builder is made to serve as a scene browser and scene placer for scenes of type Node3D. Scene builder also aims to offer a handful of productivity commands.
+Scene builder is made to serve as a scene browser and scene placer for scenes of type Node3D. Scene builder also aims to offer a handful of productivity commands. Scenes may only be placed on collision shapes.
 
 #### Multi-mesh Instances
 

@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_2n20b")
-instantiate_from_json = 74
 instantiate_in_a_row_1 = 76
 instantiate_in_a_row_2 = 59
 instantiate_in_a_row_5 = 39

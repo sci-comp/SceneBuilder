@@ -280,6 +280,7 @@ columns = 4
 
 [node name="Settings" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("2_vl512")
 
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
@@ -302,7 +303,7 @@ text = "Surface normal"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Lbl" type="Label" parent="Settings/Tab/Options/SurfaceNormal/Oritentation"]
+[node name="Label" type="Label" parent="Settings/Tab/Options/SurfaceNormal/Oritentation"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("2_vl512")
