@@ -4,7 +4,6 @@ class_name SceneBuilderInputMap
 @export_group("For use with the Alt modifier")
 
 # Instantiate
-@export var instantiate_from_json : Key = KEY_J
 @export var instantiate_in_a_row_1 : Key = KEY_L
 @export var instantiate_in_a_row_2 : Key = KEY_SEMICOLON
 @export var instantiate_in_a_row_5 : Key = KEY_APOSTROPHE
