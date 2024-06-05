@@ -106,17 +106,17 @@ If you have a folder in `res://Data/SceneBuilderCollections/` that is not listed
 
 The scene builder dock only provides space for 12 collections, however, you can make additional folders. We can update which 12 collections are currently in use by swapping out names in the CollectionNames resource, then hitting the "Reload all items" button on the scene builder dock. The decision to have 12 collections was an arbitrary one, though it does fit nicely into the UI dock.
 
-You can enable the plugin now to preview your collection names in the scene builder dock. However, since our collection folders are empty, you will see a harmless error: `Directory exists, but contains no items: Furniture`.
+You can enable the plugin now to preview your collection names in the scene builder dock. Since our collection folders are empty, you will see a harmless error: `Directory exists, but contains no items: Furniture`.
 
 ### Manually create one item
 
-Usually, we will want to create `SceneBuilderItem` resources in bulk. However, for demonstration purposes, let us create our first item manually.
+Usually, we want to create SceneBuilderItem resources in bulk. However, for demonstration purposes, let us create our first item manually.
 
-Continuing with the furniture example, we assume in this section that you have already added "Furniture" to collection names, and have created an empty "Furniture" folder,
+Continuing with the furniture example,
 
 1. Create a `PackedScene` that we will use as an item to place. For this example, I will assume that you already have "Chair.glb," "Chair.tscn," or other relevant PackedScene somewhere in your project files. It doesn't matter where your chair scene is located in FileSystem.
 
-Also note that the root node of imported scenes must derive from Node3D.
+Remember, the root node of imported scenes must derive from Node3D.
 
 2. Create two sub folders "Item" and "Thumbnail" at locations,
 
@@ -148,19 +148,26 @@ Icons are not resized, so they should be around 80x80 pixels in order to fit in 
 
 Our chair item is now ready!
 
-Note that the result of scene path being a field of a given SceneBuilderItem instance is that if the item PackedScene is moved around in FileSystem, then the PackedScene will no longer be found by SceneBuilder. If we need to move a PackedScene item in FileSystem, then we should manually update scene path fields, or simply delete then recreate SceneBuilderItem resources in bulk.
+#### How to break our items
 
-Although we demonstrate how to automatically generate items and icons in the next section, once a SceneBuilderItem is made, it must be edited by hand for any further changes.
+If we move our PackedScenes (ex, Chair.glb) files around, then the scene path property of the SceneBuilterItem resource will point to the wrong location.
+
+If we need to move a PackedScene in FileSystem, then we should manually update scene path field.
+
+If we need to move many PackedScenes around in FileSystem, then we should delete the SceneBuilderItem resources, then recreate them in bulk.
+
+Once a SceneBuilderItem resource is made, it must be edited by hand for any further changes.
+
 
 ### Batch create items
 
-1. Select paths in FileSystem that contain an imported scene with a root node that derives from type Node3D. These paths must end in either .glb or .tscn.
+1. Select paths in FileSystem that contain an imported scene with a root node that derives from type Node3D.
 2. Run the "Create scene builder items" command by going to Project > Tools > Scene Builder > Create scene builder items, or by pressing the keyboard shortcut Alt + /
 3. Fill out the fields in the popup window, then hit okay.
 
 ![scene_builder_create_items](./Documentation/Image/scene_builder_create_items.png)
 
-4. When the command "Create scene builder items" is run, the scene icon_studio will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn.
+4. When the command "Create scene builder items" is run, the `icon_studio` scene will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn.
 
 However, if you would like to make changes to icon_studio.tscn, then that's a great way to customize your icons.
 
@@ -168,13 +175,11 @@ However, if you would like to make changes to icon_studio.tscn, then that's a gr
 
 ### Update the scene builder dock
 
-#### World3D
+#### Find world 3d
 
-The scene builder dock needs to know which scene it should be placing items into. This is typically done automatically, though, the process will fail if a scene is currently selected in the Editor that does not inherit from type Node3D.
+The scene builder dock needs to know which scene it should be placing items into. Since this is typically done automatically, this button is usually not needed.
 
-We can refresh the root scene used by the scene builder dock by clicking on that scene's tab, then clicking on the "Find world 3d" button in the scene builder dock.
-
-#### Scene builder items
+#### Reload all items
 
 Whenever we make changes to SceneBuilderItem resources or collection names, we must then press the "Reload all items" button on the scene builder dock.
 
@@ -182,23 +187,23 @@ Whenever we make changes to SceneBuilderItem resources or collection names, we m
 
 When an icon is highlighted green in the scene builder dock, then placement mode has been enabled.
 
-To exit placement mode, we may: press the highlighted icon, or use the assigned shotcut.
+To exit placement mode, we may click the highlighted icon or press the escape key.
 
-When placement mode is active, then there will be an item preview in the current edited scene. 
-
-Note that a "SceneBuilderTemp" of type Node will be created in the current edited scene. We may safely delete this node when we are done.
+When placement mode is active, an item preview is created in the current edited scene. The preview node will have a parent node named "SceneBuilderTemp." We may safely delete this node when we are done, while the item preview node will be automatically clear when exiting placement mode.
 
 #### Use surface normal
 
-Instantiated items will align their respective Y axis with the specified orientation when the checkbox "Surface normal" is toggled on.
+Instantiated items will align their Y axis with the specified orientation when the checkbox "Surface normal" is toggled on.
 
-Due to gimbal lock, you may notice that the preview item will often acquire orientations with undesired offsets. Press `5` to reset the item preview's orientation
+Due to gimbal lock, you may notice that the preview item will often acquire orientations with undesired offsets. Press `5` to reset the item preview's orientation.
 
 #### Rotation mode
 
-Press `1`, `2`, or, `3` to enter rotation mode, where these digits  represents the x, y, and z-axis respectively. When rotation mode is enabled, the corresponding digit will be highlighted in the bottom right of the scene builder dock.
+Press `1`, `2`, or, `3` to enter rotation mode, where these digits represents the x, y, and z-axis respectively. When rotation mode is enabled, the corresponding digit will be highlighted in the bottom right of the scene builder dock.
 
-Rotation is applied through mouse movement (proportional to the mouse motion's greatest relative value in the x or y axis), and is only applied as a world space rotation. (todo: Rotation will be applied in local or world space according to the editor's "Use Local Space" setting.)
+Rotation is applied through mouse movement (proportional to the mouse motion's greatest relative value in the x or y axis)
+
+Rotation will be applied in local or world space according to the "Use Local Space" button in Godot's 3D toolbar.
 
 To exit rotation mode: left click to apply the rotation or right-click to cancel and restore the original rotation.
 
@@ -206,7 +211,7 @@ To exit rotation mode: left click to apply the rotation or right-click to cancel
 
 Press `4` to enter scale mode.
 
-Scale mode works similarly to rotation mode: 
+Scale mode works similarly to rotation mode.
 
 To exit scale mode: left click to apply or right-click to cancel and restore the original values.
 
