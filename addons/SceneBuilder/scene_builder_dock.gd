@@ -33,6 +33,13 @@ var btn_surface_normal_z : CheckBox
 var btn_group_surface_orientation : ButtonGroup
 var btn_find_world_3d : Button
 var btn_reload_all_items : Button
+# Path3D
+var spinbox_separation_distance : SpinBox
+var spinbox_jitter_x : SpinBox
+var spinbox_jitter_y : SpinBox
+var spinbox_jitter_z : SpinBox
+var spinbox_y_offset : SpinBox
+var btn_place_fence : Button
 
 # Indicators
 var lbl_indicator_x : Label
@@ -130,8 +137,13 @@ func _enter_tree() -> void:
 	btn_reload_all_items.pressed.connect(reload_all_items)
 	
 	# Path3D tab
-	# TODO: var separation_distance : float = 2.0
-	# TODO: var btn_create_fence : Button = scene_builder_dock.get_node("Settings/Tab/Path3D/CreateFence")
+	spinbox_separation_distance = scene_builder_dock.get_node("Settings/Tab/Path3D/Separation/SpinBox")
+	spinbox_jitter_x = scene_builder_dock.get_node("Settings/Tab/Path3D/Jitter/X")
+	spinbox_jitter_y = scene_builder_dock.get_node("Settings/Tab/Path3D/Jitter/Y")
+	spinbox_jitter_z = scene_builder_dock.get_node("Settings/Tab/Path3D/Jitter/Z")
+	spinbox_y_offset = scene_builder_dock.get_node("Settings/Tab/Path3D/YOffset/Value")
+	btn_place_fence = scene_builder_dock.get_node("Settings/Tab/Path3D/PlaceFence")
+	btn_place_fence.pressed.connect(place_fence)
 	
 	# Indicators
 	lbl_indicator_x = scene_builder_dock.get_node("Settings/Indicators/1")
@@ -497,7 +509,7 @@ func create_preview_instance() -> void:
 		scene_root.add_child(scene_builder_temp)
 		scene_builder_temp.owner = scene_root
 	
-	preview_instance = get_instance_of_selected_item()
+	preview_instance = get_instance_from_path(selected_item.scene_path)
 	scene_builder_temp.add_child(preview_instance)
 	preview_instance.owner = scene_root
 	
@@ -592,7 +604,7 @@ func instantiate_selected_item_at_position() -> void:
 	
 	if result and result.collider:
 		
-		var instance = get_instance_of_selected_item()
+		var instance = get_instance_from_path(selected_item.scene_path)
 		scene_root.add_child(instance)
 		instance.owner = scene_root
 		initialize_node_name(instance, selected_item.item_name)
@@ -710,6 +722,55 @@ func refresh_collection_names() -> void:
 
 # ---- Shortcut ----------------------------------------------------------------
 
+func place_fence():
+	
+	var selection : EditorSelection = editor.get_selection()
+	var selected_nodes : Array[Node] = selection.get_selected_nodes()
+	
+	if scene_root == null:
+		print("Scene root is null")
+		return
+	
+	if selected_nodes.size() != 1:
+		printerr("Exactly one node sould be selected in the scene") 
+		return
+	
+	if not selected_nodes[0] is Path3D:
+		printerr("The selected node should be of type Node3D")
+		return
+	
+	undo_redo.create_action("Make a fence")
+	
+	var path : Path3D = selected_nodes[0]
+	
+	var fence_piece_names : Array = ordered_keys_by_collection[selected_collection_name]
+	var jitter : Vector3 = Vector3(0, 0, 0)
+	var path_length : float = path.curve.get_baked_length()
+	
+	for distance in range(0, path_length, spinbox_separation_distance.value):
+		
+		var transform: Transform3D = path.curve.sample_baked_with_rotation(distance)
+		var position: Vector3 = transform.origin
+		var basis: Basis = transform.basis.rotated(Vector3(0, 1, 0), deg_to_rad(spinbox_y_offset.value))
+		
+		var chosen_piece_name : String = fence_piece_names[randi() % fence_piece_names.size()]
+		var chosen_piece = items_by_collection[selected_collection_name][chosen_piece_name]
+		var instance = get_instance_from_path(chosen_piece.scene_path)
+		
+		undo_redo.add_do_method(scene_root, "add_child", instance)
+		undo_redo.add_do_method(instance, "set_owner", scene_root)
+		undo_redo.add_do_method(instance, "set_global_transform", Transform3D(
+			basis.rotated(Vector3(1, 0, 0), randf() * deg_to_rad(spinbox_jitter_x.value))
+				 .rotated(Vector3(0, 1, 0), randf() * deg_to_rad(spinbox_jitter_y.value))
+				 .rotated(Vector3(0, 0, 1), randf() * deg_to_rad(spinbox_jitter_z.value)),
+			position
+		))
+		
+		undo_redo.add_undo_method(scene_root, "remove_child", instance)
+	
+	print("Commiting action")
+	undo_redo.commit_action()
+
 func reroll_preview_instance_transform() -> void:
 	
 	if preview_instance == null:
@@ -812,9 +873,9 @@ func get_icon(collection_name : String, item_name : String) -> Texture:
 		return null
 	return tex
 
-func get_instance_of_selected_item() -> Node3D:
-	if ResourceLoader.exists(selected_item.scene_path):
-		var loaded = load(selected_item.scene_path)
+func get_instance_from_path(path : String) -> Node3D:
+	if ResourceLoader.exists(path):
+		var loaded = load(path)
 		if loaded is PackedScene:
 			var instance = loaded.instantiate()
 			if instance is Node3D:
@@ -822,9 +883,7 @@ func get_instance_of_selected_item() -> Node3D:
 			else:
 				printerr("The instantiated scene's root is not a Node3D: ", loaded.name)
 		else:
-			printerr("Loaded resource is not a PackedScene: ", selected_item.scene_path)
+			printerr("Loaded resource is not a PackedScene: ", path)
 	else:
-		printerr("Path does not exist: ", selected_item.scene_path)
+		printerr("Path does not exist: ", path)
 	return null
-
-
