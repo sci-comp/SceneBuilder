@@ -2,43 +2,47 @@
 extends EditorPlugin
 class_name SceneBuilderDock
 
-# Constant
+# Paths
 var path_root : String = "res://Data/SceneBuilderCollections/"
-var path_to_resource : String = "res://Data/SceneBuilderCollections/collection_names.tres"
-var path_to_tmp_icon : String = "res://addons/SceneBuilder/icon_tmp.png"
-var path_to_solid_white_texture = "res://addons/StandardAssets/Texture/Common/T_Solid_White.png"
-var btns_collection_tabs : Array = []  # set in _enter_tree()
-var toolbox : SceneBuilderToolbox
+var path_to_collection_names : String = "res://Data/SceneBuilderCollections/collection_names.tres"
+var dock_paths = [
+	"res://addons/SceneBuilder/scene_builder_dock.tscn",
+	"res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn"
+]  # The recursive directory will exist when installing from a submodule
 
+# Constants
 var num_collections : int = 12
 
-#region Dock control elements
+var rng : RandomNumberGenerator = RandomNumberGenerator.new()
+var toolbox : SceneBuilderToolbox = SceneBuilderToolbox.new()
+var undo_redo : EditorUndoRedoManager = get_undo_redo()
 
+# Godot controls
+var base_control : Control
+var btn_use_local_space : Button
+
+# Scene builder dock controls
 var scene_builder_dock : VBoxContainer
 var tab_container : TabContainer
-
+var btns_collection_tabs : Array = []  # set in _enter_tree()
 # Options
-#
 var btn_use_surface_normal : CheckButton
 var btn_surface_normal_x : CheckBox
 var btn_surface_normal_y : CheckBox
 var btn_surface_normal_z : CheckBox
-
+var btn_group_surface_orientation : ButtonGroup
 var btn_find_world_3d : Button
 var btn_reload_all_items : Button
 
 # Indicators
-var indicator_x : Label
-var indicator_y : Label
-var indicator_z : Label
-var indicator_scale : Label
+var lbl_indicator_x : Label
+var lbl_indicator_y : Label
+var lbl_indicator_z : Label
+var lbl_indicator_scale : Label
 
-#endregion
-
-# Updated by update_world_3d()
-# Todo: This needs to be called on root scene change 
+# Updated with update_world_3d()
 var editor : EditorInterface
-var space : PhysicsDirectSpaceState3D
+var physics_space : PhysicsDirectSpaceState3D
 var world3d : World3D
 var viewport : Viewport
 var camera : Camera3D
@@ -46,7 +50,7 @@ var scene_root : Node3D
 
 # Updated when reloading all collections
 var collection_names : Array[String] = []
-var items_by_collection : Dictionary = {}
+var items_by_collection : Dictionary = {}  # A dictionary of dictionaries
 var ordered_keys_by_collection : Dictionary = {}
 var item_highlighters_by_collection : Dictionary = {}
 # Also updated on tab button click
@@ -59,38 +63,27 @@ var selected_item_name : String = ""
 var preview_instance : Node3D = null
 var preview_instance_rid_array : Array[RID] = []
 
-# Assorted variables
+# Placement mode
 var placement_mode_enabled : bool = false
 var rotation_mode_x_enabled : bool = false
 var rotation_mode_y_enabled : bool = false
 var rotation_mode_z_enabled : bool = false
 var scale_mode_enabled : bool = false
-
+# Preview item
 var original_preview_basis : Basis = Basis.IDENTITY
 var original_mouse_position : Vector2 = Vector2.ONE
 var random_offset_y : float = 0
 var original_preview_scale : Vector3 = Vector3.ONE
-
-var scene_builder_temp : Node
-
-var rng : RandomNumberGenerator = RandomNumberGenerator.new()
-
-var btn_group_surface_orientation : ButtonGroup
-
-var input_map
-
-var base_control : Control
-var btn_use_local_space : Button
+var scene_builder_temp : Node  # Used as a parent to the preview item
 
 # ---- Notifications -----------------------------------------------------------
 
 func _enter_tree() -> void:
 	
-	#
 	editor = get_editor_interface()
-	toolbox = SceneBuilderToolbox.new()
 	base_control = editor.get_base_control()
 	
+	# Found using: https://github.com/Zylann/godot_editor_debugger_plugin
 	var main_screen : VBoxContainer = base_control.get_child(0).get_child(1).get_child(1).get_child(1).get_child(0).get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
 	if main_screen:
 		btn_use_local_space = main_screen.get_child(1).get_child(0).get_child(0).get_child(0).get_child(12)
@@ -99,52 +92,52 @@ func _enter_tree() -> void:
 	else:
 		printerr("Unable to find main screen")
 	
-	#
 	update_world_3d()
 	
-	#region Initialize controls
+	#region Initialize controls for the scene builder dock
 	
-	if FileAccess.file_exists("res://addons/SceneBuilder/scene_builder_dock.tscn"):
-		scene_builder_dock = load("res://addons/SceneBuilder/scene_builder_dock.tscn").instantiate()
-	elif FileAccess.file_exists("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn"):
-		# Recursive directories will exist when installing from a submodule
-		scene_builder_dock = load("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn").instantiate()
-	else:
+	for path in dock_paths:
+		if FileAccess.file_exists(path):
+			scene_builder_dock = load(path).instantiate()
+			break
+	if not scene_builder_dock:
 		printerr("scene_builder_dock.tscn was not found")
 		return
 	
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_RIGHT_UL, scene_builder_dock)
 	
-	# Tabs
+	# Collection tabs
 	tab_container = scene_builder_dock.get_node("Collection/TabContainer")
-	
 	for i : int in range(num_collections):
 		var tab_button : Button = scene_builder_dock.get_node("Collection/Tab/%s" % str(i+1))
 		tab_button.pressed.connect(select_collection.bind(i))
 		btns_collection_tabs.append(tab_button)
 	
-	# Options
+	# Options tab
 	btn_use_surface_normal = scene_builder_dock.get_node("Settings/Tab/Options/SurfaceNormal/UseSurfaceNormal")
-	
 	btn_surface_normal_x = scene_builder_dock.get_node("Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup/X")
 	btn_surface_normal_y = scene_builder_dock.get_node("Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup/Y")
 	btn_surface_normal_z = scene_builder_dock.get_node("Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup/Z")
-	
+	#
 	btn_group_surface_orientation = ButtonGroup.new()
 	btn_surface_normal_x.button_group = btn_group_surface_orientation
 	btn_surface_normal_y.button_group = btn_group_surface_orientation
 	btn_surface_normal_z.button_group = btn_group_surface_orientation
-	
+	#
 	btn_find_world_3d = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/FindWorld3D")
 	btn_reload_all_items = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/ReloadAllItems")
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
 	
+	# Path3D tab
+	# TODO: var separation_distance : float = 2.0
+	# TODO: var btn_create_fence : Button = scene_builder_dock.get_node("Settings/Tab/Path3D/CreateFence")
+	
 	# Indicators
-	indicator_x = scene_builder_dock.get_node("Settings/Indicators/1")
-	indicator_y = scene_builder_dock.get_node("Settings/Indicators/2")
-	indicator_z = scene_builder_dock.get_node("Settings/Indicators/3")
-	indicator_scale = scene_builder_dock.get_node("Settings/Indicators/4")
+	lbl_indicator_x = scene_builder_dock.get_node("Settings/Indicators/1")
+	lbl_indicator_y = scene_builder_dock.get_node("Settings/Indicators/2")
+	lbl_indicator_z = scene_builder_dock.get_node("Settings/Indicators/3")
+	lbl_indicator_scale = scene_builder_dock.get_node("Settings/Indicators/4")
 	
 	#endregion
 	
@@ -156,6 +149,16 @@ func _enter_tree() -> void:
 	
 	#
 	select_collection(0)
+	
+	# Info blurb
+	var _num_populated_collections : int = 0
+	for name in collection_names:
+		if name != "":
+			_num_populated_collections += 1
+	var _total_items : int = 0
+	for key : String in items_by_collection.keys():
+		_total_items += items_by_collection[key].size()
+	print("Scene builder dock is ready with %s collections and %s items"% [str(_num_populated_collections), str(_total_items)])
 
 func _exit_tree() -> void:
 	remove_control_from_docks(scene_builder_dock)
@@ -172,7 +175,7 @@ func _process(delta: float) -> void:
 			return
 		
 		if !is_transform_mode_enabled():
-			if preview_instance != null:
+			if preview_instance:
 				populate_preview_instance_rid_array(preview_instance)
 			var result = perform_raycast_with_exclusion(preview_instance_rid_array)
 			if result and result.collider:
@@ -180,25 +183,17 @@ func _process(delta: float) -> void:
 				if _preview_item and _preview_item.get_child_count() > 0:
 					var _instance : Node3D = _preview_item.get_child(0)
 					
-					var new_position : Vector3
-					if selected_item.use_random_vertical_offset:
-						new_position = Vector3(result.position.x, result.position.y + random_offset_y, result.position.z)
-					else:
-						new_position = Vector3(result.position.x, result.position.y, result.position.z)
-						
-					_instance.global_transform.origin = Vector3(new_position)
+					var new_position : Vector3 = result.position
+					# This offset prevents z-fighting when placing overlapping quads
+					if selected_item.use_random_vertical_offset: 
+						new_position.y += random_offset_y
+
+					_instance.global_transform.origin = new_position
 					if btn_use_surface_normal.button_pressed:
-						
-						var new_basis : Basis = Basis.IDENTITY
-						
-						new_basis = align_up(_instance.global_transform.basis, result.normal)
-						_instance.basis = new_basis
-						
+						_instance.basis = align_up(_instance.global_transform.basis, result.normal)
 						var quaternion = Quaternion(_instance.basis.orthonormalized())
-						
 						if btn_surface_normal_x.button_pressed:
 							quaternion = quaternion * Quaternion(Vector3(1, 0, 0), deg_to_rad(90))
-						
 						elif btn_surface_normal_z.button_pressed:
 							quaternion = quaternion * Quaternion(Vector3(0, 0, 1), deg_to_rad(90))
 
@@ -211,7 +206,7 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 				relative_motion = event.relative.x
 			else:
 				relative_motion = -event.relative.y
-			relative_motion *= 0.01  # Sensitivity
+			relative_motion *= 0.01  # Sensitivity factor
 			
 			if rotation_mode_x_enabled:
 				if btn_use_local_space.button_pressed:
@@ -351,10 +346,10 @@ func select_collection(tab_index: int) -> void:
 	tab_container.current_tab = tab_index
 	selected_collection_name = collection_names[tab_index]
 	selected_collection_index = tab_index
+	
 	if selected_collection_name == "" or selected_collection_name == " ":
 		selected_collection = {}
 	else:
-		
 		if selected_collection_name in items_by_collection:
 			selected_collection = items_by_collection[selected_collection_name]
 		else:
@@ -366,13 +361,10 @@ func on_item_icon_clicked(_button_name: String) -> void:
 	if !update_world_3d():
 		return
 	
-	var item_highlighters : Dictionary = item_highlighters_by_collection[selected_collection_name]
-	
-	var previously_selected_item_name = selected_item_name
 	if placement_mode_enabled:
 		end_placement_mode()
 	
-	if previously_selected_item_name != _button_name:
+	if selected_item_name != _button_name:
 		select_item(selected_collection_name, _button_name)
 
 func reload_all_items() -> void:
@@ -389,21 +381,18 @@ func reload_all_items() -> void:
 	var i = 0
 	for collection_name in collection_names:
 		i += 1
+		
 		if collection_name != "" and DirAccess.dir_exists_absolute(path_root + "/%s" % collection_name):
+			print("Populating grid with icons")
+			
 			var grid_container : GridContainer = tab_container.get_node("%s/Grid" % i)
 			
-			var _result = get_items_from_collection_folder(collection_name)
+			load_items_from_collection_folder_on_disk(collection_name)
 			
-			var item_dict : Dictionary = _result[0]
-			var _ordered_item_keys : Array = _result[1]
-			
-			var item_keys = item_dict.keys()
-			items_by_collection[collection_name] = item_dict
-			ordered_keys_by_collection[collection_name] = _ordered_item_keys
 			item_highlighters_by_collection[collection_name] = {}
-			print("Populating grid with icons")
-			for key : String in item_dict.keys():
-				var item : SceneBuilderItem = item_dict[key]
+			
+			for key : String in ordered_keys_by_collection[collection_name]:
+				var item : SceneBuilderItem = items_by_collection[collection_name][key]
 				var texture_button : TextureButton = TextureButton.new()
 				texture_button.toggle_mode = true
 				texture_button.texture_normal = get_icon(collection_name, item.item_name)
@@ -431,7 +420,7 @@ func update_world_3d() -> bool:
 		scene_root = new_scene_root
 		viewport = editor.get_editor_viewport_3d()
 		world3d = viewport.find_world_3d()
-		space = world3d.direct_space_state
+		physics_space = world3d.direct_space_state
 		camera = viewport.get_camera_3d()
 		return true
 	else:
@@ -439,7 +428,7 @@ func update_world_3d() -> bool:
 		scene_root = null
 		viewport = null
 		world3d = null
-		space = null
+		physics_space = null
 		camera = null
 		return false
 
@@ -448,48 +437,32 @@ func update_world_3d() -> bool:
 func align_up(node_basis, normal) -> Basis:
 	var result : Basis = Basis()
 	var scale : Vector3 = node_basis.get_scale()
-
 	var orientation : String = btn_group_surface_orientation.get_pressed_button().name
 	
-	if orientation == "X":
-		
-		var arbitrary_vector : Vector3 = Vector3(1, 0, 0) if abs(normal.dot(Vector3(1, 0, 0))) < 0.999 else Vector3(0, 1, 0)
-		var crossZ = normal.cross(node_basis.y).normalized()
-		
-		if crossZ.length_squared() < 0.001:
-			crossZ = normal.cross(arbitrary_vector).normalized()
-		var crossY = crossZ.cross(normal).normalized()
-		
-		result.x = normal
-		result.y = crossY
-		result.z = crossZ
-	
-	elif orientation == "Y":
-		var arbitrary_vector : Vector3 = Vector3(1, 0, 0) if abs(normal.dot(Vector3(1, 0, 0))) < 0.999 else Vector3(0, 1, 0)
-		var crossX = normal.cross(node_basis.z).normalized()
-		
-		if crossX.length_squared() < 0.001:
-			crossX = normal.cross(arbitrary_vector).normalized()
-		var crossZ = crossX.cross(normal).normalized()
-		
-		result.x = crossX
-		result.y = normal
-		result.z = crossZ
-		
-	elif orientation == "Z":
-		var arbitrary_vector = Vector3(0, 0, 1) if abs(normal.dot(Vector3(0, 0, -1))) < 0.99 else Vector3(-1, 0, 0)
-		var crossY = normal.cross(node_basis.x).normalized()
-		
-		if crossY.length_squared() < 0.001:
-			crossY = normal.cross(arbitrary_vector).normalized()
-			crossY = Vector3(crossY.x, abs(crossY.y), crossY.z)
-		
-		crossY = Vector3(crossY.x, abs(crossY.y), crossY.z)
-		var crossX = crossY.cross(normal).normalized()
-		
-		result.x = crossX
-		result.y = crossY
-		result.z = normal
+	var arbitrary_vector: Vector3 = Vector3(1, 0, 0) if abs(normal.dot(Vector3(1, 0, 0))) < 0.999 else Vector3(0, 1, 0)
+	var cross1: Vector3
+	var cross2: Vector3
+
+	match orientation:
+		"X":
+			cross1 = normal.cross(node_basis.y).normalized()
+			if cross1.length_squared() < 0.001:
+				cross1 = normal.cross(arbitrary_vector).normalized()
+			cross2 = cross1.cross(normal).normalized()
+			result = Basis(normal, cross2, cross1)
+		"Y":
+			cross1 = normal.cross(node_basis.z).normalized()
+			if cross1.length_squared() < 0.001:
+				cross1 = normal.cross(arbitrary_vector).normalized()
+			cross2 = cross1.cross(normal).normalized()
+			result = Basis(cross1, normal, cross2)
+		"Z":
+			arbitrary_vector = Vector3(0, 0, 1) if abs(normal.dot(Vector3(0, 0, -1))) < 0.99 else Vector3(-1, 0, 0)
+			cross1 = normal.cross(node_basis.x).normalized()
+			if cross1.length_squared() < 0.001:
+				cross1 = normal.cross(arbitrary_vector).normalized()
+			cross2 = cross1.cross(normal).normalized()
+			result = Basis(cross2, cross1, normal)
 
 	result = result.orthonormalized()
 	result.x *= scale.x
@@ -564,16 +537,16 @@ func end_transform_mode() -> void:
 	rotation_mode_y_enabled = false
 	rotation_mode_z_enabled = false
 	scale_mode_enabled = false
-	indicator_x.self_modulate = Color.WHITE
-	indicator_y.self_modulate = Color.WHITE
-	indicator_z.self_modulate = Color.WHITE
-	indicator_scale.self_modulate = Color.WHITE
+	lbl_indicator_x.self_modulate = Color.WHITE
+	lbl_indicator_y.self_modulate = Color.WHITE
+	lbl_indicator_z.self_modulate = Color.WHITE
+	lbl_indicator_scale.self_modulate = Color.WHITE
 
-func get_items_from_collection_folder(_collection_name : String) -> Array:
+func load_items_from_collection_folder_on_disk(_collection_name : String):
 	print("Collecting items from collection folder")
 	
-	var _items = {}
-	var _ordered_item_keys = []
+	var items = {}
+	var ordered_item_keys = []
 	
 	var dir = DirAccess.open(path_root + _collection_name + "/Item")
 	if dir:
@@ -588,14 +561,15 @@ func get_items_from_collection_folder(_collection_name : String) -> Array:
 				
 				print("Loaded item: ", item_filename)
 				
-				_items[scene_builder_item.item_name] = scene_builder_item
-				_ordered_item_keys.append(scene_builder_item.item_name)
+				items[scene_builder_item.item_name] = scene_builder_item
+				ordered_item_keys.append(scene_builder_item.item_name)
 			else:
 				print("The resource is not a SceneBuilderItem or failed to load: ", item_filename)
 				
 			item_filename = dir.get_next()
-
-	return [_items, _ordered_item_keys]
+	
+	items_by_collection[_collection_name] = items
+	ordered_keys_by_collection[_collection_name] = ordered_item_keys
 
 func get_all_node_names(_node) -> Array[String]:
 	var _all_node_names = []
@@ -609,7 +583,6 @@ func get_all_node_names(_node) -> Array[String]:
 
 func instantiate_selected_item_at_position() -> void:
 	
-	var undo_redo : EditorUndoRedoManager = get_undo_redo()
 	undo_redo.create_action("Instantiate selected item")
 	
 	if preview_instance != null:
@@ -665,7 +638,7 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	query.from = origin
 	query.to = end
 	query.exclude = exclude_rids
-	return space.intersect_ray(query)
+	return physics_space.intersect_ray(query)
 
 func populate_preview_instance_rid_array(instance: Node) -> void:
 	''' This prevents us from trying to raycast against our preview item. '''
@@ -682,18 +655,18 @@ func refresh_collection_names() -> void:
 		DirAccess.make_dir_recursive_absolute(path_root)
 		print("Creating a new data folder: ", path_root)
 	
-	if !ResourceLoader.exists(path_to_resource):
+	if !ResourceLoader.exists(path_to_collection_names):
 		var _collection_names : CollectionNames = CollectionNames.new()
-		print("path_to_resource: ", path_to_resource)
-		var save_result = ResourceSaver.save(_collection_names, path_to_resource)
-		print("A CollectionNames resource has been created at location: ", path_to_resource)
+		print("path_to_collection_names: ", path_to_collection_names)
+		var save_result = ResourceSaver.save(_collection_names, path_to_collection_names)
+		print("A CollectionNames resource has been created at location: ", path_to_collection_names)
 		
 		if save_result != OK:
-			printerr("We were unable to create a CollectionNames resource at location: ", path_to_resource)
+			printerr("We were unable to create a CollectionNames resource at location: ", path_to_collection_names)
 			collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
 			return
 	
-	var _names : CollectionNames = load(path_to_resource)
+	var _names : CollectionNames = load(path_to_collection_names)
 	if _names != null:
 			var new_collection_names : Array[String] = []
 			new_collection_names.append(_names.collection_name_01)
@@ -730,44 +703,40 @@ func refresh_collection_names() -> void:
 					collection_name = " "
 				btns_collection_tabs[i].text = collection_name
 	else:
-		printerr("An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_resource))
+		printerr("An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_collection_names))
 		collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
 	
 	#endregion
-
-func update_input_map(new_input_map) -> void:
-	input_map = new_input_map
 
 # ---- Shortcut ----------------------------------------------------------------
 
 func reroll_preview_instance_transform() -> void:
 	
-	if preview_instance != null:
+	if preview_instance == null:
+		printerr("preview_instance is null inside reroll_preview_instance_transform()")
+		return
 		
-		random_offset_y = rng.randf_range(selected_item.random_offset_y_min, selected_item.random_offset_y_max)
-		
-		if selected_item.use_random_scale:
-			var random_scale : float = rng.randf_range(selected_item.random_scale_min, selected_item.random_scale_max)
-			original_preview_scale = Vector3(random_scale, random_scale, random_scale)
-		else:
-			original_preview_scale = Vector3(1, 1, 1)
-		
-		preview_instance.scale = original_preview_scale
-		
-		if selected_item.use_random_rotation:
-			var x_rot : float = rng.randf_range(0, selected_item.random_rot_x)
-			var y_rot : float = rng.randf_range(0, selected_item.random_rot_y)
-			var z_rot : float = rng.randf_range(0, selected_item.random_rot_z)
-			preview_instance.rotation = Vector3(deg_to_rad(x_rot), deg_to_rad(y_rot), deg_to_rad(z_rot))
-			original_preview_basis = preview_instance.basis
-		else:
-			preview_instance.rotation = Vector3(0, 0, 0)
-			original_preview_basis = preview_instance.basis
-		
+	random_offset_y = rng.randf_range(selected_item.random_offset_y_min, selected_item.random_offset_y_max)
+	
+	if selected_item.use_random_scale:
+		var random_scale : float = rng.randf_range(selected_item.random_scale_min, selected_item.random_scale_max)
+		original_preview_scale = Vector3(random_scale, random_scale, random_scale)
+	else:
+		original_preview_scale = Vector3(1, 1, 1)
+	
+	preview_instance.scale = original_preview_scale
+	
+	if selected_item.use_random_rotation:
+		var x_rot : float = rng.randf_range(0, selected_item.random_rot_x)
+		var y_rot : float = rng.randf_range(0, selected_item.random_rot_y)
+		var z_rot : float = rng.randf_range(0, selected_item.random_rot_z)
+		preview_instance.rotation = Vector3(deg_to_rad(x_rot), deg_to_rad(y_rot), deg_to_rad(z_rot))
+		original_preview_basis = preview_instance.basis
+	else:
+		preview_instance.rotation = Vector3(0, 0, 0)
 		original_preview_basis = preview_instance.basis
 	
-	else:
-		printerr("preview_instance is null inside reroll_preview_instance_transform()")
+	original_preview_basis = preview_instance.basis
 
 func select_item(collection_name : String, item_name : String) -> void:
 	end_placement_mode()
@@ -815,25 +784,25 @@ func start_rotation_mode_x() -> void:
 	original_mouse_position = viewport.get_mouse_position()
 	original_preview_basis = preview_instance.basis
 	rotation_mode_x_enabled = true
-	indicator_x.self_modulate = Color.GREEN
+	lbl_indicator_x.self_modulate = Color.GREEN
 
 func start_rotation_mode_y() -> void:
 	original_mouse_position = viewport.get_mouse_position()
 	original_preview_basis = preview_instance.basis
 	rotation_mode_y_enabled = true
-	indicator_y.self_modulate = Color.GREEN
+	lbl_indicator_y.self_modulate = Color.GREEN
 
 func start_rotation_mode_z() -> void:
 	original_mouse_position = viewport.get_mouse_position()
 	original_preview_basis = preview_instance.basis
 	rotation_mode_z_enabled = true
-	indicator_z.self_modulate = Color.GREEN
+	lbl_indicator_z.self_modulate = Color.GREEN
 
 func start_scale_mode() -> void:
 	original_mouse_position = viewport.get_mouse_position()
 	original_preview_scale = preview_instance.scale
 	scale_mode_enabled = true
-	indicator_scale.self_modulate = Color.GREEN
+	lbl_indicator_scale.self_modulate = Color.GREEN
 
 func get_icon(collection_name : String, item_name : String) -> Texture:
 	var icon_path : String = "res://Data/SceneBuilderCollections/%s/Thumbnail/%s.png" % [collection_name, item_name]

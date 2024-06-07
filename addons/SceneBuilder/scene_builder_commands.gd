@@ -63,7 +63,6 @@ func _unhandled_input(event: InputEvent):
 					select_parents()
 
 func _enter_tree():
-	
 	submenu_scene = PopupMenu.new()
 	submenu_scene.connect("id_pressed", Callable(self, "_on_scene_submenu_item_selected"))
 	add_tool_submenu_item("Scene Builder", submenu_scene)
@@ -77,7 +76,6 @@ func _enter_tree():
 	submenu_scene.add_item("Select children", SceneCommands.select_children)
 	submenu_scene.add_item("Select parents", SceneCommands.select_parents)
 	submenu_scene.add_item("Swap nodes", SceneCommands.swap_nodes)
-	
 
 func _exit_tree():
 	remove_tool_menu_item("Scene Builder")

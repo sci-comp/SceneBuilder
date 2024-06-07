@@ -40,7 +40,7 @@ See `scene_builder_plugin.gd` for specific implmenetation.
 
 ## Shortcuts
 
-Some shortcuts are hardcoded into scene builder. They are as follows,
+Shortcuts for the scene builder dock are hardcoded. They are as follows,
 
 With an item selected,
 
@@ -53,7 +53,9 @@ With an item selected,
 - Select previous/next category by pressing: Alt + Left/Right Arrow
 - Exit placement mode: Escape
 
-Many other commands may be rebound by selecting new values in `scene_builder_input_map.tres`. Note that, for the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
+Meanwhile, shortcuts for scene builder commands may be rebound by selecting new values in `scene_builder_input_map.tres`. Note that, for the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
+
+You will need disable/enable the plugin in order to update new values in `scene_builder_input_map.tres`.
 
 ## Scene builder commands
 

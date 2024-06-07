@@ -34,7 +34,6 @@ func _enter_tree():
 	add_child(scene_builder_dock)
 	
 	scene_builder_commands.update_input_map(scene_builder_input_map)
-	scene_builder_dock.update_input_map(scene_builder_input_map)
 
 func _exit_tree():
 	scene_builder_commands.queue_free()
