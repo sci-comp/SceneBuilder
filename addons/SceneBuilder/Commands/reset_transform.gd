@@ -7,11 +7,14 @@ func execute():
 	
 	var editor : EditorInterface = get_editor_interface()
 	var undo_redo : EditorUndoRedoManager = get_undo_redo()
-	undo_redo.create_action("Reset node name")
-	
 	var current_scene : Node = editor.get_edited_scene_root()
 	var selection : EditorSelection = editor.get_selection()
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
+	
+	if selected_nodes.is_empty():
+		return
+	
+	undo_redo.create_action("Reset node name")
 
 	for selected: Node3D in selected_nodes:
 		

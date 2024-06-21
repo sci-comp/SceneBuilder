@@ -10,10 +10,14 @@ func execute():
 	
 	var editor : EditorInterface = get_editor_interface()
 	var undo_redo : EditorUndoRedoManager = get_undo_redo()
-	undo_redo.create_action("Alphabetical Sort Children")
 	
 	var selection : EditorSelection = editor.get_selection()
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
+
+	if selected_nodes.is_empty():
+		return
+
+	undo_redo.create_action("Alphabetical Sort Children")
 
 	for parent_node in selected_nodes:
 		

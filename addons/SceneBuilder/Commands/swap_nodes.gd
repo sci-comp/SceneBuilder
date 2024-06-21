@@ -20,8 +20,6 @@ func execute():
 	
 	var editor : EditorInterface = get_editor_interface()
 	var undo_redo : EditorUndoRedoManager = get_undo_redo()
-	undo_redo.create_action("Swap selected nodes with a single selected node in FileSystem")
-	
 	var current_scene : Node = editor.get_edited_scene_root()
 	var selection : EditorSelection = editor.get_selection()
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
@@ -43,6 +41,8 @@ func execute():
 	if selected_nodes.is_empty():
 		print("Error: Select at least one node in the Scene.")
 		return
+	
+	undo_redo.create_action("Swap selected nodes with a single selected node in FileSystem")
 	
 	for node in selected_nodes:
 		var instance: Node3D = resource.instantiate()

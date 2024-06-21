@@ -7,12 +7,18 @@ func execute():
 	
 	var editor : EditorInterface = get_editor_interface()
 	var undo_redo : EditorUndoRedoManager = get_undo_redo()
+	
+	var selection : EditorSelection = editor.get_selection()
+	var selected_nodes : Array[Node] = selection.get_selected_nodes()
+
+	if selected_nodes.is_empty():
+		return
+	
 	undo_redo.create_action("Snap to Grid")
 	
-	var grid_size : float = 1.0  # Todo: this should be adjustable by the user
+	var grid_size : float = 0.25  # Todo: this should be adjustable by the user
 	
-	var selection: EditorSelection = get_editor_interface().get_selection()
-	for selected: Node3D in selection.get_selected_nodes():
+	for selected: Node3D in selected_nodes:
 		var old_pos = selected.position
 		var new_pos = Vector3(
 			round(selected.position.x / grid_size) * grid_size,

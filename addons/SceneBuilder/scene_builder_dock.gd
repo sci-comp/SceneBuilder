@@ -595,11 +595,11 @@ func get_all_node_names(_node) -> Array[String]:
 
 func instantiate_selected_item_at_position() -> void:
 	
-	undo_redo.create_action("Instantiate selected item")
+	if preview_instance == null or selected_item == null:
+		printerr("Preview instance or selected item is null")
+		return
 	
-	if preview_instance != null:
-		populate_preview_instance_rid_array(preview_instance)
-	
+	populate_preview_instance_rid_array(preview_instance)
 	var result = perform_raycast_with_exclusion(preview_instance_rid_array)
 	
 	if result and result.collider:
@@ -616,13 +616,13 @@ func instantiate_selected_item_at_position() -> void:
 		instance.global_transform.origin = new_position
 		instance.basis = preview_instance.basis
 
+		undo_redo.create_action("Instantiate selected item")
 		undo_redo.add_undo_method(scene_root, "remove_child", instance)
-		undo_redo.add_do_reference(instance)  # Ensure instance is not freed when undoing
+		undo_redo.add_do_reference(instance)
+		undo_redo.commit_action()
 	
 	else:
 		print("Raycast missed, items must be instantiated on a StaticBody with a CollisionShape")
-	
-	undo_redo.commit_action()
 
 func initialize_node_name(node : Node3D, new_name : String) -> void:
 	var all_names = toolbox.get_all_node_names(scene_root)

@@ -6,7 +6,6 @@ extends EditorPlugin
 func execute():
 	
 	var editor : EditorInterface = get_editor_interface()
-	
 	var selection : EditorSelection = editor.get_selection()
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
 	

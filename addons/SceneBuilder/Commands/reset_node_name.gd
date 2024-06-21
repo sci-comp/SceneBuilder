@@ -8,22 +8,19 @@ func execute():
 	var toolbox : SceneBuilderToolbox = SceneBuilderToolbox.new()
 	
 	var editor : EditorInterface = get_editor_interface()
-	var undo_redo : EditorUndoRedoManager = get_undo_redo()
-	undo_redo.create_action("Reset node name")
-	
+	var undo_redo : EditorUndoRedoManager = get_undo_redo()	
 	var current_scene : Node = editor.get_edited_scene_root()
 	var selection : EditorSelection = editor.get_selection()
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
+	
+	if selected_nodes.is_empty():
+		return
+	
+	undo_redo.create_action("Reset node name")
 
 	var all_names = toolbox.get_all_node_names(current_scene)
 	
-	var pattern = "\\w -n(\\d+)"
-	var regex = RegEx.new()
-	regex.compile(pattern)
-	
 	for node in selected_nodes:
-		
-		all_names = toolbox.get_all_node_names(current_scene)
 		
 		if node.scene_file_path:
 			var path_name = node.scene_file_path.get_file().get_basename()

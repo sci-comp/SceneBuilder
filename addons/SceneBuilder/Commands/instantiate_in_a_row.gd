@@ -7,13 +7,14 @@ func execute(_spacing : int):
 	
 	var editor : EditorInterface = get_editor_interface()
 	var undo_redo : EditorUndoRedoManager = get_undo_redo()
-	undo_redo.create_action("Instantiate Scenes")
 	
 	var current_scene : Node = editor.get_edited_scene_root()
 	var selected_paths : PackedStringArray = editor.get_selected_paths()
 	
-	if current_scene == null:
+	if current_scene == null or selected_paths.is_empty():
 		return
+
+	undo_redo.create_action("Instantiate Scenes")
 	
 	var instantiated_nodes = []
 	var x_offset = 0
