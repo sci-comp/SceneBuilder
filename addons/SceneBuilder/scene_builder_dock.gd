@@ -72,11 +72,18 @@ var preview_instance_rid_array : Array[RID] = []
 
 # Placement mode
 var placement_mode_enabled : bool = false
+var position_offset_mode_x_enabled : bool = false
+var position_offset_mode_y_enabled : bool = false
+var position_offset_mode_z_enabled : bool = false
 var rotation_mode_x_enabled : bool = false
 var rotation_mode_y_enabled : bool = false
 var rotation_mode_z_enabled : bool = false
 var scale_mode_enabled : bool = false
 # Preview item
+var pos_offset_x : float = 0
+var pos_offset_y : float = 0
+var pos_offset_z : float = 0
+var original_preview_position : Vector3 = Vector3.ZERO
 var original_preview_basis : Basis = Basis.IDENTITY
 var original_mouse_position : Vector2 = Vector2.ONE
 var random_offset_y : float = 0
@@ -196,6 +203,9 @@ func _process(delta: float) -> void:
 					var _instance : Node3D = _preview_item.get_child(0)
 					
 					var new_position : Vector3 = result.position
+					
+					new_position += Vector3(pos_offset_x, pos_offset_y, pos_offset_z)
+					
 					# This offset prevents z-fighting when placing overlapping quads
 					if selected_item.use_random_vertical_offset: 
 						new_position.y += random_offset_y
@@ -219,8 +229,18 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 			else:
 				relative_motion = -event.relative.y
 			relative_motion *= 0.01  # Sensitivity factor
+
+			if position_offset_mode_x_enabled:
+				pos_offset_x += relative_motion
+				preview_instance.position.x = original_preview_position.x + pos_offset_x
+			elif position_offset_mode_y_enabled:
+				pos_offset_y += relative_motion
+				preview_instance.position.y = original_preview_position.y + pos_offset_y
+			elif position_offset_mode_z_enabled:
+				pos_offset_z += relative_motion
+				preview_instance.position.z = original_preview_position.z + pos_offset_z
 			
-			if rotation_mode_x_enabled:
+			elif rotation_mode_x_enabled:
 				if btn_use_local_space.button_pressed:
 					preview_instance.rotate_object_local(Vector3(1, 0, 0), relative_motion) 
 				else:
@@ -235,6 +255,7 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 					preview_instance.rotate_object_local(Vector3(0, 0, 1), relative_motion) 
 				else:
 					preview_instance.rotate_z(relative_motion)
+			
 			elif scale_mode_enabled:
 				var new_scale : Vector3 = preview_instance.scale * (1 + relative_motion)
 				if is_zero_approx(new_scale.x) or is_zero_approx(new_scale.y) or is_zero_approx(new_scale.z):
@@ -277,54 +298,88 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 	elif event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
 			
-			if !event.alt_pressed and !event.ctrl_pressed and !event.shift_pressed:
+			if !event.alt_pressed and !event.ctrl_pressed:
 				
-				if event.keycode == KEY_1:
-					if is_transform_mode_enabled():
-						if rotation_mode_x_enabled:
-							end_transform_mode()
-						else:
-							end_transform_mode()
-							start_rotation_mode_x()
-					else:
-						start_rotation_mode_x()
-				
-				elif event.keycode == KEY_2:
-					if is_transform_mode_enabled():
-						if rotation_mode_y_enabled:
-							end_transform_mode()
-						else:
-							end_transform_mode()
-							start_rotation_mode_y()
-					else:
-						start_rotation_mode_y()
-				
-				elif event.keycode == KEY_3:
-					if is_transform_mode_enabled():
-						if rotation_mode_z_enabled:
-							end_transform_mode()
-						else:
-							end_transform_mode()
-							start_rotation_mode_z()
-					else:
-						start_rotation_mode_z()
-				
-				elif event.keycode == KEY_4:
-					if is_transform_mode_enabled():
-						if scale_mode_enabled:
-							end_transform_mode()
-						else:
-							end_transform_mode()
-							start_scale_mode()
-					else:
-						start_scale_mode()
-				
-				elif event.keycode == KEY_5:
-					if is_transform_mode_enabled():
-						end_transform_mode()
-					reroll_preview_instance_transform()
+				if event.shift_pressed:
 					
-				elif event.keycode == KEY_ESCAPE:
+					if event.keycode == KEY_1:
+						if is_transform_mode_enabled():
+							if position_offset_mode_x_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_position_offset_mode_x()
+						else:
+							start_position_offset_mode_x()
+					
+					elif event.keycode == KEY_2:
+						if is_transform_mode_enabled():
+							if position_offset_mode_y_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_position_offset_mode_y()
+						else:
+							start_position_offset_mode_y()
+					
+					elif event.keycode == KEY_3:
+						if is_transform_mode_enabled():
+							if position_offset_mode_z_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_position_offset_mode_z()
+						else:
+							start_position_offset_mode_z()
+					
+				else:
+					
+					if event.keycode == KEY_1:
+						if is_transform_mode_enabled():
+							if rotation_mode_x_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_rotation_mode_x()
+						else:
+							start_rotation_mode_x()
+					
+					elif event.keycode == KEY_2:
+						if is_transform_mode_enabled():
+							if rotation_mode_y_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_rotation_mode_y()
+						else:
+							start_rotation_mode_y()
+					
+					elif event.keycode == KEY_3:
+						if is_transform_mode_enabled():
+							if rotation_mode_z_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_rotation_mode_z()
+						else:
+							start_rotation_mode_z()
+					
+					elif event.keycode == KEY_4:
+						if is_transform_mode_enabled():
+							if scale_mode_enabled:
+								end_transform_mode()
+							else:
+								end_transform_mode()
+								start_scale_mode()
+						else:
+							start_scale_mode()
+				
+					elif event.keycode == KEY_5:
+						if is_transform_mode_enabled():
+							end_transform_mode()
+						reroll_preview_instance_transform()
+				
+				if event.keycode == KEY_ESCAPE:
 					end_placement_mode()
 			
 			if placement_mode_enabled:
@@ -545,6 +600,10 @@ func end_placement_mode() -> void:
 	selected_item_name = ""
 
 func end_transform_mode() -> void:
+	position_offset_mode_x_enabled = false
+	position_offset_mode_y_enabled = false
+	position_offset_mode_z_enabled = false
+	original_preview_position = Vector3.ZERO
 	rotation_mode_x_enabled = false
 	rotation_mode_y_enabled = false
 	rotation_mode_z_enabled = false
@@ -614,6 +673,8 @@ func instantiate_selected_item_at_position() -> void:
 			new_position.y += random_offset_y
 		
 		instance.global_transform.origin = new_position
+		instance.position += Vector3(pos_offset_x, pos_offset_y, pos_offset_z)
+		print("pos_offset_y: ", pos_offset_y)
 		instance.basis = preview_instance.basis
 
 		undo_redo.create_action("Instantiate selected item")
@@ -629,8 +690,14 @@ func initialize_node_name(node : Node3D, new_name : String) -> void:
 	node.name = toolbox.increment_name_until_unique(new_name, all_names)
 
 func is_transform_mode_enabled() -> bool:
-	if rotation_mode_x_enabled or rotation_mode_y_enabled or rotation_mode_z_enabled or scale_mode_enabled:
-		return true;
+	if (position_offset_mode_x_enabled
+		or position_offset_mode_y_enabled
+		or position_offset_mode_z_enabled
+		or rotation_mode_x_enabled
+		or rotation_mode_y_enabled
+		or rotation_mode_z_enabled
+		or scale_mode_enabled):
+		return true
 	else:
 		return false
 
@@ -798,6 +865,10 @@ func reroll_preview_instance_transform() -> void:
 		original_preview_basis = preview_instance.basis
 	
 	original_preview_basis = preview_instance.basis
+	
+	pos_offset_x = 0
+	pos_offset_y = 0
+	pos_offset_z = 0
 
 func select_item(collection_name : String, item_name : String) -> void:
 	end_placement_mode()
@@ -840,6 +911,24 @@ func select_previous_collection() -> void:
 	end_placement_mode()
 	select_collection((selected_collection_index + num_collections - 1) % num_collections)
 	select_first_item()
+
+func start_position_offset_mode_x() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_position = preview_instance.position
+	position_offset_mode_x_enabled = true
+	lbl_indicator_x.self_modulate = Color.GREEN
+
+func start_position_offset_mode_y() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_position = preview_instance.position
+	position_offset_mode_y_enabled = true
+	lbl_indicator_y.self_modulate = Color.GREEN
+
+func start_position_offset_mode_z() -> void:
+	original_mouse_position = viewport.get_mouse_position()
+	original_preview_position = preview_instance.position
+	position_offset_mode_z_enabled = true
+	lbl_indicator_z.self_modulate = Color.GREEN
 
 func start_rotation_mode_x() -> void:
 	original_mouse_position = viewport.get_mouse_position()
