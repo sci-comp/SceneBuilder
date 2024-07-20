@@ -4,11 +4,12 @@
 
 SceneBuilder is a 3D level design tool and asset browser, together with a set of common productivity commands.
 
-Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock.
-
-**Bugs** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us in Discord, or make a post in Github's Issues section.
+> [!IMPORTANT]
+**Bugs** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us in Discord, or make a post in Github's Issue's section.
 
 ![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)
+
+---
 
 ### Scope
 
@@ -26,53 +27,51 @@ Scattering large numbers of objects, often with help from multi-mesh instances, 
 
 Grid snapping is currently out of scope due to the existence of [GridMap](https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html). GridMap is a fantastic tool built directly into Godot.
 
+---
+
 ## Installation
 
 In addition to being available in the AssetLib, Scene builder may be installed by simply cloning the entire repo into,
 
 `res://addons/SceneBuilder/`
 
-meaning that there will be recursive directories such as,
+which means that a recursive directory pattern will exist,
 
 `res://addons/SceneBuilder/addons/SceneBuilder/`
 
-See `scene_builder_plugin.gd` for specific implmenetation.
+[!NOTE]
+Implementation details: Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock. The script `scene_builder_commands.gd` adds commands to the Godot toolbar (Project > Tools) and listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file, located in `addons/SceneBuilder/Commands/. In the other hand, we have `scene_builder_dock.gd`, which handles logic for the interactable scene builder dock.
+
+---
 
 ## Shortcuts
 
-Shortcuts for the scene builder dock are hardcoded. They are as follows,
+These are the default shortcuts. To update, edit the resource `scene_builder_config.tres`, then reload the project.
 
-With an item selected,
+[!CAUTION]
+Some default shortcuts for scene builder will likely conflict with one of Godot's default shortcuts. Scene builder's shortcuts may be updated by changing the values in the resource file: `addons/SceneBuilder/scene_builder_config.tres`, then reloading the project. Godot's shortcuts can be updated in the toolbar, `Editor > Editor Settings... > Shortcuts`.
+
+With an item selected in the dock,
 
 - Enter x rotation mode: 1
 - Enter y rotation mode: 2
 - Enter z rotation mode: 3
+- Enter x offset mode: Shift + 1
+- Enter y offset mode: Shift + 2
+- Enter z offset mode: Shift + 3
 - Enter scale mode: 4
 - Reset orientation: 5
 - Select previous/next items by pressing: Shift + Left/Right Arrow
 - Select previous/next category by pressing: Alt + Left/Right Arrow
 - Exit placement mode: Escape
 
-Meanwhile, shortcuts for scene builder commands may be rebound by selecting new values in `scene_builder_input_map.tres`. Note that, for the most part, Godot doesn't make use of the `Alt` modifier, so we are free to fill out the keyboard with our own shortcuts that use this modifier.
-
-You will need disable/enable the plugin in order to update new values in `scene_builder_input_map.tres`.
-
-## Scene builder commands
-
-In Godot's main bar, click `Project > Tools > Scene Builder` to see a list of productivity commands.
-
-If you would like to know more about how these commands work, please see the command's respective GDScript file for more information, which is located,
-
-	`res://addons/SceneBuilder/Commands/`
+Shortcuts for commands are not listed here, but may be viewed in the configuration resource.
 
 ![scene_builder_commands](./Documentation/Image/scene_builder_commands.png)
 
-Implementation details: The script `scene_builder_commands.gd` is loaded by `scene_builder_plugin.gd`, which is the class registered to EditorPlugin via `plugin.cfg`. The script `scene_builder_commands.gd` adds commands to the Godot toolbar and also listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file.
-
+---
 
 ## The scene builder dock
-
-The scene builder dock requires manual setup. This isn't an ideal user experience, but doing things this way leads to very simple and stable solutions, please bear with us!
 
 ![scene_builder_dock](./Documentation/Image/scene_builder_dock.png)
 
