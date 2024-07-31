@@ -11,7 +11,10 @@ enum SceneCommands
 	alphabetize_nodes = 1,
 	change_places = 8,
 	create_scene_builder_items = 10,
-	instantiate_in_a_row = 32,
+	fix_negative_scaling = 20,
+	instantiate_in_a_row_1 = 32,
+	instantiate_in_a_row_2 = 33,
+	instantiate_in_a_row_3 = 34,
 	push_to_grid = 45,
 	push_parent_offset_to_child = 46,
 	reset_node_name = 50,
@@ -69,6 +72,10 @@ func _enter_tree():
 	submenu_scene.add_item("Alphabetize nodes", SceneCommands.alphabetize_nodes)
 	submenu_scene.add_item("Change places", SceneCommands.change_places)
 	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
+	submenu_scene.add_item("Fix negative scaling", SceneCommands.fix_negative_scaling)
+	submenu_scene.add_item("Instantiate selected paths in a row (1m)", SceneCommands.instantiate_in_a_row_1)
+	submenu_scene.add_item("Instantiate selected paths in a row (5m)", SceneCommands.instantiate_in_a_row_2)
+	submenu_scene.add_item("Instantiate selected paths in a row (10m)", SceneCommands.instantiate_in_a_row_3)
 	submenu_scene.add_item("Push to grid", SceneCommands.push_to_grid)
 	submenu_scene.add_item("Push parent offset to child", SceneCommands.push_parent_offset_to_child)
 	submenu_scene.add_item("Reset node names", SceneCommands.reset_node_name)
@@ -88,6 +95,14 @@ func _on_scene_submenu_item_selected(id: int):
 			change_places()
 		SceneCommands.create_scene_builder_items:
 			create_scene_builder_items()
+		SceneCommands.fix_negative_scaling:
+			fix_negative_scaling()
+		SceneCommands.instantiate_in_a_row_1:
+			instantiate_in_a_row(1)
+		SceneCommands.instantiate_in_a_row_2:
+			instantiate_in_a_row(5)
+		SceneCommands.instantiate_in_a_row_3:
+			instantiate_in_a_row(10)
 		SceneCommands.push_to_grid:
 			push_to_grid()
 		SceneCommands.push_parent_offset_to_child:
@@ -116,6 +131,10 @@ func create_scene_builder_items():
 	add_child(reusable_instance)
 	reusable_instance.done.connect(_on_reusable_instance_done)
 	reusable_instance.execute()
+
+func fix_negative_scaling():
+	var _instance = preload("./Commands/fix_negative_scaling.gd").new()
+	_instance.execute()
 
 func instantiate_in_a_row(_space):
 	var _instance = preload("./Commands/instantiate_in_a_row.gd").new()
@@ -162,5 +181,3 @@ func _on_reusable_instance_done():
 	if reusable_instance != null:
 		print("Freeing reusable instance")
 		reusable_instance.queue_free()
-
-

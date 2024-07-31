@@ -39,7 +39,7 @@ which means that a recursive directory pattern will exist,
 
 `res://addons/SceneBuilder/addons/SceneBuilder/`
 
-[!NOTE]
+> [!NOTE]
 Implementation details: Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock. The script `scene_builder_commands.gd` adds commands to the Godot toolbar (Project > Tools) and listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file, located in `addons/SceneBuilder/Commands/. In the other hand, we have `scene_builder_dock.gd`, which handles logic for the interactable scene builder dock.
 
 ---
@@ -48,7 +48,7 @@ Implementation details: Scene builder is logically divided into two main parts: 
 
 These are the default shortcuts. To update, edit the resource `scene_builder_config.tres`, then reload the project.
 
-[!CAUTION]
+> [!CAUTION]
 Some default shortcuts for scene builder will likely conflict with one of Godot's default shortcuts. Scene builder's shortcuts may be updated by changing the values in the resource file: `addons/SceneBuilder/scene_builder_config.tres`, then reloading the project. Godot's shortcuts can be updated in the toolbar, `Editor > Editor Settings... > Shortcuts`.
 
 With an item selected in the dock,
