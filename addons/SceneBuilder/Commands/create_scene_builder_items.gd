@@ -123,7 +123,12 @@ func _create_resource(path: String):
 		
 		resource.scene_path = path
 		resource.item_name = path.get_file().get_basename()
-		resource.collection_name = collection_line_edit.text
+				
+		if collection_line_edit.text.is_empty():
+			print("Collection name was not given, using: Unnamed")
+			resource.collection_name = "Unnamed"
+		else:
+			resource.collection_name = collection_line_edit.text
 		
 		resource.use_random_vertical_offset = randomize_vertical_offset_checkbox.button_pressed
 		resource.use_random_rotation = randomize_rotation_checkbox.button_pressed
@@ -214,4 +219,3 @@ func search_for_mesh_instance_3d(node : Node):
 		max_diameter = max(max_diameter, diameter)
 	for child in node.get_children():
 		search_for_mesh_instance_3d(child)
-

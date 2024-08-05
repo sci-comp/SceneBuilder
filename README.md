@@ -40,7 +40,7 @@ which means that a recursive directory pattern will exist,
 `res://addons/SceneBuilder/addons/SceneBuilder/`
 
 > [!NOTE]
-Implementation details: Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock. The script `scene_builder_commands.gd` adds commands to the Godot toolbar (Project > Tools) and listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file, located in `addons/SceneBuilder/Commands/. In the other hand, we have `scene_builder_dock.gd`, which handles logic for the interactable scene builder dock.
+Implementation details: Scene builder is logically divided into two main parts: scene builder commands and the scene builder dock. The script `scene_builder_commands.gd` adds commands to the Godot toolbar (Project > Tools) and listens for keyboard shortcuts. Each command's implementation is contained within the command's respective GDScript file, located in `addons/SceneBuilder/Commands/`. In the other hand, we have `scene_builder_dock.gd`, which handles logic for the interactable scene builder dock.
 
 ---
 

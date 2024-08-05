@@ -22,7 +22,7 @@ text = "Collection:"
 [node name="LineEdit" type="LineEdit" parent="Collection"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Furniture"
+text = "Unnamed"
 alignment = 1
 
 [node name="Boolean" type="HBoxContainer" parent="."]
