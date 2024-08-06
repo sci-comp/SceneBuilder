@@ -34,4 +34,3 @@ func execute():
 				undo_redo.add_undo_method(child, "set_global_position", original_position)
 
 	undo_redo.commit_action()
-

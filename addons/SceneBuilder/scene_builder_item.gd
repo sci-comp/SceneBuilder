@@ -3,7 +3,10 @@ class_name SceneBuilderItem
 
 @export var collection_name : String = "Temporary"
 @export var item_name : String = "TempItemName"
-@export var scene_path : String = ""
+#@export var scene_path : String = ""
+
+@export var texture : Texture
+@export var uid : String
 
 # Boolean
 @export var use_random_vertical_offset : bool = false
@@ -22,4 +25,3 @@ class_name SceneBuilderItem
 # Scale
 @export var random_scale_min : float = 0.9
 @export var random_scale_max : float = 1.1
-

@@ -30,4 +30,3 @@ func execute():
 		undo_redo.add_undo_property(selected, "position", old_pos)
 	
 	undo_redo.commit_action()
-

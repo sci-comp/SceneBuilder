@@ -4,7 +4,7 @@ class_name SceneBuilderCommands
 
 var submenu_scene: PopupMenu
 var reusable_instance
-var input_map
+var config : SceneBuilderConfig
 
 enum SceneCommands 
 {
@@ -29,37 +29,33 @@ func _unhandled_input(event: InputEvent):
 		if event.is_pressed() and !event.is_echo():
 			
 			if event.alt_pressed:
-				
 				match event.keycode:
-					
-					input_map.alphabetize_nodes:
+					config.alphabetize_nodes:
 						alphabetize_nodes()
-					input_map.change_places:
+					config.change_places:
 						change_places()
-					input_map.create_scene_builder_items:
+					config.create_scene_builder_items:
 						create_scene_builder_items()
-					input_map.instantiate_in_a_row_1:
+					config.instantiate_in_a_row_1:
 						instantiate_in_a_row(1)
-					input_map.instantiate_in_a_row_2:
+					config.instantiate_in_a_row_2:
 						instantiate_in_a_row(2)
-					input_map.instantiate_in_a_row_5:
+					config.instantiate_in_a_row_5:
 						instantiate_in_a_row(5)
-					input_map.push_to_grid:
+					config.push_to_grid:
 						push_to_grid()
-					input_map.push_parent_offset_to_child:
+					config.push_parent_offset_to_child:
 						push_parent_offset_to_child()
-					input_map.reset_node_name:
+					config.reset_node_name:
 						reset_node_name()
-					input_map.reset_transform:
+					config.reset_transform:
 						reset_transform()
-					input_map.swap_nodes:
+					config.swap_nodes:
 						swap_nodes()
-					
-					input_map.temporary_debug:
+					config.temporary_debug:
 						temporary_debug()
 					
 			elif event.ctrl_pressed:
-				
 				if event.keycode == KEY_RIGHT:
 					select_children()
 				elif event.keycode == KEY_LEFT:
@@ -130,7 +126,7 @@ func create_scene_builder_items():
 	var reusable_instance = preload("./Commands/create_scene_builder_items.gd").new()
 	add_child(reusable_instance)
 	reusable_instance.done.connect(_on_reusable_instance_done)
-	reusable_instance.execute()
+	reusable_instance.execute(config.root_dir)
 
 func fix_negative_scaling():
 	var _instance = preload("./Commands/fix_negative_scaling.gd").new()
@@ -172,8 +168,8 @@ func temporary_debug():
 	var _instance = preload("./Commands/temporary_debug.gd").new()
 	_instance.execute()
 
-func update_input_map(new_input_map) -> void:
-	input_map = new_input_map
+func update_config(new_config) -> void:
+	config = new_config
 
 # ------------------------------------------------------------------------------
 

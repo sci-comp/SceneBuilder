@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="SceneBuilderInputMap" load_steps=2 format=3 uid="uid://b0cjokimkkpiu"]
+[gd_resource type="Resource" script_class="SceneBuilderConfig" load_steps=2 format=3 uid="uid://b0cjokimkkpiu"]
 
-[ext_resource type="Script" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_input_map.gd" id="1_2n20b"]
+[ext_resource type="Script" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_config.gd" id="1_2n20b"]
 
 [resource]
 script = ExtResource("1_2n20b")
+root_dir = "res://Data/SceneBuilder/"
 instantiate_in_a_row_1 = 76
 instantiate_in_a_row_2 = 59
 instantiate_in_a_row_5 = 39

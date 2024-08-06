@@ -75,104 +75,37 @@ Shortcuts for commands are not listed here, but may be viewed in the configurati
 
 ![scene_builder_dock](./Documentation/Image/scene_builder_dock.png)
 
-In order to set-up the scene builder dock, follow these steps,
+### Setting up the dock
 
-### Initialize your data folder
+By default, our data directory is located here: `res://Data/SceneBuilderCollections/`. You may change this in the configuration file.
 
-1. Create an empty folder,
-
-	`res://Data/SceneBuilderCollections`
-
-This folder path is hard coded into the scene builder dock.
-
-2. Create a CollectionNames resource at the following location by first creating a new Resource, then by attaching the script: `scene_builder_collections.gd`,
-
-	`res://Data/SceneBuilderCollections/collection_names.tres`
-
-This resource path is hard coded into the scene builder dock.
-
-3. Enter your desired collection names into the CollectionNames resource, then create empty folders with matching names.
+1. Enter your desired collection names into the CollectionNames resource. Empty folders with matching names will be created, if they do not already exist.
 
 ![scene_builder_collection_names_resource](./Documentation/Image/scene_builder_collection_names_resource.png)
 
-For example, if you would like a collection named "Furniture," then write "Furniture" in the CollectionNames resource. Next, create an empty folder "Furniture" at location, 
-
-	`res://Data/SceneBuilderCollections/Furniture/`
+The dock is populated from SceneBuilderItem resources located in these folders.
 
 ![scene_builder_file_system](./Documentation/Image/scene_builder_file_system.png)
 
-Your data folder is now initialized.
+If you have a folder in `res://Data/SceneBuilderCollections/` that is not listed in the CollectionNames resource, then it will simply be ignored. Conversely, if a collection name is written in CollectionNames, then a harmless error will occur if a matching folder is not found.
 
-If you have a folder in `res://Data/SceneBuilderCollections/` that is not listed in the CollectionNames resource, then it will simply be ignored. Conversely, if a collection name is written in CollectionNames, then an error will occur if a matching folder is not found.
+The scene builder dock only provides space for 18 collections, however, you can make additional folders. We can update which 18 collections are currently in use by swapping out names in the CollectionNames resource, then hitting the "Reload all items" button on the scene builder dock.
 
-The scene builder dock only provides space for 12 collections, however, you can make additional folders. We can update which 12 collections are currently in use by swapping out names in the CollectionNames resource, then hitting the "Reload all items" button on the scene builder dock. The decision to have 12 collections was an arbitrary one, though it does fit nicely into the UI dock.
+We can enable the plugin now to preview collection names in the dock. Since our collection folders are empty, you will see a harmless error: `Directory exists, but contains no items: Furniture`.
 
-You can enable the plugin now to preview your collection names in the scene builder dock. Since our collection folders are empty, you will see a harmless error: `Directory exists, but contains no items: Furniture`.
-
-### Manually create one item
-
-Usually, we want to create SceneBuilderItem resources in bulk. However, for demonstration purposes, let us create our first item manually.
-
-Continuing with the furniture example,
-
-1. Create a `PackedScene` that we will use as an item to place. For this example, I will assume that you already have "Chair.glb," "Chair.tscn," or other relevant PackedScene somewhere in your project files. It doesn't matter where your chair scene is located in FileSystem.
-
-Remember, the root node of imported scenes must derive from Node3D.
-
-2. Create two sub folders "Item" and "Thumbnail" at locations,
-
-	`res://Data/SceneBuilderCollections/Furniture/Item/`
-	`res://Data/SceneBuilderCollections/Furniture/Thumbnail/`
-
-3. Create a new resource at the following location, then attach the script `scene_builder_item.gd` to it,
-
-	`res://Data/SceneBuilderCollections/Furniture/Item/Chair.tres`
-
-The SceneBuilderItem resource must have the same name as the corresponding PackedScene.
-
-4. Create an icon at the following location,
-
-	`res://Data/SceneBuilderCollections/Furniture/Thumbnail/Chair.png`
-
-The png file must have the same name as the corresponding PackedScene and must be placed in the Thumbnail folder. 
-
-Icons are not resized, so they should be around 80x80 pixels in order to fit in the dock. A temporary icon is included at location `res://addons/SceneBuilder/icon_tmp.png` for demonstration.
-
-5. Fill out fields in the SceneBuilderItem resource (Chair.tres for this example),
-
-- Collection name would be "Furniture" in this example
-- The item name must be the same as the base of the path name, "Chair" in this example.
-- Scene path is the path to Chair.glb (or Chair.tscn)
-- Random vertical offset is often used with decals as a way to avoid z fighting. The default values work well for this purpose.
+### Scene Builder Items
 
 ![scene_builder_item](./Documentation/Image/scene_builder_item.png)
 
-Our chair item is now ready!
+To create an item resource,
 
-#### How to break our items
-
-If we move our PackedScenes (ex, Chair.glb) files around, then the scene path property of the SceneBuilterItem resource will point to the wrong location.
-
-If we need to move a PackedScene in FileSystem, then we should manually update scene path field.
-
-If we need to move many PackedScenes around in FileSystem, then we should delete the SceneBuilderItem resources, then recreate them in bulk.
-
-Once a SceneBuilderItem resource is made, it must be edited by hand for any further changes.
-
-
-### Batch create items
-
-1. Select paths in FileSystem that contain an imported scene with a root node that derives from type Node3D.
-2. Run the "Create scene builder items" command by going to Project > Tools > Scene Builder > Create scene builder items, or by pressing the keyboard shortcut Alt + /
+1. Select one or more paths in FileSystem that contain an imported scene with a root node that derives from type Node3D.
+2. Run the "Create scene builder items" command by going to Project > Tools > Scene Builder > Create scene builder items, or by pressing the keyboard shortcut `Alt + /`
 3. Fill out the fields in the popup window, then hit okay.
+4. After pressing okay, the `icon_studio` scene will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn. However, if you would like to make changes to icon_studio.tscn, then that's a great way to customize your icons.
+5. In the scene builder dock, click the button "Reload all items"
 
 ![scene_builder_create_items](./Documentation/Image/scene_builder_create_items.png)
-
-4. When the command "Create scene builder items" is run, the `icon_studio` scene will be opened. Please close the scene when it's done without saving changes to icon_studio.tscn.
-
-However, if you would like to make changes to icon_studio.tscn, then that's a great way to customize your icons.
-
-5. In the scene builder dock, click the button "Reload all items"
 
 ### Update the scene builder dock
 

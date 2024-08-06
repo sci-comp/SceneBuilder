@@ -10,7 +10,7 @@ func execute():
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
 	
 	if selected_nodes.is_empty():
-		print("Selection is empty")
+		print("[Select Children] Selection is empty")
 		return
 	
 	selection.clear()
@@ -18,4 +18,3 @@ func execute():
 	for node in selected_nodes:
 		for child in node.get_children():
 			selection.add_node(child)
-

@@ -6,7 +6,7 @@ class_name CollectionNames
 # hardcoded in since this gives us an opportunity to set our UI into stone.
 
 # Not yet implemented: rather than have a dynamic amount of collections, we 
-# will have sets of 12, as specified by this resource. Swap these resource 
+# will have sets of 18, as specified by this resource. Swap these resource 
 # around in the Collections tab in the Scene Builder dock.
 
 #@export var collection_names : Array
@@ -23,3 +23,9 @@ class_name CollectionNames
 @export var collection_name_10 : String = ""
 @export var collection_name_11 : String = ""
 @export var collection_name_12 : String = ""
+@export var collection_name_13 : String = ""
+@export var collection_name_14 : String = ""
+@export var collection_name_15 : String = ""
+@export var collection_name_16 : String = ""
+@export var collection_name_17 : String = ""
+@export var collection_name_18 : String = ""

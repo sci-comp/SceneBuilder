@@ -1,5 +1,7 @@
 extends Resource
-class_name SceneBuilderInputMap
+class_name SceneBuilderConfig
+
+@export var root_dir : String = "res://Data/SceneBuilder/"
 
 @export_group("For use with the Alt modifier")
 

@@ -13,7 +13,7 @@ func execute():
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
 	
 	if selected_nodes.size() != 2:
-		print("Exactly two nodes must be selected.")
+		print("[Change Places] Exactly two nodes must be selected.")
 		return
 	
 	var node_a = selected_nodes[0]
@@ -24,7 +24,7 @@ func execute():
 	
 	# Check for parent-child relationship
 	if node_a.get_parent() == node_b or node_b.get_parent() == node_a:
-		print("The selected nodes cannot have a parent-child relationship.")
+		print("[Change Places] The selected nodes cannot have a parent-child relationship.")
 		return
 	
 	# Set-up undo_redo

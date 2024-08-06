@@ -27,19 +27,19 @@ func execute():
 	
 	# Verify that only one FileSystem path is selected
 	if selected_paths.size() != 1:
-		print("Error: Please select exactly one PackedScene in the FileSystem.")
+		print("[Swap Nodes] Please select exactly one PackedScene in the FileSystem.")
 		return
 	
 	# Verify that selected Filesystem item is a PackedScene
 	var selected_path = selected_paths[0]
 	var resource = load(selected_path)
 	if not resource or not resource is PackedScene:
-		print("Error: The selected path is not a PackedScene.")
+		print("[Swap Nodes] The selected path is not a PackedScene.")
 		return
 	
 	# Verify selected nodes
 	if selected_nodes.is_empty():
-		print("Error: Select at least one node in the Scene.")
+		print("[Swap Nodes] Select at least one node in the Scene.")
 		return
 	
 	undo_redo.create_action("Swap selected nodes with a single selected node in FileSystem")
@@ -58,9 +58,9 @@ func execute():
 			undo_redo.add_undo_method(instance, "queue_free")
 			undo_redo.add_undo_method(self, "print_message", "Nodes cleared from memory, undo unavailable")
 			
-			print("Node has been swapped: " + node.name)
+			print("[Swap Nodes] Node has been swapped: " + node.name)
 		else:
-			print("Error: parent not found for node: " + node.name)
+			printerr("[Swap Nodes] parent not found for node: " + node.name)
 	
 	undo_redo.commit_action()
 

@@ -18,7 +18,7 @@ size_flags_vertical = 3
 
 [node name="Tab" type="GridContainer" parent="Collection"]
 layout_mode = 2
-columns = 4
+columns = 6
 
 [node name="1" type="Button" parent="Collection/Tab"]
 layout_mode = 2
@@ -58,14 +58,12 @@ toggle_mode = true
 text = "6"
 
 [node name="7" type="Button" parent="Collection/Tab"]
-self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "7"
 
 [node name="8" type="Button" parent="Collection/Tab"]
-self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
@@ -84,14 +82,48 @@ toggle_mode = true
 text = "10"
 
 [node name="11" type="Button" parent="Collection/Tab"]
-self_modulate = Color(1, 0.843137, 0.839216, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "11"
 
 [node name="12" type="Button" parent="Collection/Tab"]
-self_modulate = Color(1, 0.843137, 0.839216, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "12"
+
+[node name="13" type="Button" parent="Collection/Tab"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "10"
+
+[node name="14" type="Button" parent="Collection/Tab"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "11"
+
+[node name="15" type="Button" parent="Collection/Tab"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "12"
+
+[node name="16" type="Button" parent="Collection/Tab"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "10"
+
+[node name="17" type="Button" parent="Collection/Tab"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "11"
+
+[node name="18" type="Button" parent="Collection/Tab"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
@@ -104,11 +136,10 @@ size_flags_vertical = 8
 [node name="TabContainer" type="TabContainer" parent="Collection"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 1
+current_tab = 0
 tabs_visible = false
 
 [node name="1" type="ScrollContainer" parent="Collection/TabContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -120,6 +151,7 @@ size_flags_horizontal = 3
 columns = 4
 
 [node name="2" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -138,6 +170,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 2
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/3"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -150,6 +183,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 3
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/4"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -162,6 +196,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 4
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/5"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -174,6 +209,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 5
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/6"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -186,6 +222,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 6
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/7"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -198,6 +235,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 7
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/8"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -210,6 +248,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 8
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/9"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -222,6 +261,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 9
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/10"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -234,6 +274,7 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 10
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/11"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
@@ -246,6 +287,85 @@ horizontal_scroll_mode = 0
 metadata/_tab_index = 11
 
 [node name="Grid" type="GridContainer" parent="Collection/TabContainer/12"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="13" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 12
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/13"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="14" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 13
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/14"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="15" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 14
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/15"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="16" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 15
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/16"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="17" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 16
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/17"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="18" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 17
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/18"]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 4

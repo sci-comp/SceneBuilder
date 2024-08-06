@@ -28,11 +28,6 @@ func execute():
 			undo_redo.add_do_method(node, "set_name", new_name)
 			undo_redo.add_undo_method(node, "set_name", node.name)
 		else:
-			print("Passing over: " + node.name)
+			print("[Reset Transform] Passing over: " + node.name)
 	
 	undo_redo.commit_action()
-
-
-
-
-

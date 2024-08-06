@@ -2,16 +2,18 @@
 extends EditorPlugin
 class_name SceneBuilderDock
 
+var config : SceneBuilderConfig
+
 # Paths
-var path_root : String = "res://Data/SceneBuilderCollections/"
-var path_to_collection_names : String = "res://Data/SceneBuilderCollections/collection_names.tres"
+var data_dir : String = ""
+var path_to_collection_names : String
 var dock_paths = [
 	"res://addons/SceneBuilder/scene_builder_dock.tscn",
 	"res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn"
 ]  # The recursive directory will exist when installing from a submodule
 
 # Constants
-var num_collections : int = 12
+var num_collections : int = 18
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var toolbox : SceneBuilderToolbox = SceneBuilderToolbox.new()
@@ -94,6 +96,8 @@ var scene_builder_temp : Node  # Used as a parent to the preview item
 
 func _enter_tree() -> void:
 	
+	path_to_collection_names = config.root_dir + "collection_names.tres"
+	
 	editor = get_editor_interface()
 	base_control = editor.get_base_control()
 	
@@ -102,9 +106,9 @@ func _enter_tree() -> void:
 	if main_screen:
 		btn_use_local_space = main_screen.get_child(1).get_child(0).get_child(0).get_child(0).get_child(12)
 		if !btn_use_local_space:
-			printerr("Unable to find use local space button")
+			printerr("[Scene Builder Dock] Unable to find use local space button")
 	else:
-		printerr("Unable to find main screen")
+		printerr("[Scene Builder Dock] Unable to find main screen")
 	
 	update_world_3d()
 	
@@ -115,7 +119,7 @@ func _enter_tree() -> void:
 			scene_builder_dock = load(path).instantiate()
 			break
 	if not scene_builder_dock:
-		printerr("scene_builder_dock.tscn was not found")
+		printerr("[Scene Builder Dock] scene_builder_dock.tscn was not found")
 		return
 	
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_RIGHT_UL, scene_builder_dock)
@@ -161,23 +165,7 @@ func _enter_tree() -> void:
 	#endregion
 	
 	#
-	refresh_collection_names()
-	
-	#
 	reload_all_items()
-	
-	#
-	select_collection(0)
-	
-	# Info blurb
-	var _num_populated_collections : int = 0
-	for name in collection_names:
-		if name != "":
-			_num_populated_collections += 1
-	var _total_items : int = 0
-	for key : String in items_by_collection.keys():
-		_total_items += items_by_collection[key].size()
-	print("Scene builder dock is ready with %s collections and %s items"% [str(_num_populated_collections), str(_total_items)])
 
 func _exit_tree() -> void:
 	remove_control_from_docks(scene_builder_dock)
@@ -189,7 +177,7 @@ func _process(delta: float) -> void:
 	if placement_mode_enabled:
 		
 		if not scene_root or not scene_root is Node3D:
-			print("Edited scene root must be of type Node3D, deselecting item")
+			print("[Scene Builder Dock] Edited scene root must be of type Node3D, deselecting item")
 			end_placement_mode()
 			return
 		
@@ -287,7 +275,7 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 						
 							if is_transform_mode_enabled():
 								# Revert preview transformations
-								print("warping to: ", original_mouse_position)
+								print("[Scene Builder Dock] warping to: ", original_mouse_position)
 								preview_instance.basis = original_preview_basis
 								preview_instance.scale = original_preview_scale
 								end_transform_mode()
@@ -399,10 +387,24 @@ func forward_3d_gui_input(_camera : Camera3D, event : InputEvent) -> AfterGUIInp
 
 # ---- Buttons -----------------------------------------------------------------
 
+func is_collection_populated(tab_index: int) -> bool:
+	var _collection_name : String = collection_names[tab_index]
+	if _collection_name == "" or _collection_name == " ":
+		return false
+	else:
+		if _collection_name in items_by_collection:
+			var _items : Dictionary = items_by_collection[_collection_name]
+			if _items.is_empty():
+				return false
+			else:
+				return true
+		else:
+			return false
+
 func select_collection(tab_index: int) -> void:
 	
 	if collection_names.size() == 0:
-		print("Unable to select collection, none exist")
+		print("[Scene Builder Dock] Unable to select collection, none exist")
 		return
 	
 	end_placement_mode()
@@ -436,21 +438,21 @@ func on_item_icon_clicked(_button_name: String) -> void:
 
 func reload_all_items() -> void:
 	
-	print("Freeing all texture buttons")
-	for i in range(1, 13):
+	print("[Scene Builder Dock] Freeing all texture buttons")
+	for i in range(1, num_collections + 1):
 		var grid_container : GridContainer = tab_container.get_node("%s/Grid" % i)
 		for _node in grid_container.get_children():
 			_node.queue_free()
 	
 	refresh_collection_names()
 	
-	print("Loading all items from all collections")
+	print("[Scene Builder Dock] Loading all items from all collections")
 	var i = 0
 	for collection_name in collection_names:
 		i += 1
 		
-		if collection_name != "" and DirAccess.dir_exists_absolute(path_root + "/%s" % collection_name):
-			print("Populating grid with icons")
+		if collection_name != "" and DirAccess.dir_exists_absolute(config.root_dir + "/%s" % collection_name):
+			print("[Scene Builder Dock] Populating grid with icons")
 			
 			var grid_container : GridContainer = tab_container.get_node("%s/Grid" % i)
 			
@@ -459,11 +461,15 @@ func reload_all_items() -> void:
 			item_highlighters_by_collection[collection_name] = {}
 			
 			for key : String in ordered_keys_by_collection[collection_name]:
+				print("[Scene Builder Dock] Creating a new button for key: ", key)
 				var item : SceneBuilderItem = items_by_collection[collection_name][key]
 				var texture_button : TextureButton = TextureButton.new()
 				texture_button.toggle_mode = true
-				texture_button.texture_normal = get_icon(collection_name, item.item_name)
+				texture_button.texture_normal = item.texture
 				texture_button.tooltip_text = item.item_name
+				texture_button.ignore_texture_size = true
+				texture_button.stretch_mode = TextureButton.STRETCH_SCALE
+				texture_button.custom_minimum_size = Vector2(80, 80)
 				texture_button.pressed.connect(on_item_icon_clicked.bind(item.item_name))
 				grid_container.add_child(texture_button)
 				
@@ -478,6 +484,19 @@ func reload_all_items() -> void:
 				nine_patch.self_modulate = Color("000000")  # black  # 6a9d2e green
 				item_highlighters_by_collection[collection_name][key] = nine_patch
 				texture_button.add_child(nine_patch)
+	
+	select_collection(0)
+	
+	# Info blurb
+	var _num_populated_collections : int = 0
+	for name in collection_names:
+		if name != "":
+			_num_populated_collections += 1
+	var _total_items : int = 0
+	for key : String in items_by_collection.keys():
+		_total_items += items_by_collection[key].size()
+	
+	print("[Scene Builder Dock] Ready with %s collections and %s items"% [str(_num_populated_collections), str(_total_items)])
 
 func update_world_3d() -> bool:
 	var new_scene_root = editor.get_edited_scene_root()
@@ -491,7 +510,7 @@ func update_world_3d() -> bool:
 		camera = viewport.get_camera_3d()
 		return true
 	else:
-		print("Failed to update world 3d")
+		print("[Scene Builder Dock] Failed to update world 3d")
 		scene_root = null
 		viewport = null
 		world3d = null
@@ -552,7 +571,7 @@ func clear_preview_instance() -> void:
 func create_preview_instance() -> void:
 	
 	if scene_root == null:
-		printerr("scene_root is null inside create_preview_item_instance")
+		printerr("[Scene Builder Dock] scene_root is null inside create_preview_item_instance")
 		return
 	
 	clear_preview_instance()
@@ -564,7 +583,7 @@ func create_preview_instance() -> void:
 		scene_root.add_child(scene_builder_temp)
 		scene_builder_temp.owner = scene_root
 	
-	preview_instance = get_instance_from_path(selected_item.scene_path)
+	preview_instance = get_instance_from_path(selected_item.uid)
 	scene_builder_temp.add_child(preview_instance)
 	preview_instance.owner = scene_root
 	
@@ -590,11 +609,11 @@ func end_placement_mode() -> void:
 				if selected_nine_path:
 					selected_nine_path.self_modulate = Color.BLACK
 				else:
-					print("NinePatchRect is null for selected_item_name: ", selected_item_name)
+					print("[Scene Builder Dock] NinePatchRect is null for selected_item_name: ", selected_item_name)
 			else:
-				print("Key missing from highlighter collection, key: ", selected_item_name, ", from collection: ", selected_collection_name)
+				print("[Scene Builder Dock] Key missing from highlighter collection, key: ", selected_item_name, ", from collection: ", selected_collection_name)
 		else:
-			print("Highlighter collection missing for collection: ", selected_collection_name)
+			print("[Scene Builder Dock] Highlighter collection missing for collection: ", selected_collection_name)
 
 	selected_item = null
 	selected_item_name = ""
@@ -614,28 +633,28 @@ func end_transform_mode() -> void:
 	lbl_indicator_scale.self_modulate = Color.WHITE
 
 func load_items_from_collection_folder_on_disk(_collection_name : String):
-	print("Collecting items from collection folder")
+	print("[Scene Builder Dock] Collecting items from collection folder")
 	
 	var items = {}
 	var ordered_item_keys = []
 	
-	var dir = DirAccess.open(path_root + _collection_name + "/Item")
+	var dir = DirAccess.open(config.root_dir + _collection_name)
 	if dir:
 		dir.list_dir_begin()
 		var item_filename = dir.get_next()
 		while item_filename != "":
-			
-			var item_path = path_root + _collection_name + "/Item/" + item_filename
+			var item_path = config.root_dir + _collection_name + "/" + item_filename
 			var resource = load(item_path)
 			if resource and resource is SceneBuilderItem:
 				var scene_builder_item : SceneBuilderItem = resource
 				
-				print("Loaded item: ", item_filename)
+				print("[Scene Builder Dock] Loaded item: ", item_filename)
+				print("[Scene Builder Dock] scene_builder_item.item_name: ", scene_builder_item.item_name)
 				
 				items[scene_builder_item.item_name] = scene_builder_item
 				ordered_item_keys.append(scene_builder_item.item_name)
 			else:
-				print("The resource is not a SceneBuilderItem or failed to load: ", item_filename)
+				print("[Scene Builder Dock] The resource is not a SceneBuilderItem or failed to load, item_path: ", item_path)
 				
 			item_filename = dir.get_next()
 	
@@ -655,7 +674,7 @@ func get_all_node_names(_node) -> Array[String]:
 func instantiate_selected_item_at_position() -> void:
 	
 	if preview_instance == null or selected_item == null:
-		printerr("Preview instance or selected item is null")
+		printerr("[Scene Builder Dock] Preview instance or selected item is null")
 		return
 	
 	populate_preview_instance_rid_array(preview_instance)
@@ -663,7 +682,7 @@ func instantiate_selected_item_at_position() -> void:
 	
 	if result and result.collider:
 		
-		var instance = get_instance_from_path(selected_item.scene_path)
+		var instance = get_instance_from_path(selected_item.uid)
 		scene_root.add_child(instance)
 		instance.owner = scene_root
 		initialize_node_name(instance, selected_item.item_name)
@@ -674,7 +693,7 @@ func instantiate_selected_item_at_position() -> void:
 		
 		instance.global_transform.origin = new_position
 		instance.position += Vector3(pos_offset_x, pos_offset_y, pos_offset_z)
-		print("pos_offset_y: ", pos_offset_y)
+		print("[Scene Builder Dock] pos_offset_y: ", pos_offset_y)
 		instance.basis = preview_instance.basis
 
 		undo_redo.create_action("Instantiate selected item")
@@ -683,7 +702,7 @@ func instantiate_selected_item_at_position() -> void:
 		undo_redo.commit_action()
 	
 	else:
-		print("Raycast missed, items must be instantiated on a StaticBody with a CollisionShape")
+		print("[Scene Builder Dock] Raycast missed, items must be instantiated on a StaticBody with a CollisionShape")
 
 func initialize_node_name(node : Node3D, new_name : String) -> void:
 	var all_names = toolbox.get_all_node_names(scene_root)
@@ -706,7 +725,7 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	if viewport == null:
 		update_world_3d()
 		if viewport == null:
-			print("The editor's root scene must be of type Node3D, deselecting item")
+			print("[Scene Builder Dock] The editor's root scene must be of type Node3D, deselecting item")
 			end_placement_mode()
 			return {}
 	
@@ -728,21 +747,21 @@ func populate_preview_instance_rid_array(instance: Node) -> void:
 		populate_preview_instance_rid_array(child)
 
 func refresh_collection_names() -> void:
-	print("Refreshing collection names")
+	print("[Scene Builder Dock] Refreshing collection names")
 	
-	if !DirAccess.dir_exists_absolute(path_root):
-		DirAccess.make_dir_recursive_absolute(path_root)
-		print("Creating a new data folder: ", path_root)
+	if !DirAccess.dir_exists_absolute(config.root_dir):
+		DirAccess.make_dir_recursive_absolute(config.root_dir)
+		print("[Scene Builder Dock] Creating a new data folder: ", config.root_dir)
 	
 	if !ResourceLoader.exists(path_to_collection_names):
 		var _collection_names : CollectionNames = CollectionNames.new()
-		print("path_to_collection_names: ", path_to_collection_names)
+		print("[Scene Builder Dock] path_to_collection_names: ", path_to_collection_names)
 		var save_result = ResourceSaver.save(_collection_names, path_to_collection_names)
-		print("A CollectionNames resource has been created at location: ", path_to_collection_names)
+		print("[Scene Builder Dock] A CollectionNames resource has been created at location: ", path_to_collection_names)
 		
 		if save_result != OK:
-			printerr("We were unable to create a CollectionNames resource at location: ", path_to_collection_names)
-			collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
+			printerr("[Scene Builder Dock] We were unable to create a CollectionNames resource at location: ", path_to_collection_names)
+			collection_names = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
 			return
 	
 	var _names : CollectionNames = load(path_to_collection_names)
@@ -760,20 +779,26 @@ func refresh_collection_names() -> void:
 			new_collection_names.append(_names.collection_name_10)
 			new_collection_names.append(_names.collection_name_11)
 			new_collection_names.append(_names.collection_name_12)
+			new_collection_names.append(_names.collection_name_13)
+			new_collection_names.append(_names.collection_name_14)
+			new_collection_names.append(_names.collection_name_15)
+			new_collection_names.append(_names.collection_name_16)
+			new_collection_names.append(_names.collection_name_17)
+			new_collection_names.append(_names.collection_name_18)
 			
 			# Validate
 			for _name in new_collection_names:
 				if _name != "":
-					var dir = DirAccess.open(path_root + _name)
+					var dir = DirAccess.open(config.root_dir + _name)
 					if dir:
 						dir.list_dir_begin()
 						var item = dir.get_next()
 						if item != "":
-							print("Collection directory is present and contains items: " + _name)
+							print("[Scene Builder Dock] Collection directory is present and contains items: " + _name)
 						else:
-							printerr("Directory exists, but contains no items: " + _name)
+							printerr("[Scene Builder Dock] Directory exists, but contains no items: " + _name)
 					else:
-						printerr("Collection directory does not exist: " + _name)
+						printerr("[Scene Builder Dock] Collection directory does not exist: " + _name)
 			collection_names = new_collection_names
 			
 			for i in range(num_collections):
@@ -782,8 +807,8 @@ func refresh_collection_names() -> void:
 					collection_name = " "
 				btns_collection_tabs[i].text = collection_name
 	else:
-		printerr("An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_collection_names))
-		collection_names = ["", "", "", "", "", "", "", "", "", "", "", ""]
+		printerr("[Scene Builder Dock] An unknown file exists at location %s. A resource of type CollectionNames should exist here.".format(path_to_collection_names))
+		collection_names = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
 	
 	#endregion
 
@@ -795,15 +820,15 @@ func place_fence():
 	var selected_nodes : Array[Node] = selection.get_selected_nodes()
 	
 	if scene_root == null:
-		print("Scene root is null")
+		print("[Scene Builder Dock] Scene root is null")
 		return
 	
 	if selected_nodes.size() != 1:
-		printerr("Exactly one node sould be selected in the scene") 
+		printerr("[Scene Builder Dock] Exactly one node sould be selected in the scene") 
 		return
 	
 	if not selected_nodes[0] is Path3D:
-		printerr("The selected node should be of type Node3D")
+		printerr("[Scene Builder Dock] The selected node should be of type Node3D")
 		return
 	
 	undo_redo.create_action("Make a fence")
@@ -835,13 +860,13 @@ func place_fence():
 		
 		undo_redo.add_undo_method(scene_root, "remove_child", instance)
 	
-	print("Commiting action")
+	print("[Scene Builder Dock] Commiting action")
 	undo_redo.commit_action()
 
 func reroll_preview_instance_transform() -> void:
 	
 	if preview_instance == null:
-		printerr("preview_instance is null inside reroll_preview_instance_transform()")
+		printerr("[Scene Builder Dock] preview_instance is null inside reroll_preview_instance_transform()")
 		return
 		
 	random_offset_y = rng.randf_range(selected_item.random_offset_y_min, selected_item.random_offset_y_max)
@@ -880,14 +905,27 @@ func select_item(collection_name : String, item_name : String) -> void:
 	create_preview_instance()
 
 func select_first_item() -> void:
+	if (!ordered_keys_by_collection.has(selected_collection_name)):
+		printerr("[Scene Builder Dock] Trying to select the first item, but the selected collection name does not exist: ", selected_collection_name)
+		return
+	var keys : Array = ordered_keys_by_collection[selected_collection_name]
+	if keys.is_empty():
+		printerr("[Scene Builder Dock] Trying to select the first item, but there are no items to select in this collection: ", selected_collection_name)
+		return
 	var _first_item : String = ordered_keys_by_collection[selected_collection_name][0]
 	print(_first_item)
 	select_item(selected_collection_name, _first_item)
 
 func select_next_collection() -> void:
 	end_placement_mode()
-	select_collection((selected_collection_index + num_collections + 1) % num_collections)
-	select_first_item()
+	for idx in range(selected_collection_index + 1, selected_collection_index + num_collections + 1):
+		var next_idx = idx % num_collections
+		if is_collection_populated(next_idx):
+			select_collection(next_idx)
+			select_first_item()
+			break
+		else:
+			print("[Scene Builder Dock] Collection is not populated: ", collection_names[next_idx])
 
 func select_next_item() -> void:
 	var ordered_keys : Array = ordered_keys_by_collection[selected_collection_name]
@@ -897,7 +935,7 @@ func select_next_item() -> void:
 		var next_name = ordered_keys[next_idx]
 		select_item(selected_collection_name, next_name)
 	else:
-		printerr("Next item not found? Current index: ", idx)
+		printerr("[Scene Builder Dock] Next item not found? Current index: ", idx)
 
 func select_previous_item() -> void:
 	var ordered_keys : Array = ordered_keys_by_collection[selected_collection_name]
@@ -905,12 +943,18 @@ func select_previous_item() -> void:
 	if idx >= 0:
 		select_item(selected_collection_name, ordered_keys[(idx - 1) % ordered_keys.size()])
 	else:
-		printerr("Previous item not found")
+		printerr("[Scene Builder Dock] Previous item not found")
 
 func select_previous_collection() -> void:
 	end_placement_mode()
-	select_collection((selected_collection_index + num_collections - 1) % num_collections)
-	select_first_item()
+	for idx in range(selected_collection_index - 1, selected_collection_index - num_collections - 1, -1):
+		var prev_idx = (idx + num_collections) % num_collections
+		if is_collection_populated(prev_idx):
+			select_collection(prev_idx)
+			select_first_item()
+			break
+		else:
+			print("[Scene Builder Dock] Collection is not populated: ", collection_names[prev_idx])
 
 func start_position_offset_mode_x() -> void:
 	original_mouse_position = viewport.get_mouse_position()
@@ -958,11 +1002,20 @@ func get_icon(collection_name : String, item_name : String) -> Texture:
 	var icon_path : String = "res://Data/SceneBuilderCollections/%s/Thumbnail/%s.png" % [collection_name, item_name]
 	var tex : Texture = load(icon_path) as Texture
 	if tex == null:
-		printerr("Icon not found: ", icon_path)
+		printerr("[Scene Builder Dock] Icon not found: ", icon_path)
 		return null
 	return tex
 
-func get_instance_from_path(path : String) -> Node3D:
+func get_instance_from_path(_uid : String) -> Node3D:
+	var uid : int = ResourceUID.text_to_id(_uid)
+	
+	var path : String = ""
+	if ResourceUID.has_id(uid):
+		path = ResourceUID.get_id_path(uid)
+	else:
+		printerr("[Scene Builder Dock] Does not have uid: ", ResourceUID.id_to_text(uid))
+		return
+	
 	if ResourceLoader.exists(path):
 		var loaded = load(path)
 		if loaded is PackedScene:
@@ -970,9 +1023,14 @@ func get_instance_from_path(path : String) -> Node3D:
 			if instance is Node3D:
 				return instance
 			else:
-				printerr("The instantiated scene's root is not a Node3D: ", loaded.name)
+				printerr("[Scene Builder Dock] The instantiated scene's root is not a Node3D: ", loaded.name)
 		else:
-			printerr("Loaded resource is not a PackedScene: ", path)
+			printerr("[Scene Builder Dock] Loaded resource is not a PackedScene: ", path)
 	else:
-		printerr("Path does not exist: ", path)
+		printerr("[Scene Builder Dock] Path does not exist: ", path)
 	return null
+
+# -- 
+
+func update_config(_config : SceneBuilderConfig) -> void:
+	config = _config
