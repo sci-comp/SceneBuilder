@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
+[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
 
 [ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_ui_theme.tres" id="2_vl512"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn2d1"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.211765, 0.239216, 0.290196, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Scene Builder" type="VBoxContainer"]
 custom_minimum_size = Vector2(352, 0)
@@ -16,122 +29,233 @@ theme = ExtResource("2_vl512")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Tab" type="GridContainer" parent="Collection"]
+[node name="Panel" type="PanelContainer" parent="Collection"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rn2d1")
+
+[node name="Grid" type="GridContainer" parent="Collection/Panel"]
 layout_mode = 2
 columns = 6
 
-[node name="1" type="Button" parent="Collection/Tab"]
+[node name="1" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 button_pressed = true
 text = "1"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="2" type="Button" parent="Collection/Tab"]
+[node name="2" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "2"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="3" type="Button" parent="Collection/Tab"]
+[node name="3" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "3"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="4" type="Button" parent="Collection/Tab"]
+[node name="4" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "4"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="5" type="Button" parent="Collection/Tab"]
+[node name="5" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "5"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="6" type="Button" parent="Collection/Tab"]
+[node name="6" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "6"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="7" type="Button" parent="Collection/Tab"]
+[node name="7" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "7"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="8" type="Button" parent="Collection/Tab"]
+[node name="8" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "8"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="9" type="Button" parent="Collection/Tab"]
+[node name="9" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "9"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="10" type="Button" parent="Collection/Tab"]
+[node name="10" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "10"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="11" type="Button" parent="Collection/Tab"]
+[node name="11" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "11"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="12" type="Button" parent="Collection/Tab"]
+[node name="12" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "12"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="13" type="Button" parent="Collection/Tab"]
+[node name="13" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
-text = "10"
+text = "13"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="14" type="Button" parent="Collection/Tab"]
+[node name="14" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
-text = "11"
+text = "14"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="15" type="Button" parent="Collection/Tab"]
+[node name="15" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
-text = "12"
+text = "15"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="16" type="Button" parent="Collection/Tab"]
+[node name="16" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
-text = "10"
+text = "16"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="17" type="Button" parent="Collection/Tab"]
+[node name="17" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
-text = "11"
+text = "17"
+text_overrun_behavior = 1
+clip_text = true
 
-[node name="18" type="Button" parent="Collection/Tab"]
+[node name="18" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
 toggle_mode = true
-text = "12"
+text = "18"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="19" type="Button" parent="Collection/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
+toggle_mode = true
+text = "19"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="20" type="Button" parent="Collection/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
+toggle_mode = true
+text = "20"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="21" type="Button" parent="Collection/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
+toggle_mode = true
+text = "21"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="22" type="Button" parent="Collection/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
+toggle_mode = true
+text = "22"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="23" type="Button" parent="Collection/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
+toggle_mode = true
+text = "23"
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="24" type="Button" parent="Collection/Panel/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vl512")
+toggle_mode = true
+text = "24"
+text_overrun_behavior = 1
+clip_text = true
 
 [node name="HSeparator3" type="HSeparator" parent="Collection"]
 layout_mode = 2
-size_flags_vertical = 8
 
 [node name="TabContainer" type="TabContainer" parent="Collection"]
 layout_mode = 2
@@ -370,16 +494,93 @@ layout_mode = 2
 size_flags_horizontal = 3
 columns = 4
 
+[node name="19" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 18
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/19"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="20" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 19
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/20"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="21" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 20
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/21"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="22" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 21
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/22"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="23" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 22
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/23"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="24" type="ScrollContainer" parent="Collection/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+metadata/_tab_index = 23
+
+[node name="Grid" type="GridContainer" parent="Collection/TabContainer/24"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
 [node name="Settings" type="HBoxContainer" parent="."]
 layout_mode = 2
 
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -446,6 +647,7 @@ size_flags_horizontal = 8
 text = "Reload all items"
 
 [node name="Path3D" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
