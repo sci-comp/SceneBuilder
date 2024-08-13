@@ -25,6 +25,7 @@ class_name SceneBuilderConfig
 @export var push_parent_offset_to_child : Key = KEY_O
 
 # Resources
+@export var create_audio_stream_player_3d : Key = KEY_COMMA
 @export var create_scene_builder_items : Key = KEY_SLASH
 
 # Debug

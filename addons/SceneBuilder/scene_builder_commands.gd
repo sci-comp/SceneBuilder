@@ -10,6 +10,7 @@ enum SceneCommands
 {
 	alphabetize_nodes = 1,
 	change_places = 8,
+	create_audio_stream_player_3d = 9,
 	create_scene_builder_items = 10,
 	fix_negative_scaling = 20,
 	instantiate_in_a_row_1 = 32,
@@ -34,6 +35,8 @@ func _unhandled_input(event: InputEvent):
 						alphabetize_nodes()
 					config.change_places:
 						change_places()
+					config.create_audio_stream_player_3d:
+						create_audio_stream_player_3d()
 					config.create_scene_builder_items:
 						create_scene_builder_items()
 					config.instantiate_in_a_row_1:
@@ -67,6 +70,7 @@ func _enter_tree():
 	add_tool_submenu_item("Scene Builder", submenu_scene)
 	submenu_scene.add_item("Alphabetize nodes", SceneCommands.alphabetize_nodes)
 	submenu_scene.add_item("Change places", SceneCommands.change_places)
+	submenu_scene.add_item("Create audio stream player 3d", SceneCommands.create_audio_stream_player_3d)
 	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
 	submenu_scene.add_item("Fix negative scaling", SceneCommands.fix_negative_scaling)
 	submenu_scene.add_item("Instantiate selected paths in a row (1m)", SceneCommands.instantiate_in_a_row_1)
@@ -127,6 +131,10 @@ func create_scene_builder_items():
 	add_child(reusable_instance)
 	reusable_instance.done.connect(_on_reusable_instance_done)
 	reusable_instance.execute(config.root_dir)
+
+func create_audio_stream_player_3d():
+	var _instance = preload("./Commands/create_audio_stream_player_3d.gd").new()
+	_instance.execute()
 
 func fix_negative_scaling():
 	var _instance = preload("./Commands/fix_negative_scaling.gd").new()
