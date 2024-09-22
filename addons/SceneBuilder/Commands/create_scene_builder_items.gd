@@ -76,7 +76,7 @@ func _on_ok_pressed():
 	
 	if FileAccess.file_exists(path_to_icon_studio_1):
 		path_to_icon_studio = path_to_icon_studio_1
-	if FileAccess.file_exists(path_to_icon_studio_2):
+	elif FileAccess.file_exists(path_to_icon_studio_2):
 		path_to_icon_studio = path_to_icon_studio_2
 	else:
 		print("[Create Scene Builder Items] Path to icon studio not found")
@@ -105,7 +105,7 @@ func _create_resource(path: String):
 	
 	if FileAccess.file_exists(scene_builder_item_path1):
 		scene_builder_item_path = scene_builder_item_path1
-	if FileAccess.file_exists(scene_builder_item_path2):
+	elif FileAccess.file_exists(scene_builder_item_path2):
 		scene_builder_item_path = scene_builder_item_path2
 	else:
 		print("[Create Scene Builder Items] Path to scene builder item not found")

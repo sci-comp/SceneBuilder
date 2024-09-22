@@ -14,7 +14,7 @@ func _enter_tree():
 		
 		scene_builder_dock = load("res://addons/SceneBuilder/scene_builder_dock.gd").new()
 		scene_builder_commands = load("res://addons/SceneBuilder/scene_builder_commands.gd").new()
-		scene_builder_config = load("res://addons/SceneBuilder/scene_builder_config.tres")
+		scene_builder_config = load("res://addons/SceneBuilder/scene_builder_config.tres") as SceneBuilderConfig
 	
 	# Recursive directories will exist when installing from a submodule
 	elif (ResourceLoader.exists("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.gd") and 

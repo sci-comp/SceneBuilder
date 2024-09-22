@@ -2,7 +2,7 @@
 extends EditorPlugin
 class_name SceneBuilderDock
 
-var config : SceneBuilderConfig
+@onready var config : SceneBuilderConfig = SceneBuilderConfig.new()
 
 # Paths
 var data_dir : String = ""
