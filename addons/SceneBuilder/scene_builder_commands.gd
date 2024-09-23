@@ -93,6 +93,8 @@ func _on_scene_submenu_item_selected(id: int):
 			alphabetize_nodes()
 		SceneCommands.change_places:
 			change_places()
+		SceneCommands.create_audio_stream_player_3d:
+			create_audio_stream_player_3d()
 		SceneCommands.create_scene_builder_items:
 			create_scene_builder_items()
 		SceneCommands.fix_negative_scaling:
