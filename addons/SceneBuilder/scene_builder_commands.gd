@@ -4,9 +4,9 @@ class_name SceneBuilderCommands
 
 var submenu_scene: PopupMenu
 var reusable_instance
-var config : SceneBuilderConfig
+var config: SceneBuilderConfig
 
-enum SceneCommands 
+enum SceneCommands
 {
 	alphabetize_nodes = 1,
 	change_places = 8,
@@ -28,7 +28,7 @@ enum SceneCommands
 func _unhandled_input(event: InputEvent):
 	if event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
-			
+
 			if event.alt_pressed:
 				match event.keycode:
 					config.alphabetize_nodes:
@@ -57,7 +57,7 @@ func _unhandled_input(event: InputEvent):
 						swap_nodes()
 					config.temporary_debug:
 						temporary_debug()
-					
+
 			elif event.ctrl_pressed:
 				if event.keycode == KEY_RIGHT:
 					select_children()
@@ -119,7 +119,7 @@ func _on_scene_submenu_item_selected(id: int):
 			select_parents()
 		SceneCommands.swap_nodes:
 			swap_nodes()
-	
+
 func alphabetize_nodes():
 	var _instance = preload("./Commands/alphabetize_nodes.gd").new()
 	_instance.execute()
@@ -165,7 +165,7 @@ func reset_transform():
 func select_children():
 	var _instance = preload("./Commands/select_children.gd").new()
 	_instance.execute()
-	
+
 func select_parents():
 	var _instance = preload("./Commands/select_parents.gd").new()
 	_instance.execute()

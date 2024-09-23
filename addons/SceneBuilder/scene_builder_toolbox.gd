@@ -15,7 +15,7 @@ func increment_name_until_unique(new_name, all_names) -> String:
 		var backup_name = new_name
 		var suffix_counter = 1
 		var increment_until = true
-		while(increment_until):
+		while (increment_until):
 			var _backup_name = backup_name + "-n" + str(suffix_counter)
 			if _backup_name in all_names:
 				suffix_counter += 1
@@ -28,4 +28,3 @@ func increment_name_until_unique(new_name, all_names) -> String:
 		return backup_name
 	else:
 		return new_name
-
