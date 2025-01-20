@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
-
-[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_ui_theme.tres" id="2_vl512"]
+[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn2d1"]
 bg_color = Color(0, 0, 0, 1)
@@ -23,7 +21,6 @@ anchor_bottom = 1.0
 offset_right = -800.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_vl512")
 
 [node name="Collection" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -40,7 +37,6 @@ columns = 6
 [node name="1" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 button_pressed = true
 text = "1"
@@ -50,7 +46,6 @@ clip_text = true
 [node name="2" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "2"
 text_overrun_behavior = 1
@@ -59,7 +54,6 @@ clip_text = true
 [node name="3" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "3"
 text_overrun_behavior = 1
@@ -68,7 +62,6 @@ clip_text = true
 [node name="4" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "4"
 text_overrun_behavior = 1
@@ -77,7 +70,6 @@ clip_text = true
 [node name="5" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "5"
 text_overrun_behavior = 1
@@ -86,7 +78,6 @@ clip_text = true
 [node name="6" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "6"
 text_overrun_behavior = 1
@@ -95,7 +86,6 @@ clip_text = true
 [node name="7" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "7"
 text_overrun_behavior = 1
@@ -104,7 +94,6 @@ clip_text = true
 [node name="8" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "8"
 text_overrun_behavior = 1
@@ -113,7 +102,6 @@ clip_text = true
 [node name="9" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "9"
 text_overrun_behavior = 1
@@ -122,7 +110,6 @@ clip_text = true
 [node name="10" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "10"
 text_overrun_behavior = 1
@@ -131,7 +118,6 @@ clip_text = true
 [node name="11" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "11"
 text_overrun_behavior = 1
@@ -140,7 +126,6 @@ clip_text = true
 [node name="12" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "12"
 text_overrun_behavior = 1
@@ -149,7 +134,6 @@ clip_text = true
 [node name="13" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "13"
 text_overrun_behavior = 1
@@ -158,7 +142,6 @@ clip_text = true
 [node name="14" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "14"
 text_overrun_behavior = 1
@@ -167,7 +150,6 @@ clip_text = true
 [node name="15" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "15"
 text_overrun_behavior = 1
@@ -176,7 +158,6 @@ clip_text = true
 [node name="16" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "16"
 text_overrun_behavior = 1
@@ -185,7 +166,6 @@ clip_text = true
 [node name="17" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "17"
 text_overrun_behavior = 1
@@ -194,7 +174,6 @@ clip_text = true
 [node name="18" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "18"
 text_overrun_behavior = 1
@@ -203,7 +182,6 @@ clip_text = true
 [node name="19" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "19"
 text_overrun_behavior = 1
@@ -212,7 +190,6 @@ clip_text = true
 [node name="20" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "20"
 text_overrun_behavior = 1
@@ -221,7 +198,6 @@ clip_text = true
 [node name="21" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "21"
 text_overrun_behavior = 1
@@ -230,7 +206,6 @@ clip_text = true
 [node name="22" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "22"
 text_overrun_behavior = 1
@@ -239,7 +214,6 @@ clip_text = true
 [node name="23" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "23"
 text_overrun_behavior = 1
@@ -248,7 +222,6 @@ clip_text = true
 [node name="24" type="Button" parent="Collection/Panel/Grid"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_vl512")
 toggle_mode = true
 text = "24"
 text_overrun_behavior = 1

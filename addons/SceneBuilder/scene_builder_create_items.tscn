@@ -1,6 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://x8g21udghd81"]
-
-[ext_resource type="Theme" uid="uid://vtossrqqyvig" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_ui_theme.tres" id="1_dlrx5"]
+[gd_scene format=3 uid="uid://x8g21udghd81"]
 
 [node name="SceneBuilderCreateItems" type="VBoxContainer"]
 anchors_preset = 15
@@ -10,7 +8,6 @@ offset_right = -768.0
 offset_bottom = -439.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_dlrx5")
 
 [node name="Collection" type="HBoxContainer" parent="."]
 layout_mode = 2
