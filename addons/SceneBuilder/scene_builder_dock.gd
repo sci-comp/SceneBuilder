@@ -634,7 +634,7 @@ func load_items_from_collection_folder_on_disk(_collection_name: String):
 		var item_filename = dir.get_next()
 		while item_filename != "":
 			var item_path = config.root_dir + _collection_name + "/" + item_filename
-			var resource = load(item_path)
+			var resource = ResourceLoader.load(item_path, "Resource", 0)
 			if resource and resource is SceneBuilderItem:
 				var scene_builder_item: SceneBuilderItem = resource
 
@@ -644,8 +644,10 @@ func load_items_from_collection_folder_on_disk(_collection_name: String):
 				ordered_item_keys.append(scene_builder_item.item_name)
 			else:
 				print("[SceneBuilderDock] The resource is not a SceneBuilderItem or failed to load, item_path: ", item_path)
-
+			
 			item_filename = dir.get_next()
+		
+		dir.list_dir_end()
 
 	items_by_collection[_collection_name] = items
 	ordered_keys_by_collection[_collection_name] = ordered_item_keys
@@ -825,6 +827,7 @@ func refresh_collection_names() -> void:
 							print("[SceneBuilderDock] Collection directory is present and contains items: " + _name)
 						else:
 							printerr("[SceneBuilderDock] Directory exists, but contains no items: " + _name)
+						dir.list_dir_end()
 					else:
 						printerr("[SceneBuilderDock] Collection directory does not exist: " + _name)
 			collection_names = new_collection_names
