@@ -101,14 +101,17 @@ func _enter_tree() -> void:
 	base_control = EditorInterface.get_base_control()
 
 	# Found using: https://github.com/Zylann/godot_editor_debugger_plugin
-	var main_screen: VBoxContainer = base_control.get_child(0).get_child(1).get_child(1).get_child(1).get_child(0).get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
-	if main_screen:
-		btn_use_local_space = main_screen.get_child(1).get_child(0).get_child(0).get_child(0).get_child(12)
-		if !btn_use_local_space:
-			printerr("[SceneBuilderDock] Unable to find use local space button")
-	else:
-		printerr("[SceneBuilderDock] Unable to find main screen")
-
+	#var main_screen: VBoxContainer = base_control.get_child(0).get_child(1).get_child(1).get_child(1).get_child(0).get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
+	#if main_screen:
+	#	btn_use_local_space = main_screen.get_child(1).get_child(0).get_child(0).get_child(0).get_child(12)
+	#	if !btn_use_local_space:
+	#		printerr("[SceneBuilderDock] Unable to find use local space button")
+	#else:
+	#	printerr("[SceneBuilderDock] Unable to find main screen")
+	
+	print("[SceneBuilderDock] btn_use_local_space is temporarily null")
+	btn_use_local_space = Button.new()
+	
 	update_world_3d()
 
 	#region Initialize controls for the SceneBuilderDock

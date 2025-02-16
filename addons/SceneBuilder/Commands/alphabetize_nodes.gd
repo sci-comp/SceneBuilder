@@ -33,8 +33,10 @@ func execute():
 		# Sort
 		var sorted_node_names = names_to_nodes.keys()
 		var sorted_node3d_names = names_to_node3ds.keys()
-		sorted_node_names.sort()
-		sorted_node3d_names.sort()
+		
+		sorted_node_names.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+		sorted_node3d_names.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+
 		var sorted_names = sorted_node_names + sorted_node3d_names
 
 		# Add methods
@@ -44,4 +46,4 @@ func execute():
 			undo_redo.add_do_method(parent_node, "move_child", child_node, i)
 			undo_redo.add_undo_method(parent_node, "move_child", child_node, parent_node.get_children().find(child_node))
 
-		undo_redo.commit_action()
+	undo_redo.commit_action()

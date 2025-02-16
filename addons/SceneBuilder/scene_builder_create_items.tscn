@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://x8g21udghd81"]
+[gd_scene load_steps=0 format=3 uid="uid://x8g21udghd81"]
 
 [node name="SceneBuilderCreateItems" type="VBoxContainer"]
 anchors_preset = 15
