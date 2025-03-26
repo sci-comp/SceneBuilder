@@ -800,7 +800,7 @@ func refresh_collection_names() -> void:
 			new_collection_names.append(_names.name_18)
 			new_collection_font_colors.append(_names.font_color_13)
 			new_collection_font_colors.append(_names.font_color_14)
-			new_collection_font_colors.append(_names.font_color_16)
+			new_collection_font_colors.append(_names.font_color_15)
 			new_collection_font_colors.append(_names.font_color_16)
 			new_collection_font_colors.append(_names.font_color_17)
 			new_collection_font_colors.append(_names.font_color_18)
