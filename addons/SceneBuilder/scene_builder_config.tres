@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SceneBuilderConfig" load_steps=2 format=3 uid="uid://d4jr8ot7ggqbf"]
 
-[ext_resource type="Script" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_config.gd" id="1_64inv"]
+[ext_resource type="Script" uid="uid://dww7642buy6vx" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_config.gd" id="1_64inv"]
 
 [resource]
 script = ExtResource("1_64inv")
@@ -11,6 +11,7 @@ instantiate_in_a_row_5 = 39
 alphabetize_nodes = 48
 reset_node_name = 78
 change_places = 67
+find_mismatched_types = 57
 swap_nodes = 83
 reset_transform = 84
 reset_transform_rotation = 89
