@@ -12,6 +12,7 @@ enum SceneCommands
 	change_places = 8,
 	create_audio_stream_player_3d = 9,
 	create_scene_builder_items = 10,
+	find_mismatched_types = 15,
 	fix_negative_scaling = 20,
 	instantiate_in_a_row_1 = 32,
 	instantiate_in_a_row_2 = 33,
@@ -39,6 +40,8 @@ func _unhandled_input(event: InputEvent):
 						create_audio_stream_player_3d()
 					config.create_scene_builder_items:
 						create_scene_builder_items()
+					config.find_mismatched_types:
+						find_mismatched_types()
 					config.instantiate_in_a_row_1:
 						instantiate_in_a_row(1)
 					config.instantiate_in_a_row_2:
@@ -72,6 +75,7 @@ func _enter_tree():
 	submenu_scene.add_item("Change places", SceneCommands.change_places)
 	submenu_scene.add_item("Create audio stream player 3d", SceneCommands.create_audio_stream_player_3d)
 	submenu_scene.add_item("Create scene builder items", SceneCommands.create_scene_builder_items)
+	submenu_scene.add_item("Find mismatched types", SceneCommands.find_mismatched_types)
 	submenu_scene.add_item("Fix negative scaling", SceneCommands.fix_negative_scaling)
 	submenu_scene.add_item("Instantiate selected paths in a row (1m)", SceneCommands.instantiate_in_a_row_1)
 	submenu_scene.add_item("Instantiate selected paths in a row (5m)", SceneCommands.instantiate_in_a_row_2)
@@ -97,6 +101,8 @@ func _on_scene_submenu_item_selected(id: int):
 			create_audio_stream_player_3d()
 		SceneCommands.create_scene_builder_items:
 			create_scene_builder_items()
+		SceneCommands.find_mismatched_types:
+			find_mismatched_types()
 		SceneCommands.fix_negative_scaling:
 			fix_negative_scaling()
 		SceneCommands.instantiate_in_a_row_1:
@@ -136,6 +142,10 @@ func create_scene_builder_items():
 
 func create_audio_stream_player_3d():
 	var _instance = preload("./Commands/create_audio_stream_player_3d.gd").new()
+	_instance.execute()
+
+func find_mismatched_types():
+	var _instance = preload("./Commands/find_mismatched_types.gd").new()
 	_instance.execute()
 
 func fix_negative_scaling():

@@ -16,6 +16,7 @@ class_name SceneBuilderConfig
 
 # Node
 @export var change_places: Key = KEY_C
+@export var find_mismatched_types: Key = KEY_9
 @export var swap_nodes: Key = KEY_S
 
 # Transform
