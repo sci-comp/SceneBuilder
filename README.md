@@ -4,6 +4,8 @@
 
 SceneBuilder is a 3D level design tool and asset browser, together with a set of common productivity commands.
 
+For Godot version 4.4.1 or later
+
 > [!IMPORTANT]
 **Bugs** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us in Discord, or make a post in Github's Issue's section.
 

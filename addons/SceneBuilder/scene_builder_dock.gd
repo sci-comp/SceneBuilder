@@ -101,16 +101,15 @@ func _enter_tree() -> void:
 	base_control = EditorInterface.get_base_control()
 
 	# Found using: https://github.com/Zylann/godot_editor_debugger_plugin
-	#var main_screen: VBoxContainer = base_control.get_child(0).get_child(1).get_child(1).get_child(1).get_child(0).get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
-	#if main_screen:
-	#	btn_use_local_space = main_screen.get_child(1).get_child(0).get_child(0).get_child(0).get_child(12)
-	#	if !btn_use_local_space:
-	#		printerr("[SceneBuilderDock] Unable to find use local space button")
-	#else:
-	#	printerr("[SceneBuilderDock] Unable to find main screen")
+	var _panel : Panel = get_editor_interface().get_base_control()
+	var _vboxcontainer15 : VBoxContainer = _panel.get_child(0)
+	var _vboxcontainer26 : VBoxContainer = _vboxcontainer15.get_child(1).get_child(1).get_child(1).get_child(0)
+	var _main_screen : VBoxContainer = _vboxcontainer26.get_child(0).get_child(0).get_child(0).get_child(1).get_child(0)
+	var _hboxcontainer11486 : HBoxContainer = _main_screen.get_child(1).get_child(0).get_child(0).get_child(0)
 	
-	print("[SceneBuilderDock] btn_use_local_space is temporarily null")
-	btn_use_local_space = Button.new()
+	btn_use_local_space = _hboxcontainer11486.get_child(13)
+	if !btn_use_local_space:
+		printerr("[SceneBuilderDock] Unable to find use local space button")
 	
 	update_world_3d()
 
@@ -729,7 +728,7 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	query.exclude = exclude_rids
 	return physics_space.intersect_ray(query)
 
-## This function  prevents us from trying to raycast against our preview item.
+## This function prevents us from trying to raycast against our preview item.
 func populate_preview_instance_rid_array(instance: Node) -> void:
 	if instance is PhysicsBody3D:
 		preview_instance_rid_array.append(instance.get_rid())
