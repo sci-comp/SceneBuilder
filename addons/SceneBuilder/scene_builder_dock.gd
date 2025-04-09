@@ -429,8 +429,7 @@ func on_item_icon_clicked(_button_name: String) -> void:
 
 	if placement_mode_enabled:
 		end_placement_mode()
-
-	if selected_item_name != _button_name:
+	elif selected_item_name != _button_name:
 		select_item(selected_collection_name, _button_name)
 
 func reload_all_items() -> void:
