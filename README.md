@@ -62,13 +62,13 @@ With an item selected in the dock,
 - Select previous/next category by pressing: Alt + Left/Right Arrow
 - Exit placement mode: Escape
 
-### Alt-modifier Map
+### Alt-modifier
 
 SceneBuilder commands all require the Alt key pressed for activation. Although Godot generally doesn't make use of the Alt key, it does conflict in a few cases. To keep things simple, I simply move Godot's shortcut somewhere else. Shortcuts are still in progress-- new commands are still being added.
 
 To update default shortcuts, edit the resource `scene_builder_config.tres`, then reload the project.
 
-![scene_builder_commands](./Documentation/Image/scene_builder_alt_mod_map.png)
+![scene_builder_shortcuts](./Documentation/Image/scene_builder_shortcuts.png)
 
 > [!CAUTION]
 Some default shortcuts for scene builder will likely conflict with Godot's default shortcuts. Scene builder's shortcuts may be updated by changing the values in the resource file: `addons/SceneBuilder/scene_builder_config.tres`, then reloading the project. Godot's shortcuts can be updated in the toolbar, `Editor > Editor Settings... > Shortcuts`.

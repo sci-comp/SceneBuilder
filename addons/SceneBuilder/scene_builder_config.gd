@@ -21,7 +21,7 @@ class_name SceneBuilderConfig
 
 # Transform
 @export var reset_transform: Key = KEY_T
-@export var reset_transform_rotation: Key = KEY_Y
+@export var reset_transform_rotation: Key = KEY_R
 @export var push_to_grid: Key = KEY_P
 @export var push_parent_offset_to_child: Key = KEY_O
 
