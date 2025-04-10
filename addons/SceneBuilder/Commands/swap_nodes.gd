@@ -12,7 +12,7 @@ extends EditorPlugin
 ## * Assumes that the selected PackedScene path, and selected nodes all
 ##	 have a Node3D as their root, skips selected nodes otherwise.
 
-var utilities = load("res://addons/EditorToolbox/editor_toolbox_utilities.gd")
+var utilities = SceneBuilderToolbox.new()
 
 func execute():
 	var undo_redo: EditorUndoRedoManager = get_undo_redo()

@@ -28,6 +28,7 @@ class_name SceneBuilderConfig
 # Resources
 @export var create_audio_stream_player_3d: Key = KEY_COMMA
 @export var create_scene_builder_items: Key = KEY_SLASH
+@export var create_standard_material_3d: Key = KEY_M
 
 # Debug
 @export var temporary_debug: Key = KEY_PERIOD
