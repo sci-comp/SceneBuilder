@@ -4,7 +4,7 @@
 
 SceneBuilder is a 3D level design tool and asset browser, together with a set of common productivity commands.
 
-For Godot version 4.4.1 or later
+For Godot version 4.4.1 or later.
 
 > [!IMPORTANT]
 **Bugs** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us in Discord, or make a post in Github's Issue's section.
@@ -48,11 +48,6 @@ Implementation details: Scene builder is logically divided into two main parts: 
 
 ## Shortcuts
 
-These are the default shortcuts. To update, edit the resource `scene_builder_config.tres`, then reload the project.
-
-> [!CAUTION]
-Some default shortcuts for scene builder will likely conflict with one of Godot's default shortcuts. Scene builder's shortcuts may be updated by changing the values in the resource file: `addons/SceneBuilder/scene_builder_config.tres`, then reloading the project. Godot's shortcuts can be updated in the toolbar, `Editor > Editor Settings... > Shortcuts`.
-
 With an item selected in the dock,
 
 - Enter x rotation mode: 1
@@ -67,7 +62,18 @@ With an item selected in the dock,
 - Select previous/next category by pressing: Alt + Left/Right Arrow
 - Exit placement mode: Escape
 
-Shortcuts for commands are not listed here, but may be viewed in the configuration resource.
+### Alt-modifier Map
+
+SceneBuilder commands all require the Alt key pressed for activation. Although Godot generally doesn't make use of the Alt key, it does conflict in a few cases. To keep things simple, I simply move Godot's shortcut somewhere else. Shortcuts are still in progress-- new commands are still being added.
+
+To update default shortcuts, edit the resource `scene_builder_config.tres`, then reload the project.
+
+![scene_builder_commands](./Documentation/Image/scene_builder_alt_mod_map.png)
+
+> [!CAUTION]
+Some default shortcuts for scene builder will likely conflict with Godot's default shortcuts. Scene builder's shortcuts may be updated by changing the values in the resource file: `addons/SceneBuilder/scene_builder_config.tres`, then reloading the project. Godot's shortcuts can be updated in the toolbar, `Editor > Editor Settings... > Shortcuts`.
+
+We can also access commands from the menu, as is shown here,
 
 ![scene_builder_commands](./Documentation/Image/scene_builder_commands.png)
 
