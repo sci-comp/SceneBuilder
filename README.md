@@ -11,6 +11,10 @@ For Godot version 4.4.1 or later.
 
 ![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)
 
+## Video Guides
+
+[![Quick Start](./Documentation/Image/tutorial_link.png)](https://youtu.be/PEcoOdYNfc4)
+
 ---
 
 ### Scope
