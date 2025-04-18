@@ -153,7 +153,7 @@ func _create_resource(path: String):
 		var studio_camera: Camera3D = icon_studio.get_node("CameraRoot/Pitch/Camera3D") as Camera3D
 
 		max_diameter = 0.0
-		_search_for_mesh_instance_3d(subject)
+		await _search_for_geometry_instance_3d(subject)
 		print("[Create Scene Builder Items] Subject diameter: ", max_diameter)
 		studio_camera.position = Vector3(0, 0, max_diameter)
 
@@ -182,10 +182,19 @@ func _create_directory_if_not_exists(path_to_directory: String) -> void:
 		print("[Create Scene Builder Items] Creating directory: " + path_to_directory)
 		DirAccess.make_dir_recursive_absolute(path_to_directory)
 
-func _search_for_mesh_instance_3d(node: Node):
-	if node is MeshInstance3D:
-		var aabb = node.get_mesh().get_aabb()
+func _search_for_geometry_instance_3d(node: Node):
+	if node is GeometryInstance3D:
+		if node is CSGShape3D:
+			await _wait_for_csg_update()
+		var aabb = node.get_aabb()
 		var diameter = aabb.size.length()
 		max_diameter = max(max_diameter, diameter)
 	for child in node.get_children():
-		_search_for_mesh_instance_3d(child)
+		await _search_for_geometry_instance_3d(child)
+
+# CSGShape3D does not update its AABB immediately
+# This behavior is intentional and documented here:
+# https://github.com/godotengine/godot/issues/38273
+func _wait_for_csg_update():
+	await get_tree().process_frame
+	await get_tree().process_frame
