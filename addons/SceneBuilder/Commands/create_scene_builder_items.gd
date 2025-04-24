@@ -149,13 +149,21 @@ func _create_resource(path: String):
 		var subject: Node3D = packed_scene.instantiate()
 		icon_studio.add_child(subject)
 		subject.owner = icon_studio
-
+		
+		var camera_root: Node3D = icon_studio.get_node("CameraRoot") as Node3D
 		var studio_camera: Camera3D = icon_studio.get_node("CameraRoot/Pitch/Camera3D") as Camera3D
 
-		max_diameter = 0.0
-		await _search_for_geometry_instance_3d(subject)
-		print("[Create Scene Builder Items] Subject diameter: ", max_diameter)
-		studio_camera.position = Vector3(0, 0, max_diameter)
+		# Center item in portrait frame
+		# Defaulting to 5 node child layers to get AABB
+		# Possible improvement : add parameter to UI
+		var node_depth = 5
+		var aabb = await _get_merged_aabb(subject, node_depth)
+		print("[Create Scene Builder Items] Subject AABB: ", aabb)
+		var center = aabb.get_center()
+		print("[Create Scene Builder Items] Subject center: ", center)
+		camera_root.position = center
+		# Using 120% of longest axis for cases where the subject gets too close to camera
+		studio_camera.position = Vector3(0, 0, aabb.get_longest_axis_size() * 1.2)
 
 		await get_tree().process_frame
 		await get_tree().process_frame
@@ -182,15 +190,21 @@ func _create_directory_if_not_exists(path_to_directory: String) -> void:
 		print("[Create Scene Builder Items] Creating directory: " + path_to_directory)
 		DirAccess.make_dir_recursive_absolute(path_to_directory)
 
-func _search_for_geometry_instance_3d(node: Node):
+# Returns the merged AABB of node and it's children up to node_depth layers
+func _get_merged_aabb(node: Node, node_depth: int) -> AABB:
+	var aabb := AABB()
+	
 	if node is GeometryInstance3D:
 		if node is CSGShape3D:
 			await _wait_for_csg_update()
-		var aabb = node.get_aabb()
-		var diameter = aabb.size.length()
-		max_diameter = max(max_diameter, diameter)
-	for child in node.get_children():
-		await _search_for_geometry_instance_3d(child)
+		aabb = node.global_transform * node.get_aabb()
+	
+	if node_depth > 0:
+		for child in node.get_children():
+			var child_aabb = await _get_merged_aabb(child, node_depth - 1)
+			aabb = aabb.merge(child_aabb)
+	
+	return aabb
 
 # CSGShape3D does not update its AABB immediately
 # This behavior is intentional and documented here:
