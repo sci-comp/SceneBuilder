@@ -12,7 +12,7 @@ var path_to_collection_names: String
 var num_collections: int = 24
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var toolbox: EditorUtilities = EditorUtilities.new()
+var toolbox: SceneBuilderToolbox = SceneBuilderToolbox.new()
 var undo_redo: EditorUndoRedoManager = get_undo_redo()
 
 # Godot controls
@@ -119,7 +119,7 @@ func _enter_tree() -> void:
 
 	#region Initialize controls for the SceneBuilderDock
 	
-	var path : String = EditorUtilities.find_resource_with_dynamic_path("scene_builder_dock.tscn")
+	var path : String = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_dock.tscn")
 	if path == "":
 		printerr("[SceneBuilderDock] scene_builder_dock.tscn was not found")
 		return

@@ -1,5 +1,5 @@
 extends Node
-class_name EditorUtilities
+class_name SceneBuilderToolbox
 
 static func replace_first(s: String, pattern: String, replacement: String) -> String:
 	var index = s.find(pattern)
