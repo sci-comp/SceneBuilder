@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
+[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
+
+[ext_resource type="Script" uid="uid://g0vw44nmg6p1" path="res://addons/SceneBuilder/scene_builder_node_path_selector.gd" id="1_aaeli"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn2d1"]
 bg_color = Color(0, 0, 0, 1)
@@ -557,39 +559,63 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="SurfaceNormal" type="HBoxContainer" parent="Settings/Tab/Options"]
+[node name="Top" type="HBoxContainer" parent="Settings/Tab/Options"]
 layout_mode = 2
 
-[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options/SurfaceNormal"]
+[node name="Left" type="VBoxContainer" parent="Settings/Tab/Options/Top"]
+layout_mode = 2
+
+[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options/Top/Left"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Surface normal"
 
-[node name="Oritentation" type="VBoxContainer" parent="Settings/Tab/Options/SurfaceNormal"]
+[node name="ParentNode" type="HBoxContainer" parent="Settings/Tab/Options/Top/Left"]
+layout_mode = 2
+
+[node name="EmptySpace" type="Control" parent="Settings/Tab/Options/Top/Left/ParentNode"]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Tab/Options/Top/Left/ParentNode"]
+layout_mode = 2
+text = "Parent node"
+
+[node name="ParentNodeSelector" type="Button" parent="Settings/Tab/Options/Top/Left/ParentNode"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "(root)"
+text_overrun_behavior = 3
+script = ExtResource("1_aaeli")
+
+[node name="Oritentation" type="VBoxContainer" parent="Settings/Tab/Options/Top"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Settings/Tab/Options/SurfaceNormal/Oritentation"]
+[node name="Label" type="Label" parent="Settings/Tab/Options/Top/Oritentation"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Orientation"
 vertical_alignment = 1
 
-[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/SurfaceNormal/Oritentation"]
+[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/Top/Oritentation"]
 layout_mode = 2
 
-[node name="X" type="CheckBox" parent="Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup"]
+[node name="X" type="CheckBox" parent="Settings/Tab/Options/Top/Oritentation/ButtonGroup"]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "X"
 
-[node name="Y" type="CheckBox" parent="Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup"]
+[node name="Y" type="CheckBox" parent="Settings/Tab/Options/Top/Oritentation/ButtonGroup"]
 layout_mode = 2
 size_flags_horizontal = 6
 button_pressed = true
 text = "Y"
 
-[node name="Z" type="CheckBox" parent="Settings/Tab/Options/SurfaceNormal/Oritentation/ButtonGroup"]
+[node name="Z" type="CheckBox" parent="Settings/Tab/Options/Top/Oritentation/ButtonGroup"]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "-Z"
