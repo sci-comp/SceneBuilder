@@ -40,11 +40,12 @@ func execute(root_dir: String):
 	add_child(popup_instance)
 	popup_instance.popup_centered(Vector2(500, 300))
 
-	var create_items_scene = EditorUtilities.find_resource_with_dynamic_path("scene_builder_create_items.tscn")
-	if create_items_scene == "":
+	var create_items_scene_path = EditorUtilities.find_resource_with_dynamic_path("scene_builder_create_items.tscn")
+	if create_items_scene_path == "":
 		printerr("[Create Scene Builder Items] Could not find scene_builder_create_items.tscn")
 		return
 
+	var create_items_scene := load(create_items_scene_path)
 	create_items = create_items_scene.instantiate()
 	popup_instance.add_child(create_items)
 
