@@ -45,6 +45,7 @@ func execute(root_dir: String):
 		printerr("[Create Scene Builder Items] Could not find scene_builder_create_items.tscn")
 		return
 
+	var create_items_scene := load(create_items_scene_path)
 	create_items = create_items_scene.instantiate()
 	popup_instance.add_child(create_items)
 
