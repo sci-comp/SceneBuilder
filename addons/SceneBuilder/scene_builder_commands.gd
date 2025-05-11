@@ -121,7 +121,7 @@ func _on_scene_submenu_item_selected(id: int):
 			reset_transform()
 		SceneCommands.select_children:
 			select_children()
-		SceneCommands.select_children:
+		SceneCommands.select_parents:
 			select_parents()
 		SceneCommands.swap_nodes:
 			swap_nodes()

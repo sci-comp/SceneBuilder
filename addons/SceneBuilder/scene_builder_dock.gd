@@ -7,16 +7,12 @@ class_name SceneBuilderDock
 # Paths
 var data_dir: String = ""
 var path_to_collection_names: String
-var dock_paths = [
-	"res://addons/SceneBuilder/scene_builder_dock.tscn",
-	"res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_dock.tscn"
-] # The recursive directory will exist when installing from a submodule
 
 # Constants
 var num_collections: int = 24
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var toolbox: SceneBuilderToolbox = SceneBuilderToolbox.new()
+var toolbox: EditorUtilities = EditorUtilities.new()
 var undo_redo: EditorUndoRedoManager = get_undo_redo()
 
 # Godot controls
@@ -72,15 +68,23 @@ var selected_item_name: String = ""
 var preview_instance: Node3D = null
 var preview_instance_rid_array: Array[RID] = []
 
-# Placement mode
+enum TransformMode {
+	NONE,
+	POSITION_X,
+	POSITION_Y, 
+	POSITION_Z,
+	ROTATION_X,
+	ROTATION_Y,
+	ROTATION_Z,
+	SCALE
+}
+
 var placement_mode_enabled: bool = false
-var position_offset_mode_x_enabled: bool = false
-var position_offset_mode_y_enabled: bool = false
-var position_offset_mode_z_enabled: bool = false
-var rotation_mode_x_enabled: bool = false
-var rotation_mode_y_enabled: bool = false
-var rotation_mode_z_enabled: bool = false
-var scale_mode_enabled: bool = false
+var current_transform_mode: TransformMode = TransformMode.NONE
+
+func is_transform_mode_enabled() -> bool:
+	return current_transform_mode != TransformMode.NONE
+
 # Preview item
 var pos_offset_x: float = 0
 var pos_offset_y: float = 0
@@ -114,15 +118,14 @@ func _enter_tree() -> void:
 	update_world_3d()
 
 	#region Initialize controls for the SceneBuilderDock
-
-	for path in dock_paths:
-		if FileAccess.file_exists(path):
-			scene_builder_dock = load(path).instantiate()
-			break
-	if not scene_builder_dock:
+	
+	var path : String = EditorUtilities.find_resource_with_dynamic_path("scene_builder_dock.tscn")
+	if path == "":
 		printerr("[SceneBuilderDock] scene_builder_dock.tscn was not found")
 		return
-
+	
+	scene_builder_dock = load(path).instantiate()
+	
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_RIGHT_UL, scene_builder_dock)
 
 	# Collection tabs
@@ -217,37 +220,36 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 				relative_motion = -event.relative.y
 			relative_motion *= 0.01 # Sensitivity factor
 
-			if position_offset_mode_x_enabled:
-				pos_offset_x += relative_motion
-				preview_instance.position.x = original_preview_position.x + pos_offset_x
-			elif position_offset_mode_y_enabled:
-				pos_offset_y += relative_motion
-				preview_instance.position.y = original_preview_position.y + pos_offset_y
-			elif position_offset_mode_z_enabled:
-				pos_offset_z += relative_motion
-				preview_instance.position.z = original_preview_position.z + pos_offset_z
-
-			elif rotation_mode_x_enabled:
-				if btn_use_local_space.button_pressed:
-					preview_instance.rotate_object_local(Vector3(1, 0, 0), relative_motion)
-				else:
-					preview_instance.rotate_x(relative_motion)
-			elif rotation_mode_y_enabled:
-				if btn_use_local_space.button_pressed:
-					preview_instance.rotate_object_local(Vector3(0, 1, 0), relative_motion)
-				else:
-					preview_instance.rotate_y(relative_motion)
-			elif rotation_mode_z_enabled:
-				if btn_use_local_space.button_pressed:
-					preview_instance.rotate_object_local(Vector3(0, 0, 1), relative_motion)
-				else:
-					preview_instance.rotate_z(relative_motion)
-
-			elif scale_mode_enabled:
-				var new_scale: Vector3 = preview_instance.scale * (1 + relative_motion)
-				if is_zero_approx(new_scale.x) or is_zero_approx(new_scale.y) or is_zero_approx(new_scale.z):
-					new_scale = original_preview_scale
-				preview_instance.scale = new_scale
+			match current_transform_mode:
+				TransformMode.POSITION_X:
+					pos_offset_x += relative_motion
+					preview_instance.position.x = original_preview_position.x + pos_offset_x
+				TransformMode.POSITION_Y:
+					pos_offset_y += relative_motion
+					preview_instance.position.y = original_preview_position.y + pos_offset_y
+				TransformMode.POSITION_Z:
+					pos_offset_z += relative_motion
+					preview_instance.position.z = original_preview_position.z + pos_offset_z
+				TransformMode.ROTATION_X:
+					if btn_use_local_space.button_pressed:
+						preview_instance.rotate_object_local(Vector3(1, 0, 0), relative_motion)
+					else:
+						preview_instance.rotate_x(relative_motion)
+				TransformMode.ROTATION_Y:
+					if btn_use_local_space.button_pressed:
+						preview_instance.rotate_object_local(Vector3(0, 1, 0), relative_motion)
+					else:
+						preview_instance.rotate_y(relative_motion)
+				TransformMode.ROTATION_Z:
+					if btn_use_local_space.button_pressed:
+						preview_instance.rotate_object_local(Vector3(0, 0, 1), relative_motion)
+					else:
+						preview_instance.rotate_z(relative_motion)
+				TransformMode.SCALE:
+					var new_scale: Vector3 = preview_instance.scale * (1 + relative_motion)
+					if is_zero_approx(new_scale.x) or is_zero_approx(new_scale.y) or is_zero_approx(new_scale.z):
+						new_scale = original_preview_scale
+					preview_instance.scale = new_scale
 
 	if event is InputEventMouseButton:
 		if event.is_pressed() and !event.is_echo():
@@ -290,76 +292,78 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 				if event.shift_pressed:
 
 					if event.keycode == KEY_1:
+						
 						if is_transform_mode_enabled():
-							if position_offset_mode_x_enabled:
+							if current_transform_mode == TransformMode.POSITION_X:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_position_offset_mode_x()
+								start_transform_mode(TransformMode.POSITION_X)
 						else:
-							start_position_offset_mode_x()
+							start_transform_mode(TransformMode.POSITION_X)
 
 					elif event.keycode == KEY_2:
 						if is_transform_mode_enabled():
-							if position_offset_mode_y_enabled:
+							if current_transform_mode == TransformMode.POSITION_Y:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_position_offset_mode_y()
+								start_transform_mode(TransformMode.POSITION_Y)
 						else:
-							start_position_offset_mode_y()
+							start_transform_mode(TransformMode.POSITION_Y)
 
 					elif event.keycode == KEY_3:
 						if is_transform_mode_enabled():
-							if position_offset_mode_z_enabled:
+							if current_transform_mode == TransformMode.POSITION_Z:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_position_offset_mode_z()
+								start_transform_mode(TransformMode.POSITION_Z)
 						else:
-							start_position_offset_mode_z()
+							start_transform_mode(TransformMode.POSITION_Z)
 
 				else:
 
 					if event.keycode == KEY_1:
+						
 						if is_transform_mode_enabled():
-							if rotation_mode_x_enabled:
+							if current_transform_mode == TransformMode.ROTATION_X:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_rotation_mode_x()
+								start_transform_mode(TransformMode.ROTATION_X)
 						else:
-							start_rotation_mode_x()
+							start_transform_mode(TransformMode.ROTATION_X)
 
 					elif event.keycode == KEY_2:
 						if is_transform_mode_enabled():
-							if rotation_mode_y_enabled:
+							if current_transform_mode == TransformMode.ROTATION_Y:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_rotation_mode_y()
+								start_transform_mode(TransformMode.ROTATION_Y)
 						else:
-							start_rotation_mode_y()
+							start_transform_mode(TransformMode.ROTATION_Y)
 
 					elif event.keycode == KEY_3:
 						if is_transform_mode_enabled():
-							if rotation_mode_z_enabled:
+							if current_transform_mode == TransformMode.ROTATION_Z:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_rotation_mode_z()
+								start_transform_mode(TransformMode.ROTATION_Z)
 						else:
-							start_rotation_mode_z()
+							start_transform_mode(TransformMode.ROTATION_Z)
 
 					elif event.keycode == KEY_4:
 						if is_transform_mode_enabled():
-							if scale_mode_enabled:
+							if current_transform_mode == TransformMode.SCALE:
 								end_transform_mode()
 							else:
 								end_transform_mode()
-								start_scale_mode()
+								start_transform_mode(TransformMode.SCALE)
 						else:
-							start_scale_mode()
+							start_transform_mode(TransformMode.SCALE)
 
 					elif event.keycode == KEY_5:
 						if is_transform_mode_enabled():
@@ -610,18 +614,9 @@ func end_placement_mode() -> void:
 	selected_item_name = ""
 
 func end_transform_mode() -> void:
-	position_offset_mode_x_enabled = false
-	position_offset_mode_y_enabled = false
-	position_offset_mode_z_enabled = false
-	original_preview_position = Vector3.ZERO
-	rotation_mode_x_enabled = false
-	rotation_mode_y_enabled = false
-	rotation_mode_z_enabled = false
-	scale_mode_enabled = false
-	lbl_indicator_x.self_modulate = Color.WHITE
-	lbl_indicator_y.self_modulate = Color.WHITE
-	lbl_indicator_z.self_modulate = Color.WHITE
-	lbl_indicator_scale.self_modulate = Color.WHITE
+	current_transform_mode = TransformMode.NONE
+	#original_preview_position = Vector3.ZERO
+	reset_indicators()
 
 func load_items_from_collection_folder_on_disk(_collection_name: String):
 	print("[SceneBuilderDock] Collecting items from collection folder")
@@ -697,18 +692,6 @@ func instantiate_selected_item_at_position() -> void:
 func initialize_node_name(node: Node3D, new_name: String) -> void:
 	var all_names = toolbox.get_all_node_names(scene_root)
 	node.name = toolbox.increment_name_until_unique(new_name, all_names)
-
-func is_transform_mode_enabled() -> bool:
-	if (position_offset_mode_x_enabled
-		or position_offset_mode_y_enabled
-		or position_offset_mode_z_enabled
-		or rotation_mode_x_enabled
-		or rotation_mode_y_enabled
-		or rotation_mode_z_enabled
-		or scale_mode_enabled):
-		return true
-	else:
-		return false
 
 func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	if viewport == null:
@@ -989,47 +972,28 @@ func select_previous_collection() -> void:
 		else:
 			print("[SceneBuilderDock] Collection is not populated: ", collection_names[prev_idx])
 
-func start_position_offset_mode_x() -> void:
+func start_transform_mode(mode: TransformMode) -> void:
 	original_mouse_position = viewport.get_mouse_position()
-	original_preview_position = preview_instance.position
-	position_offset_mode_x_enabled = true
-	lbl_indicator_x.self_modulate = Color.GREEN
-
-func start_position_offset_mode_y() -> void:
-	original_mouse_position = viewport.get_mouse_position()
-	original_preview_position = preview_instance.position
-	position_offset_mode_y_enabled = true
-	lbl_indicator_y.self_modulate = Color.GREEN
-
-func start_position_offset_mode_z() -> void:
-	original_mouse_position = viewport.get_mouse_position()
-	original_preview_position = preview_instance.position
-	position_offset_mode_z_enabled = true
-	lbl_indicator_z.self_modulate = Color.GREEN
-
-func start_rotation_mode_x() -> void:
-	original_mouse_position = viewport.get_mouse_position()
-	original_preview_basis = preview_instance.basis
-	rotation_mode_x_enabled = true
-	lbl_indicator_x.self_modulate = Color.GREEN
-
-func start_rotation_mode_y() -> void:
-	original_mouse_position = viewport.get_mouse_position()
-	original_preview_basis = preview_instance.basis
-	rotation_mode_y_enabled = true
-	lbl_indicator_y.self_modulate = Color.GREEN
-
-func start_rotation_mode_z() -> void:
-	original_mouse_position = viewport.get_mouse_position()
-	original_preview_basis = preview_instance.basis
-	rotation_mode_z_enabled = true
-	lbl_indicator_z.self_modulate = Color.GREEN
-
-func start_scale_mode() -> void:
-	original_mouse_position = viewport.get_mouse_position()
-	original_preview_scale = preview_instance.scale
-	scale_mode_enabled = true
-	lbl_indicator_scale.self_modulate = Color.GREEN
+	current_transform_mode = mode
+	
+	match mode:
+		TransformMode.POSITION_X, TransformMode.POSITION_Y, TransformMode.POSITION_Z:
+			original_preview_position = preview_instance.position
+		TransformMode.ROTATION_X, TransformMode.ROTATION_Y, TransformMode.ROTATION_Z:
+			original_preview_basis = preview_instance.basis
+		TransformMode.SCALE:
+			original_preview_scale = preview_instance.scale
+	
+	reset_indicators()
+	match mode:
+		TransformMode.POSITION_X, TransformMode.ROTATION_X:
+			lbl_indicator_x.self_modulate = Color.GREEN
+		TransformMode.POSITION_Y, TransformMode.ROTATION_Y:
+			lbl_indicator_y.self_modulate = Color.GREEN
+		TransformMode.POSITION_Z, TransformMode.ROTATION_Z:
+			lbl_indicator_z.self_modulate = Color.GREEN
+		TransformMode.SCALE:
+			lbl_indicator_scale.self_modulate = Color.GREEN
 
 func get_icon(collection_name: String, item_name: String) -> Texture:
 	var icon_path: String = "res://Data/SceneBuilderCollections/%s/Thumbnail/%s.png" % [collection_name, item_name]
@@ -1067,3 +1031,10 @@ func get_instance_from_path(_uid: String) -> Node3D:
 
 func update_config(_config: SceneBuilderConfig) -> void:
 	config = _config
+
+
+func reset_indicators() -> void:
+	lbl_indicator_x.self_modulate = Color.WHITE
+	lbl_indicator_y.self_modulate = Color.WHITE
+	lbl_indicator_z.self_modulate = Color.WHITE
+	lbl_indicator_scale.self_modulate = Color.WHITE

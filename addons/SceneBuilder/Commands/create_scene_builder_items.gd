@@ -40,12 +40,8 @@ func execute(root_dir: String):
 	add_child(popup_instance)
 	popup_instance.popup_centered(Vector2(500, 300))
 
-	var create_items_scene
-	if FileAccess.file_exists("res://addons/SceneBuilder/scene_builder_create_items.tscn"):
-		create_items_scene = load("res://addons/SceneBuilder/scene_builder_create_items.tscn")
-	elif FileAccess.file_exists("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_create_items.tscn"):
-		create_items_scene = load("res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_create_items.tscn")
-	else:
+	var create_items_scene = EditorUtilities.find_resource_with_dynamic_path("scene_builder_create_items.tscn")
+	if create_items_scene == "":
 		printerr("[Create Scene Builder Items] Could not find scene_builder_create_items.tscn")
 		return
 
@@ -70,16 +66,10 @@ func execute(root_dir: String):
 func _on_ok_pressed():
 	print("[Create Scene Builder Items] On okay pressed")
 
-	var path_to_icon_studio: String
-	var path_to_icon_studio_1: String = "res://addons/SceneBuilder/icon_studio.tscn"
-	var path_to_icon_studio_2: String = "res://addons/SceneBuilder/addons/SceneBuilder/icon_studio.tscn"
-
-	if FileAccess.file_exists(path_to_icon_studio_1):
-		path_to_icon_studio = path_to_icon_studio_1
-	elif FileAccess.file_exists(path_to_icon_studio_2):
-		path_to_icon_studio = path_to_icon_studio_2
-	else:
-		print("[Create Scene Builder Items] Path to icon studio not found")
+	var path_to_icon_studio : String = EditorUtilities.find_resource_with_dynamic_path("icon_studio.tscn")
+	
+	if path_to_icon_studio == "":
+		printerr("[Create Scene Builder Items] Path to icon studio not found")
 		return
 
 	EditorInterface.open_scene_from_path(path_to_icon_studio)
