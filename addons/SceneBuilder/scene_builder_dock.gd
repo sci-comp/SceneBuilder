@@ -447,7 +447,7 @@ func on_item_icon_clicked(_button_name: String) -> void:
 		select_item(selected_collection_name, _button_name)
 
 func set_parent_node(node_path: NodePath) -> void:
-	if not scene_root and not update_world_3d():
+	if not scene_root:
 			return
 	
 	# If no path provided, set to scene root
@@ -554,8 +554,6 @@ func update_world_3d() -> bool:
 		world3d = viewport.find_world_3d()
 		physics_space = world3d.direct_space_state
 		camera = viewport.get_camera_3d()
-		# Wait for next frame to ensure scene is fully loaded
-		#await get_tree().process_frame
 		set_parent_node(NodePath())
 		return true
 	else:
@@ -668,7 +666,6 @@ func end_placement_mode() -> void:
 
 func end_transform_mode() -> void:
 	current_transform_mode = TransformMode.NONE
-	#original_preview_position = Vector3.ZERO
 	reset_indicators()
 
 func load_items_from_collection_folder_on_disk(_collection_name: String):
