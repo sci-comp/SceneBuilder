@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://18pjyynbqqci"]
-
-[ext_resource type="Script" uid="uid://g0vw44nmg6p1" path="res://addons/SceneBuilder/scene_builder_node_path_selector.gd" id="1_aaeli"]
+[gd_scene load_steps=2 format=3 uid="uid://18pjyynbqqci"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn2d1"]
 bg_color = Color(0, 0, 0, 1)
@@ -588,34 +586,33 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "(root)"
 text_overrun_behavior = 3
-script = ExtResource("1_aaeli")
 
-[node name="Oritentation" type="VBoxContainer" parent="Settings/Tab/Options/Top"]
+[node name="Orientation" type="VBoxContainer" parent="Settings/Tab/Options/Top"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Settings/Tab/Options/Top/Oritentation"]
+[node name="Label" type="Label" parent="Settings/Tab/Options/Top/Orientation"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Orientation"
 vertical_alignment = 1
 
-[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/Top/Oritentation"]
+[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/Top/Orientation"]
 layout_mode = 2
 
-[node name="X" type="CheckBox" parent="Settings/Tab/Options/Top/Oritentation/ButtonGroup"]
+[node name="X" type="CheckBox" parent="Settings/Tab/Options/Top/Orientation/ButtonGroup"]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "X"
 
-[node name="Y" type="CheckBox" parent="Settings/Tab/Options/Top/Oritentation/ButtonGroup"]
+[node name="Y" type="CheckBox" parent="Settings/Tab/Options/Top/Orientation/ButtonGroup"]
 layout_mode = 2
 size_flags_horizontal = 6
 button_pressed = true
 text = "Y"
 
-[node name="Z" type="CheckBox" parent="Settings/Tab/Options/Top/Oritentation/ButtonGroup"]
+[node name="Z" type="CheckBox" parent="Settings/Tab/Options/Top/Orientation/ButtonGroup"]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "-Z"
