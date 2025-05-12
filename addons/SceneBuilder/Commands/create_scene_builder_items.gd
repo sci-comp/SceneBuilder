@@ -40,8 +40,8 @@ func execute(root_dir: String):
 	add_child(popup_instance)
 	popup_instance.popup_centered(Vector2(500, 300))
 
-	var create_items_scene_path = EditorUtilities.find_resource_with_dynamic_path("scene_builder_create_items.tscn")
-	if create_items_scene_path == "":
+	var create_items_scene = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_create_items.tscn")
+	if create_items_scene == "":
 		printerr("[Create Scene Builder Items] Could not find scene_builder_create_items.tscn")
 		return
 
@@ -67,7 +67,7 @@ func execute(root_dir: String):
 func _on_ok_pressed():
 	print("[Create Scene Builder Items] On okay pressed")
 
-	var path_to_icon_studio : String = EditorUtilities.find_resource_with_dynamic_path("icon_studio.tscn")
+	var path_to_icon_studio : String = SceneBuilderToolbox.find_resource_with_dynamic_path("icon_studio.tscn")
 	
 	if path_to_icon_studio == "":
 		printerr("[Create Scene Builder Items] Path to icon studio not found")

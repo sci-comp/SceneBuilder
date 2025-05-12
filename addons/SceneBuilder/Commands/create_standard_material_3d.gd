@@ -30,7 +30,7 @@ var ok_button : Button
 
 signal done
 
-var editor_utilities = SceneBuilderToolbox.new()
+var toolbox = SceneBuilderToolbox.new()
 
 func execute():
 	
@@ -150,7 +150,7 @@ func _on_ok_pressed():
 			continue
 
 		if base_name.begins_with(texture_prefix) and !base_name.ends_with(nmap_suffix) and !base_name.ends_with(emap_suffix):
-			var new_mat_name = material_prefix + editor_utilities.replace_first(base_name, texture_prefix, "")
+			var new_mat_name = material_prefix + toolbox.replace_first(base_name, texture_prefix, "")
 			var albedo_texture = load(path)
 			var mat = StandardMaterial3D.new()
 			mat.albedo_texture = albedo_texture
@@ -161,7 +161,7 @@ func _on_ok_pressed():
 	for path in texture_to_material.keys():
 		var file_name = path.get_file()
 		var base_name = file_name.get_basename()
-		var nmap_path = editor_utilities.replace_last(path, base_name, base_name + nmap_suffix)
+		var nmap_path = toolbox.replace_last(path, base_name, base_name + nmap_suffix)
 
 		if nmap_path in selected_paths:
 			var normal_texture = load(nmap_path)
@@ -173,7 +173,7 @@ func _on_ok_pressed():
 	for path in texture_to_material.keys():
 		var file_name = path.get_file()
 		var base_name = file_name.get_basename()
-		var emap_path = editor_utilities.replace_last(path, base_name, base_name + emap_suffix)
+		var emap_path = toolbox.replace_last(path, base_name, base_name + emap_suffix)
 
 		if emap_path in selected_paths:
 			var emissive_texture = load(emap_path)
@@ -225,7 +225,7 @@ func _on_ok_pressed():
 		var dir = path.get_base_dir()
 		var file_name = path.get_file()
 		var base_name = file_name.get_basename()
-		var new_mat_name = material_prefix + editor_utilities.replace_first(base_name, texture_prefix, "")
+		var new_mat_name = material_prefix + toolbox.replace_first(base_name, texture_prefix, "")
 		var save_path = dir.path_join(new_mat_name + ".tres")
 
 		ResourceSaver.save(texture_to_material[path], save_path)
