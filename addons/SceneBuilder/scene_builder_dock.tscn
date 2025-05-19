@@ -557,70 +557,71 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Top" type="HBoxContainer" parent="Settings/Tab/Options"]
+[node name="FirstRow" type="HBoxContainer" parent="Settings/Tab/Options"]
 layout_mode = 2
 
-[node name="Left" type="VBoxContainer" parent="Settings/Tab/Options/Top"]
+[node name="Left" type="VBoxContainer" parent="Settings/Tab/Options/FirstRow"]
 layout_mode = 2
 
-[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options/Top/Left"]
+[node name="UseSurfaceNormal" type="CheckButton" parent="Settings/Tab/Options/FirstRow/Left"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Surface normal"
 
-[node name="ParentNode" type="HBoxContainer" parent="Settings/Tab/Options/Top/Left"]
+[node name="Orientation" type="VBoxContainer" parent="Settings/Tab/Options/FirstRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Settings/Tab/Options/FirstRow/Orientation"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Orientation"
+vertical_alignment = 1
+
+[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/FirstRow/Orientation"]
 layout_mode = 2
 
-[node name="EmptySpace" type="Control" parent="Settings/Tab/Options/Top/Left/ParentNode"]
+[node name="X" type="CheckBox" parent="Settings/Tab/Options/FirstRow/Orientation/ButtonGroup"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "X"
+
+[node name="Y" type="CheckBox" parent="Settings/Tab/Options/FirstRow/Orientation/ButtonGroup"]
+layout_mode = 2
+size_flags_horizontal = 6
+button_pressed = true
+text = "Y"
+
+[node name="Z" type="CheckBox" parent="Settings/Tab/Options/FirstRow/Orientation/ButtonGroup"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "-Z"
+
+[node name="ParentNode" type="HBoxContainer" parent="Settings/Tab/Options"]
+layout_mode = 2
+
+[node name="EmptySpace" type="Control" parent="Settings/Tab/Options/ParentNode"]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Settings/Tab/Options/Top/Left/ParentNode"]
+[node name="Label" type="Label" parent="Settings/Tab/Options/ParentNode"]
 layout_mode = 2
 text = "Parent node"
 
-[node name="ParentNodeSelector" type="Button" parent="Settings/Tab/Options/Top/Left/ParentNode"]
+[node name="ParentNodeSelector" type="Button" parent="Settings/Tab/Options/ParentNode"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "(root)"
 text_overrun_behavior = 3
 
-[node name="Orientation" type="VBoxContainer" parent="Settings/Tab/Options/Top"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="Settings/Tab/Options/Top/Orientation"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Orientation"
-vertical_alignment = 1
-
-[node name="ButtonGroup" type="HBoxContainer" parent="Settings/Tab/Options/Top/Orientation"]
-layout_mode = 2
-
-[node name="X" type="CheckBox" parent="Settings/Tab/Options/Top/Orientation/ButtonGroup"]
-layout_mode = 2
-size_flags_horizontal = 6
-text = "X"
-
-[node name="Y" type="CheckBox" parent="Settings/Tab/Options/Top/Orientation/ButtonGroup"]
-layout_mode = 2
-size_flags_horizontal = 6
-button_pressed = true
-text = "Y"
-
-[node name="Z" type="CheckBox" parent="Settings/Tab/Options/Top/Orientation/ButtonGroup"]
-layout_mode = 2
-size_flags_horizontal = 6
-text = "-Z"
-
 [node name="HSeparator" type="HSeparator" parent="Settings/Tab/Options"]
 layout_mode = 2
 
 [node name="EmptySpace" type="Label" parent="Settings/Tab/Options"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
