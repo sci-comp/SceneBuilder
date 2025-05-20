@@ -23,6 +23,7 @@ enum SceneCommands
 	reset_transform = 61,
 	select_children = 70,
 	select_parents = 71,
+	set_visibility = 75,
 	swap_nodes = 80
 }
 
@@ -58,6 +59,8 @@ func _unhandled_input(event: InputEvent):
 						reset_transform()
 					config.swap_nodes:
 						swap_nodes()
+					config.set_visibility:
+						set_visibility()
 					config.temporary_debug:
 						temporary_debug()
 
@@ -123,6 +126,8 @@ func _on_scene_submenu_item_selected(id: int):
 			select_children()
 		SceneCommands.select_parents:
 			select_parents()
+		SceneCommands.set_visibility:
+			set_visibility()
 		SceneCommands.swap_nodes:
 			swap_nodes()
 
@@ -180,6 +185,10 @@ func select_children():
 
 func select_parents():
 	var _instance = preload("./Commands/select_parents.gd").new()
+	_instance.execute()
+
+func set_visibility():
+	var _instance = preload("./Commands/set_visibility.gd").new()
 	_instance.execute()
 
 func swap_nodes():
