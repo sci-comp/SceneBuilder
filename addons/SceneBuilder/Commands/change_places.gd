@@ -26,16 +26,12 @@ func execute():
 	var undo_redo: EditorUndoRedoManager = get_undo_redo()
 	undo_redo.create_action("Swap Positions and Rotations")
 
-	# Swap positions
-	undo_redo.add_do_method(node_a, "set_global_transform", node_b.global_transform)
-	undo_redo.add_undo_method(node_a, "set_global_transform", node_a.global_transform)
-	undo_redo.add_do_method(node_b, "set_global_transform", node_a.global_transform)
-	undo_redo.add_undo_method(node_b, "set_global_transform", node_b.global_transform)
+	var transform_a = node_a.global_transform
+	var transform_b = node_b.global_transform
 
-	# Swap rotations
-	undo_redo.add_do_method(node_a, "set_rotation", node_b.rotation)
-	undo_redo.add_undo_method(node_a, "set_rotation", node_a.rotation)
-	undo_redo.add_do_method(node_b, "set_rotation", node_a.rotation)
-	undo_redo.add_undo_method(node_b, "set_rotation", node_b.rotation)
+	undo_redo.add_do_method(node_a, "set_global_transform", transform_b)
+	undo_redo.add_do_method(node_b, "set_global_transform", transform_a)
+	undo_redo.add_undo_method(node_a, "set_global_transform", transform_a)
+	undo_redo.add_undo_method(node_b, "set_global_transform", transform_b)
 
 	undo_redo.commit_action()

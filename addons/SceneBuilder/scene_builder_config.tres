@@ -13,6 +13,7 @@ reset_node_name = 78
 change_places = 67
 find_mismatched_types = 57
 swap_nodes = 83
+set_visibility = 72
 reset_transform = 84
 reset_transform_rotation = 89
 push_to_grid = 80

@@ -10,7 +10,7 @@ func execute():
 	if selected_nodes.is_empty():
 		return
 
-	undo_redo.create_action("Reset node name")
+	undo_redo.create_action("Reset transform")
 
 	for selected: Node3D in selected_nodes:
 

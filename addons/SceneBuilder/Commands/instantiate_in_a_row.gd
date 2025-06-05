@@ -41,6 +41,9 @@ func execute(_spacing: int):
 			undo_redo.add_do_method(instance, "set_owner", current_scene)
 			undo_redo.add_do_method(instance, "set_global_position", Vector3(x_offset, 0, 0))
 			undo_redo.add_undo_method(current_scene, "remove_child", instance)
+			
+			
+			
 			instantiated_nodes.append(instance)
 			x_offset += _spacing
 
