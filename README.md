@@ -9,7 +9,7 @@ For Godot version 4.4.1 or later.
 > [!IMPORTANT]
 **Bugs** Since I use this tool for my own games, any form of collaboration, bug reports, or new feature suggestions are greatly appreciated. Please join us in Discord, or make a post in Github's Issue's section.
 
-[![Discord](https://img.shields.io/discord/1227247629910675496?style=social&logo=Discord)](https://discord.gg/jnN5T2KXx5)
+[![Discord](https://img.shields.io/discord/827217464478924810?style=social&logo=Discord)](https://discord.gg/jnN5T2KXx5)
 
 ## Video Guides
 
