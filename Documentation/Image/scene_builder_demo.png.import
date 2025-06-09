@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://8yobe13siepb"
-path.s3tc="res://.godot/imported/scene_builder_demo.png-7f54ae8328d36977c18e76d220a2813e.s3tc.ctex"
+path.s3tc="res://.godot/imported/scene_builder_demo.png-6101d137f9ea4c35f0b51e2a7ced71f0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/SceneBuilder/Documentation/Image/scene_builder_demo.png"
-dest_files=["res://.godot/imported/scene_builder_demo.png-7f54ae8328d36977c18e76d220a2813e.s3tc.ctex"]
+source_file="res://addons/scene_builder/Documentation/Image/scene_builder_demo.png"
+dest_files=["res://.godot/imported/scene_builder_demo.png-6101d137f9ea4c35f0b51e2a7ced71f0.s3tc.ctex"]
 
 [params]
 

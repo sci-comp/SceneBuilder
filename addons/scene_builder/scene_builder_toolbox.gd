@@ -39,8 +39,8 @@ static func find_resource_with_dynamic_path(file_name: String) -> String:
 	# The recursive directory will exist when installing from a submodule
 	
 	var base_paths = [
-		"res://addons/SceneBuilder/",
-		"res://addons/SceneBuilder/addons/SceneBuilder/"
+		"res://addons/scene_builder/",
+		"res://addons/scene_builder/addons/scene_builder/"
 	]
 	
 	for path in base_paths:

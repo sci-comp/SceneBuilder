@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SceneBuilderConfig" load_steps=2 format=3 uid="uid://d4jr8ot7ggqbf"]
 
-[ext_resource type="Script" uid="uid://dww7642buy6vx" path="res://addons/SceneBuilder/addons/SceneBuilder/scene_builder_config.gd" id="1_64inv"]
+[ext_resource type="Script" uid="uid://dww7642buy6vx" path="res://addons/scene_builder/addons/scene_builder/scene_builder_config.gd" id="1_64inv"]
 
 [resource]
 script = ExtResource("1_64inv")

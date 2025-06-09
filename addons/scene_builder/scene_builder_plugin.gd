@@ -2,8 +2,8 @@
 extends EditorPlugin
 
 const BASE_PATHS = [
-	"res://addons/SceneBuilder/",
-	"res://addons/SceneBuilder/addons/SceneBuilder/"
+	"res://addons/scene_builder/",
+	"res://addons/scene_builder/addons/scene_builder/"
 ]
 
 var scene_builder_dock : SceneBuilderDock
