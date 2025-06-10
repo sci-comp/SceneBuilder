@@ -33,6 +33,7 @@ Since I use this tool for my own games, any form of collaboration, bug reports, 
 		- [Use Surface Normal](#use-surface-normal)
 		- [Rotation Mode](#rotation-mode)
 		- [Scale Mode](#scale-mode)
+- [Contributors](#contributors)
 - [License](#license)
 
 ## Quick Start Video Guide
@@ -109,8 +110,6 @@ Some default shortcuts for scene builder will likely conflict with Godot's defau
 We can also access commands from the menu, as is shown here,
 
 ![scene_builder_commands](./Documentation/Image/scene_builder_commands.png)
-
----
 
 ## The Scene Builder Dock
 
@@ -190,6 +189,9 @@ Scale mode works similarly to rotation mode.
 
 To exit scale mode: left click to apply or right-click to cancel and restore the original values.
 
+## Contributors
+
+Scene Builder is made by Paul Hill, with help from contributions, who can be found [here](https://github.com/sci-comp/scene-builder/graphs/contributors).
 
 ## License
 
