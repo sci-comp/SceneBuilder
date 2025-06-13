@@ -2,6 +2,7 @@
 extends EditorPlugin
 
 func execute():
+	
 	var editor_selection : EditorSelection = EditorInterface.get_selection()
 	var selected_nodes : Array = editor_selection.get_selected_nodes()
 	var selected_paths : PackedStringArray = EditorInterface.get_selected_paths()
@@ -11,6 +12,8 @@ func execute():
 		print("Something is null or empty, returning early")
 		return
 
+	var audio_extensions = [".wav", ".ogg", ".mp3"]
+
 	if selected_nodes.size() == 1:
 		var node = selected_nodes[0]
 
@@ -18,7 +21,8 @@ func execute():
 			print("Creating " + str(selected_paths.size()) + " audio sources for: " + node.name)
 
 			for path in selected_paths:
-				if path.ends_with(".wav"):
+				var extension = "." + path.get_extension()
+				if extension in audio_extensions:
 					var audio_player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
 
 					audio_player.name = path.get_file().get_basename()
