@@ -630,18 +630,19 @@ layout_mode = 2
 
 [node name="FindWorld3D" type="Button" parent="Settings/Tab/Options/Bottom"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 2
+size_flags_vertical = 4
 text = "Find world 3d"
-
-[node name="EmptySpace2" type="Label" parent="Settings/Tab/Options/Bottom"]
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="ReloadAllItems" type="Button" parent="Settings/Tab/Options/Bottom"]
 layout_mode = 2
-size_flags_horizontal = 8
-text = "Reload all items"
+size_flags_vertical = 4
+text = "Reload items"
+
+[node name="DisableHotkeys" type="CheckButton" parent="Settings/Tab/Options/Bottom"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Disable 
+Hotkeys"
 
 [node name="Path3D" type="VBoxContainer" parent="Settings/Tab"]
 visible = false

@@ -28,6 +28,9 @@ enum SceneCommands
 }
 
 func _unhandled_input(event: InputEvent):
+	if config.disable_hotkeys:
+		return
+	
 	if event is InputEventKey:
 		if event.is_pressed() and !event.is_echo():
 

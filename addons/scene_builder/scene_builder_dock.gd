@@ -32,6 +32,7 @@ var btn_parent_node_selector: Button
 var btn_group_surface_orientation: ButtonGroup
 var btn_find_world_3d: Button
 var btn_reload_all_items: Button
+var btn_disable_hotkeys: CheckButton
 # Path3D
 var spinbox_separation_distance: SpinBox
 var spinbox_jitter_x: SpinBox
@@ -157,8 +158,10 @@ func _enter_tree() -> void:
 	#
 	btn_find_world_3d = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/FindWorld3D")
 	btn_reload_all_items = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/ReloadAllItems")
+	btn_disable_hotkeys = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/DisableHotkeys")
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
+	btn_disable_hotkeys.pressed.connect(disable_hotkeys)
 
 	# Path3D tab
 	spinbox_separation_distance = scene_builder_dock.get_node("Settings/Tab/Path3D/Separation/SpinBox")
@@ -221,6 +224,9 @@ func _process(_delta: float) -> void:
 							quaternion = quaternion * Quaternion(Vector3(0, 0, 1), deg_to_rad(90))
 
 func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput:
+	if config.disable_hotkeys:
+		return EditorPlugin.AFTER_GUI_INPUT_PASS
+	
 	if event is InputEventMouseMotion:
 		if placement_mode_enabled:
 			var relative_motion: float
@@ -566,6 +572,13 @@ func update_world_3d() -> bool:
 		camera = null
 		set_parent_node(NodePath())
 		return false
+
+func disable_hotkeys() -> void:
+	config.disable_hotkeys = btn_disable_hotkeys.button_pressed
+	var config_path = SceneBuilderToolbox.find_resource_with_dynamic_path("scene_builder_config.tres")
+	if config_path != "":
+		ResourceSaver.save(config, config_path)
+		print("[SceneBuilderDock] Hotkeys ", "disabled" if btn_disable_hotkeys.button_pressed else "enabled")
 
 # ---- Helpers -----------------------------------------------------------------
 
