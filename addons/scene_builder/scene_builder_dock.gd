@@ -40,6 +40,11 @@ var spinbox_jitter_y: SpinBox
 var spinbox_jitter_z: SpinBox
 var spinbox_y_offset: SpinBox
 var btn_place_fence: Button
+# Snap
+var checkbox_snap_enabled: CheckButton
+var spinbox_translate_snap: SpinBox
+var spinbox_rotate_snap: SpinBox
+var spinbox_scale_snap: SpinBox
 
 # Indicators
 var lbl_indicator_x: Label
@@ -92,6 +97,10 @@ func is_transform_mode_enabled() -> bool:
 var pos_offset_x: float = 0
 var pos_offset_y: float = 0
 var pos_offset_z: float = 0
+var rot_offset_x: float = 0
+var rot_offset_y: float = 0
+var rot_offset_z: float = 0
+var scale_offset: float = 0
 var original_preview_position: Vector3 = Vector3.ZERO
 var original_preview_basis: Basis = Basis.IDENTITY
 var original_mouse_position: Vector2 = Vector2.ONE
@@ -156,27 +165,33 @@ func _enter_tree() -> void:
 	btn_surface_normal_y.button_group = btn_group_surface_orientation
 	btn_surface_normal_z.button_group = btn_group_surface_orientation
 	#
-	btn_find_world_3d = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/FindWorld3D")
-	btn_reload_all_items = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/ReloadAllItems")
-	btn_disable_hotkeys = scene_builder_dock.get_node("Settings/Tab/Options/Bottom/DisableHotkeys")
+	btn_find_world_3d = scene_builder_dock.get_node("%FindWorld3D")
+	btn_reload_all_items = scene_builder_dock.get_node("%ReloadAllItems")
+	btn_disable_hotkeys = scene_builder_dock.get_node("%DisableHotkeys")
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
 	btn_disable_hotkeys.pressed.connect(disable_hotkeys)
 
 	# Path3D tab
-	spinbox_separation_distance = scene_builder_dock.get_node("Settings/Tab/Path3D/Separation/SpinBox")
-	spinbox_jitter_x = scene_builder_dock.get_node("Settings/Tab/Path3D/Jitter/X")
-	spinbox_jitter_y = scene_builder_dock.get_node("Settings/Tab/Path3D/Jitter/Y")
-	spinbox_jitter_z = scene_builder_dock.get_node("Settings/Tab/Path3D/Jitter/Z")
-	spinbox_y_offset = scene_builder_dock.get_node("Settings/Tab/Path3D/YOffset/Value")
-	btn_place_fence = scene_builder_dock.get_node("Settings/Tab/Path3D/PlaceFence")
+	spinbox_separation_distance = scene_builder_dock.get_node("%Path3D/Separation/SpinBox")
+	spinbox_jitter_x = scene_builder_dock.get_node("%Path3D/Jitter/X")
+	spinbox_jitter_y = scene_builder_dock.get_node("%Path3D/Jitter/Y")
+	spinbox_jitter_z = scene_builder_dock.get_node("%Path3D/Jitter/Z")
+	spinbox_y_offset = scene_builder_dock.get_node("%Path3D/YOffset/Value")
+	btn_place_fence = scene_builder_dock.get_node("%Path3D/PlaceFence")
 	btn_place_fence.pressed.connect(place_fence)
 
+	# Setup snap controls
+	checkbox_snap_enabled = scene_builder_dock.get_node("%EnableSnap")
+	spinbox_translate_snap = scene_builder_dock.get_node("%TranslateSnap/SpinBox")
+	spinbox_rotate_snap = scene_builder_dock.get_node("%RotateSnap/SpinBox")
+	spinbox_scale_snap = scene_builder_dock.get_node("%ScaleSnap/SpinBox")
+
 	# Indicators
-	lbl_indicator_x = scene_builder_dock.get_node("Settings/Indicators/1")
-	lbl_indicator_y = scene_builder_dock.get_node("Settings/Indicators/2")
-	lbl_indicator_z = scene_builder_dock.get_node("Settings/Indicators/3")
-	lbl_indicator_scale = scene_builder_dock.get_node("Settings/Indicators/4")
+	lbl_indicator_x = scene_builder_dock.get_node("%Indicators/1")
+	lbl_indicator_y = scene_builder_dock.get_node("%Indicators/2")
+	lbl_indicator_z = scene_builder_dock.get_node("%Indicators/3")
+	lbl_indicator_scale = scene_builder_dock.get_node("%Indicators/4")
 
 	#endregion
 
@@ -214,6 +229,9 @@ func _process(_delta: float) -> void:
 					if selected_item.use_random_vertical_offset:
 						new_position.y += random_offset_y
 
+					if not btn_use_surface_normal.button_pressed:
+						new_position = snap_position_to_grid(new_position)
+
 					_instance.global_transform.origin = new_position
 					if btn_use_surface_normal.button_pressed:
 						_instance.basis = align_up(_instance.global_transform.basis, result.normal)
@@ -239,33 +257,66 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 			match current_transform_mode:
 				TransformMode.POSITION_X:
 					pos_offset_x += relative_motion
-					preview_instance.position.x = original_preview_position.x + pos_offset_x
+					var new_pos = original_preview_position + Vector3(pos_offset_x, 0, 0)
+					preview_instance.global_position  = snap_position_to_grid(new_pos)
 				TransformMode.POSITION_Y:
 					pos_offset_y += relative_motion
-					preview_instance.position.y = original_preview_position.y + pos_offset_y
+					var new_pos = original_preview_position + Vector3(0, pos_offset_y, 0)
+					preview_instance.global_position  = snap_position_to_grid(new_pos)
 				TransformMode.POSITION_Z:
 					pos_offset_z += relative_motion
-					preview_instance.position.z = original_preview_position.z + pos_offset_z
+					var new_pos = original_preview_position + Vector3(0, 0, pos_offset_z)
+					preview_instance.global_position  = snap_position_to_grid(new_pos)
 				TransformMode.ROTATION_X:
+					rot_offset_x += relative_motion
+					var snapped_offset = rot_offset_x
+					if checkbox_snap_enabled.button_pressed:
+						var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
+						snapped_offset = round(rot_offset_x / snap_radians) * snap_radians
+					snapped_offset = fmod(snapped_offset, TAU)
+					if snapped_offset < 0:
+						snapped_offset += TAU
 					if btn_use_local_space.button_pressed:
-						preview_instance.rotate_object_local(Vector3(1, 0, 0), relative_motion)
+						var local_quat = Quaternion(Vector3(1, 0, 0), snapped_offset)
+						preview_instance.basis = original_preview_basis * Basis(local_quat)
 					else:
-						preview_instance.rotate_x(relative_motion)
+						var global_quat = Quaternion(Vector3(1, 0, 0), snapped_offset)
+						preview_instance.basis = Basis(global_quat) * original_preview_basis
 				TransformMode.ROTATION_Y:
+					rot_offset_y += relative_motion
+					var snapped_offset = rot_offset_y
+					if checkbox_snap_enabled.button_pressed:
+						var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
+						snapped_offset = round(rot_offset_y / snap_radians) * snap_radians
+					snapped_offset = fmod(snapped_offset, TAU)
+					if snapped_offset < 0:
+						snapped_offset += TAU
 					if btn_use_local_space.button_pressed:
-						preview_instance.rotate_object_local(Vector3(0, 1, 0), relative_motion)
+						var local_quat = Quaternion(Vector3(0, 1, 0), snapped_offset)
+						preview_instance.basis = original_preview_basis * Basis(local_quat)
 					else:
-						preview_instance.rotate_y(relative_motion)
+						var global_quat = Quaternion(Vector3(0, 1, 0), snapped_offset)
+						preview_instance.basis = Basis(global_quat) * original_preview_basis
 				TransformMode.ROTATION_Z:
+					rot_offset_z += relative_motion
+					var snapped_offset = rot_offset_z
+					if checkbox_snap_enabled.button_pressed:
+						var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
+						snapped_offset = round(rot_offset_z / snap_radians) * snap_radians
+					snapped_offset = fmod(snapped_offset, TAU)
+					if snapped_offset < 0:
+						snapped_offset += TAU
 					if btn_use_local_space.button_pressed:
-						preview_instance.rotate_object_local(Vector3(0, 0, 1), relative_motion)
+						var local_quat = Quaternion(Vector3(0, 0, 1), snapped_offset)
+						preview_instance.basis = original_preview_basis * Basis(local_quat)
 					else:
-						preview_instance.rotate_z(relative_motion)
+						var global_quat = Quaternion(Vector3(0, 0, 1), snapped_offset)
+						preview_instance.basis = Basis(global_quat) * original_preview_basis
 				TransformMode.SCALE:
-					var new_scale: Vector3 = preview_instance.scale * (1 + relative_motion)
-					if is_zero_approx(new_scale.x) or is_zero_approx(new_scale.y) or is_zero_approx(new_scale.z):
-						new_scale = original_preview_scale
-					preview_instance.scale = new_scale
+					scale_offset += relative_motion
+					scale_offset = clamp(scale_offset, -0.95, 20.0)
+					var new_scale: Vector3 = original_preview_scale * (1 + scale_offset)
+					preview_instance.scale = snap_scale_to_grid(new_scale)
 
 	if event is InputEventMouseButton:
 		if event.is_pressed() and !event.is_echo():
@@ -278,7 +329,6 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						if event.button_index == MOUSE_BUTTON_LEFT:
 
 							if is_transform_mode_enabled():
-								# Confirm changes
 								original_preview_basis = preview_instance.basis
 								original_preview_scale = preview_instance.scale
 								end_transform_mode()
@@ -741,11 +791,15 @@ func instantiate_selected_item_at_position() -> void:
 		var new_position: Vector3 = result.position
 		if selected_item.use_random_vertical_offset:
 			new_position.y += random_offset_y
-
-		instance.global_transform.origin = new_position
-		instance.position += Vector3(pos_offset_x, pos_offset_y, pos_offset_z)
-		print("[SceneBuilderDock] pos_offset_y: ", pos_offset_y)
-		instance.basis = preview_instance.basis
+		
+		var preview_global_position = preview_instance.global_position
+		var preview_global_rotation = preview_instance.global_rotation
+		var preview_scale = preview_instance.scale
+		
+		instance.global_position = preview_global_position
+		instance.global_rotation = preview_global_rotation
+		instance.scale = preview_scale
+		
 
 		undo_redo.create_action("Instantiate selected item")
 		undo_redo.add_undo_method(scene_root, "remove_child", instance)
@@ -776,8 +830,8 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	query.exclude = exclude_rids
 	return physics_space.intersect_ray(query)
 
-## This function prevents us from trying to raycast against our preview item.
 func populate_preview_instance_rid_array(instance: Node) -> void:
+	# This function prevents us from trying to raycast against our preview item.
 	if instance is PhysicsBody3D:
 		preview_instance_rid_array.append(instance.get_rid())
 
@@ -976,6 +1030,10 @@ func reroll_preview_instance_transform() -> void:
 	pos_offset_x = 0
 	pos_offset_y = 0
 	pos_offset_z = 0
+	rot_offset_x = 0
+	rot_offset_y = 0
+	rot_offset_z = 0
+	scale_offset = 0
 
 func select_item(collection_name: String, item_name: String) -> void:
 	end_placement_mode()
@@ -1044,13 +1102,24 @@ func start_transform_mode(mode: TransformMode) -> void:
 	
 	match mode:
 		TransformMode.POSITION_X, TransformMode.POSITION_Y, TransformMode.POSITION_Z:
-			original_preview_position = preview_instance.position
+			original_preview_position = preview_instance.global_position
 		TransformMode.ROTATION_X, TransformMode.ROTATION_Y, TransformMode.ROTATION_Z:
-			original_preview_basis = preview_instance.basis
+			if checkbox_snap_enabled.button_pressed:
+				var current_rotation = preview_instance.basis.get_euler()
+				var snapped_rotation = snap_rotation_to_grid(current_rotation)
+				preview_instance.rotation = snapped_rotation
+				original_preview_basis = preview_instance.basis
+			else:
+				original_preview_basis = preview_instance.basis
+			rot_offset_x = 0
+			rot_offset_y = 0
+			rot_offset_z = 0
 		TransformMode.SCALE:
 			original_preview_scale = preview_instance.scale
+			scale_offset = 0
 	
 	reset_indicators()
+	
 	match mode:
 		TransformMode.POSITION_X, TransformMode.ROTATION_X:
 			lbl_indicator_x.self_modulate = Color.GREEN
@@ -1098,9 +1167,47 @@ func get_instance_from_path(_uid: String) -> Node3D:
 func update_config(_config: SceneBuilderConfig) -> void:
 	config = _config
 
-
 func reset_indicators() -> void:
 	lbl_indicator_x.self_modulate = Color.WHITE
 	lbl_indicator_y.self_modulate = Color.WHITE
 	lbl_indicator_z.self_modulate = Color.WHITE
 	lbl_indicator_scale.self_modulate = Color.WHITE
+
+func snap_position_to_grid(position: Vector3) -> Vector3:
+	if !checkbox_snap_enabled.button_pressed:
+		return position
+	if btn_use_local_space.button_pressed:
+		print("Snapping is disabled when local space is enabled")
+		return position
+	var snap_size = spinbox_translate_snap.value
+	return Vector3(
+		round(position.x / snap_size) * snap_size,
+		round(position.y / snap_size) * snap_size,
+		round(position.z / snap_size) * snap_size
+	)
+
+func snap_rotation_to_grid(rotation: Vector3) -> Vector3:
+	if !checkbox_snap_enabled.button_pressed:
+		return rotation
+	if btn_use_local_space.button_pressed:
+		print("Snapping is disabled when local space is enabled")
+		return rotation
+	var snap_radians = deg_to_rad(spinbox_rotate_snap.value)
+	return Vector3(
+		round(rotation.x / snap_radians) * snap_radians,
+		round(rotation.y / snap_radians) * snap_radians,
+		round(rotation.z / snap_radians) * snap_radians
+	)
+
+func snap_scale_to_grid(scale: Vector3) -> Vector3:
+	if !checkbox_snap_enabled.button_pressed:
+		return scale
+	if btn_use_local_space.button_pressed:
+		print("Snapping is disabled when local space is enabled")
+		return scale
+	var snap_amount = spinbox_scale_snap.value / 100.0
+	return Vector3(
+		round(scale.x / snap_amount) * snap_amount,
+		round(scale.y / snap_amount) * snap_amount,
+		round(scale.z / snap_amount) * snap_amount
+	)

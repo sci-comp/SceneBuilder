@@ -15,12 +15,11 @@ corner_radius_bottom_left = 8
 
 [node name="Scene Builder" type="VBoxContainer"]
 custom_minimum_size = Vector2(352, 0)
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = -800.0
-grow_horizontal = 2
+offset_right = 348.0
 grow_vertical = 2
+size_flags_vertical = 3
 
 [node name="Collection" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -551,9 +550,10 @@ layout_mode = 2
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 0
+current_tab = 2
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -629,22 +629,26 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="FindWorld3D" type="Button" parent="Settings/Tab/Options/Bottom"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Find world 3d"
 
 [node name="ReloadAllItems" type="Button" parent="Settings/Tab/Options/Bottom"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Reload items"
 
 [node name="DisableHotkeys" type="CheckButton" parent="Settings/Tab/Options/Bottom"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Disable 
 Hotkeys"
 
 [node name="Path3D" type="VBoxContainer" parent="Settings/Tab"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
@@ -704,10 +708,84 @@ suffix = "deg"
 layout_mode = 2
 text = "Place Fence"
 
+[node name="Snap" type="VBoxContainer" parent="Settings/Tab"]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Settings/Tab/Snap"]
+layout_mode = 2
+
+[node name="Left" type="VBoxContainer" parent="Settings/Tab/Snap/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 7
+size_flags_vertical = 5
+
+[node name="EnableSnap" type="CheckButton" parent="Settings/Tab/Snap/HBoxContainer/Left"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Enable"
+
+[node name="Right" type="VBoxContainer" parent="Settings/Tab/Snap/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 7
+size_flags_vertical = 5
+
+[node name="TranslateSnap" type="HBoxContainer" parent="Settings/Tab/Snap/HBoxContainer/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 5
+
+[node name="Label" type="Label" parent="Settings/Tab/Snap/HBoxContainer/Right/TranslateSnap"]
+layout_mode = 2
+text = "Translation"
+
+[node name="SpinBox" type="SpinBox" parent="Settings/Tab/Snap/HBoxContainer/Right/TranslateSnap"]
+layout_mode = 2
+min_value = 0.1
+max_value = 1000.0
+step = 0.1
+value = 1.0
+suffix = "m"
+
+[node name="RotateSnap" type="HBoxContainer" parent="Settings/Tab/Snap/HBoxContainer/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 5
+
+[node name="Label" type="Label" parent="Settings/Tab/Snap/HBoxContainer/Right/RotateSnap"]
+layout_mode = 2
+text = "Rotation"
+
+[node name="SpinBox" type="SpinBox" parent="Settings/Tab/Snap/HBoxContainer/Right/RotateSnap"]
+layout_mode = 2
+min_value = 1.0
+max_value = 360.0
+value = 15.0
+suffix = "deg"
+
+[node name="ScaleSnap" type="HBoxContainer" parent="Settings/Tab/Snap/HBoxContainer/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 5
+
+[node name="Label" type="Label" parent="Settings/Tab/Snap/HBoxContainer/Right/ScaleSnap"]
+layout_mode = 2
+text = "Scale"
+
+[node name="SpinBox" type="SpinBox" parent="Settings/Tab/Snap/HBoxContainer/Right/ScaleSnap"]
+layout_mode = 2
+min_value = 0.1
+step = 0.1
+value = 10.0
+suffix = "%"
+
 [node name="VSeparator" type="VSeparator" parent="Settings"]
 layout_mode = 2
 
 [node name="Indicators" type="VBoxContainer" parent="Settings"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 
