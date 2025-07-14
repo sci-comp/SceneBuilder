@@ -774,27 +774,32 @@ func load_items_from_collection_folder_on_disk(_collection_name: String):
 
 	var items = {}
 	var ordered_item_keys = []
+	var file_paths = []  #
 
 	var dir = DirAccess.open(config.root_dir + _collection_name)
 	if dir:
 		dir.list_dir_begin()
 		var item_filename = dir.get_next()
+		
+		# First pass: collect file paths and queue threaded requests
 		while item_filename != "":
 			var item_path = config.root_dir + _collection_name + "/" + item_filename
-			var resource = ResourceLoader.load(item_path, "Resource", 0)
+			file_paths.append(item_path)
+			ResourceLoader.load_threaded_request(item_path, "Resource", false, 1)
+			item_filename = dir.get_next()
+		
+		dir.list_dir_end()
+		
+		# Second pass: retrieve loaded resources
+		for item_path in file_paths:
+			var resource = ResourceLoader.load_threaded_get(item_path)
 			if resource and resource is SceneBuilderItem:
 				var scene_builder_item: SceneBuilderItem = resource
-
-				print("[SceneBuilderDock] Loaded item: ", item_filename)
-
+				#print("[SceneBuilderDock] Loaded item: ", item_path.get_file())
 				items[scene_builder_item.item_name] = scene_builder_item
 				ordered_item_keys.append(scene_builder_item.item_name)
 			else:
 				print("[SceneBuilderDock] The resource is not a SceneBuilderItem or failed to load, item_path: ", item_path)
-			
-			item_filename = dir.get_next()
-		
-		dir.list_dir_end()
 
 	items_by_collection[_collection_name] = items
 	ordered_keys_by_collection[_collection_name] = ordered_item_keys
