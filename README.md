@@ -1,4 +1,4 @@
-![logo](./Documentation/Image/catlogo.jpg)
+![logo](./Documentation/Image/SBIcon.png)
 
 # Scene Build & Productivity Commands for Godot 4.4+
 
@@ -192,6 +192,8 @@ To exit scale mode: left click to apply or right-click to cancel and restore the
 ## Contributors
 
 Scene Builder is made by Paul Hill, with help from contributions, who can be found [here](https://github.com/sci-comp/scene-builder/graphs/contributors).
+
+The icon was made by Hano.
 
 ## License
 
