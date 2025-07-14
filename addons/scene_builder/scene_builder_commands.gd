@@ -10,7 +10,6 @@ enum SceneCommands
 {
 	alphabetize_nodes = 1,
 	change_places = 8,
-	create_audio_stream_player_3d = 9,
 	create_scene_builder_items = 10,
 	create_standard_material_3d = 12,
 	fix_negative_scaling = 20,
@@ -24,7 +23,9 @@ enum SceneCommands
 	select_children = 70,
 	select_parents = 71,
 	set_visibility = 75,
-	swap_nodes = 80
+	swap_nodes = 80,
+	create_audio_stream_player_3d = 90,
+	add_streams_to_randomizer = 91
 }
 
 func _unhandled_input(event: InputEvent):
@@ -77,6 +78,7 @@ func _enter_tree():
 	submenu_scene = PopupMenu.new()
 	submenu_scene.connect("id_pressed", Callable(self, "_on_scene_submenu_item_selected"))
 	add_tool_submenu_item("Scene Builder", submenu_scene)
+	submenu_scene.add_item("Add audio streams to randomizer", SceneCommands.add_streams_to_randomizer)
 	submenu_scene.add_item("Alphabetize nodes", SceneCommands.alphabetize_nodes)
 	submenu_scene.add_item("Change places", SceneCommands.change_places)
 	submenu_scene.add_item("Create audio stream player 3d", SceneCommands.create_audio_stream_player_3d)
@@ -99,6 +101,8 @@ func _exit_tree():
 
 func _on_scene_submenu_item_selected(id: int):
 	match id:
+		SceneCommands.add_streams_to_randomizer:
+			add_streams_to_randomizer()
 		SceneCommands.alphabetize_nodes:
 			alphabetize_nodes()
 		SceneCommands.change_places:
@@ -134,6 +138,10 @@ func _on_scene_submenu_item_selected(id: int):
 		SceneCommands.swap_nodes:
 			swap_nodes()
 
+func add_streams_to_randomizer():
+	var _instance = preload("./Commands/add_streams_to_randomizer.gd").new()
+	_instance.execute()
+	
 func alphabetize_nodes():
 	var _instance = preload("./Commands/alphabetize_nodes.gd").new()
 	_instance.execute()
