@@ -440,6 +440,7 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 					end_placement_mode()
 
 			if placement_mode_enabled:
+
 				if event.shift_pressed:
 					if event.keycode == KEY_LEFT:
 						select_previous_item()
@@ -451,6 +452,12 @@ func forward_3d_gui_input(_camera: Camera3D, event: InputEvent) -> AfterGUIInput
 						select_previous_collection()
 					elif event.keycode == KEY_RIGHT:
 						select_next_collection()
+				
+				elif event.keycode == KEY_BRACKETLEFT:
+					preview_instance.rotate_y(deg_to_rad(-90))
+				
+				elif event.keycode == KEY_BRACKETRIGHT:
+					preview_instance.rotate_y(deg_to_rad(90))
 
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
 

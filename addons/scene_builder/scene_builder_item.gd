@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name SceneBuilderItem
 
@@ -25,3 +26,10 @@ class_name SceneBuilderItem
 # Scale
 @export var random_scale_min: float = 0.9
 @export var random_scale_max: float = 1.1
+
+@export_tool_button("Delete resource") var delete = delete_res
+
+func delete_res():
+	print("Deleting ", resource_path)
+	if len(resource_path) != 0:
+		DirAccess.remove_absolute(resource_path)
