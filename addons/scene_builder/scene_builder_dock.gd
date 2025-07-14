@@ -501,6 +501,13 @@ func select_collection(tab_index: int) -> void:
 			printerr("Missing collection folder: " + selected_collection_name)
 
 func on_item_icon_clicked(_button_name: String) -> void:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		var item = selected_collection[_button_name]
+		EditorInterface.edit_resource(item)
+		var tabs = EditorInterface.get_inspector().get_parent().get_parent() as TabContainer
+		tabs.current_tab = tabs.get_tab_idx_from_control(EditorInterface.get_inspector().get_parent())
+		return
+	
 	if !update_world_3d():
 		return
 
@@ -578,7 +585,11 @@ func reload_all_items() -> void:
 				texture_button.ignore_texture_size = true
 				texture_button.stretch_mode = TextureButton.STRETCH_SCALE
 				texture_button.custom_minimum_size = Vector2(80, 80)
-				texture_button.pressed.connect(on_item_icon_clicked.bind(item.item_name))
+				#texture_button.pressed.connect(on_item_icon_clicked.bind(item.item_name))
+				texture_button.pressed.connect(on_item_icon_clicked.bind(key))
+				texture_button.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+				texture_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
+				
 				grid_container.add_child(texture_button)
 
 				var nine_patch: NinePatchRect = NinePatchRect.new()
