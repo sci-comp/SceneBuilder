@@ -32,7 +32,7 @@ var btn_parent_node_selector: Button
 var btn_group_surface_orientation: ButtonGroup
 var btn_find_world_3d: Button
 var btn_reload_all_items: Button
-var btn_disable_hotkeys: CheckButton
+var btn_force_root_node: CheckButton
 # Path3D
 var spinbox_separation_distance: SpinBox
 var spinbox_jitter_x: SpinBox
@@ -45,6 +45,8 @@ var checkbox_snap_enabled: CheckButton
 var spinbox_translate_snap: SpinBox
 var spinbox_rotate_snap: SpinBox
 var spinbox_scale_snap: SpinBox
+# Misc
+var btn_disable_hotkeys: CheckButton
 
 # Indicators
 var lbl_indicator_x: Label
@@ -168,9 +170,10 @@ func _enter_tree() -> void:
 	btn_find_world_3d = scene_builder_dock.get_node("%FindWorld3D")
 	btn_reload_all_items = scene_builder_dock.get_node("%ReloadAllItems")
 	btn_disable_hotkeys = scene_builder_dock.get_node("%DisableHotkeys")
+	btn_force_root_node = scene_builder_dock.get_node("%ForceRootNode")
 	btn_find_world_3d.pressed.connect(update_world_3d)
 	btn_reload_all_items.pressed.connect(reload_all_items)
-	btn_disable_hotkeys.pressed.connect(disable_hotkeys)
+	btn_force_root_node.toggled.connect(on_force_root_toggled)
 
 	# Path3D tab
 	spinbox_separation_distance = scene_builder_dock.get_node("%Path3D/Separation/SpinBox")
@@ -186,6 +189,9 @@ func _enter_tree() -> void:
 	spinbox_translate_snap = scene_builder_dock.get_node("%TranslateSnap/SpinBox")
 	spinbox_rotate_snap = scene_builder_dock.get_node("%RotateSnap/SpinBox")
 	spinbox_scale_snap = scene_builder_dock.get_node("%ScaleSnap/SpinBox")
+
+	# Misc
+	btn_disable_hotkeys.pressed.connect(disable_hotkeys)
 
 	# Indicators
 	lbl_indicator_x = scene_builder_dock.get_node("%Indicators/1")
@@ -516,12 +522,25 @@ func on_item_icon_clicked(_button_name: String) -> void:
 	elif selected_item_name != _button_name:
 		select_item(selected_collection_name, _button_name)
 
+var previous_parent_node: Node3D = null
+func on_force_root_toggled(pressed: bool) -> void:
+	if pressed:
+		if selected_parent_node:
+			previous_parent_node = selected_parent_node
+		set_parent_node(NodePath())
+	else:
+		if previous_parent_node and previous_parent_node != scene_root:
+			set_parent_node(scene_root.get_path_to(previous_parent_node))
+		else:
+			set_parent_node(NodePath())
+
 func set_parent_node(node_path: NodePath) -> void:
 	if not scene_root:
-			return
+		return
 	
-	# If no path provided, set to scene root
-	if node_path.is_empty() or str(node_path) == "":
+	# Force root node or empty path both default to scene root
+	print("btn_force_root_node.button_pressed: ", btn_force_root_node.button_pressed)
+	if btn_force_root_node.button_pressed or node_path.is_empty() or str(node_path) == "":
 		selected_parent_node = scene_root
 		if scene_root:
 			var node_name := scene_root.get_class().split(".")[-1]
@@ -536,6 +555,7 @@ func set_parent_node(node_path: NodePath) -> void:
 		return
 
 	selected_parent_node = scene_root.get_node(node_path)
+	previous_parent_node = selected_parent_node
 	if not selected_parent_node:
 		# Fall back to scene root if path not found
 		selected_parent_node = scene_root

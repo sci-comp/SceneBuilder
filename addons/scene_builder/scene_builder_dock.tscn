@@ -550,10 +550,9 @@ layout_mode = 2
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 2
+current_tab = 0
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -606,16 +605,33 @@ layout_mode = 2
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Settings/Tab/Options/ParentNode"]
+[node name="lblParentNode" type="Label" parent="Settings/Tab/Options/ParentNode"]
+custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
-text = "Parent node"
+size_flags_horizontal = 3
+text = "Parent"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ParentNodeSelector" type="Button" parent="Settings/Tab/Options/ParentNode"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "(root)"
 text_overrun_behavior = 3
+
+[node name="ForceRootNode" type="CheckButton" parent="Settings/Tab/Options/ParentNode"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Force Root"
+
+[node name="EmptySpace2" type="Label" parent="Settings/Tab/Options/ParentNode"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="HSeparator" type="HSeparator" parent="Settings/Tab/Options"]
 layout_mode = 2
@@ -639,13 +655,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Reload items"
-
-[node name="DisableHotkeys" type="CheckButton" parent="Settings/Tab/Options/Bottom"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-text = "Disable 
-Hotkeys"
 
 [node name="Path3D" type="VBoxContainer" parent="Settings/Tab"]
 unique_name_in_owner = true
@@ -709,6 +718,7 @@ layout_mode = 2
 text = "Place Fence"
 
 [node name="Snap" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -780,6 +790,19 @@ min_value = 0.1
 step = 0.1
 value = 10.0
 suffix = "%"
+
+[node name="Misc" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="DisableHotkeys" type="CheckButton" parent="Settings/Tab/Misc"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Disable 
+Hotkeys"
 
 [node name="VSeparator" type="VSeparator" parent="Settings"]
 layout_mode = 2
