@@ -550,9 +550,10 @@ layout_mode = 2
 [node name="Tab" type="TabContainer" parent="Settings"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-current_tab = 0
+current_tab = 2
 
 [node name="Options" type="VBoxContainer" parent="Settings/Tab"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -718,7 +719,6 @@ layout_mode = 2
 text = "Place Fence"
 
 [node name="Snap" type="VBoxContainer" parent="Settings/Tab"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -735,7 +735,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-text = "Enable"
+text = "Snap"
 
 [node name="Right" type="VBoxContainer" parent="Settings/Tab/Snap/HBoxContainer"]
 layout_mode = 2
@@ -790,6 +790,54 @@ min_value = 0.1
 step = 0.1
 value = 10.0
 suffix = "%"
+
+[node name="EnablePlane" type="CheckButton" parent="Settings/Tab/Snap"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Plane"
+
+[node name="Plane" type="HBoxContainer" parent="Settings/Tab/Snap"]
+layout_mode = 2
+
+[node name="Spacer" type="Label" parent="Settings/Tab/Snap/Plane"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="lblYPosLabel" type="Label" parent="Settings/Tab/Snap/Plane"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Y Pos"
+
+[node name="PlaneYPosition" type="SpinBox" parent="Settings/Tab/Snap/Plane"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+suffix = "m"
+
+[node name="lblInteractionMode" type="Label" parent="Settings/Tab/Snap/Plane"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlaneMode" type="OptionButton" parent="Settings/Tab/Snap/Plane"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+selected = 0
+item_count = 3
+popup/item_0/text = "Prefer colliders"
+popup/item_0/id = 0
+popup/item_1/text = "Closest wins"
+popup/item_1/id = 1
+popup/item_2/text = "Ignore colliders"
+popup/item_2/id = 2
+
+[node name="Spacer2" type="Label" parent="Settings/Tab/Snap/Plane"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Misc" type="VBoxContainer" parent="Settings/Tab"]
 visible = false

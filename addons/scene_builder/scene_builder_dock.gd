@@ -45,6 +45,9 @@ var checkbox_snap_enabled: CheckButton
 var spinbox_translate_snap: SpinBox
 var spinbox_rotate_snap: SpinBox
 var spinbox_scale_snap: SpinBox
+var btn_enable_plane: CheckButton
+var option_plane_mode: OptionButton  
+var spinbox_plane_y_pos: SpinBox
 # Misc
 var btn_disable_hotkeys: CheckButton
 
@@ -189,7 +192,10 @@ func _enter_tree() -> void:
 	spinbox_translate_snap = scene_builder_dock.get_node("%TranslateSnap/SpinBox")
 	spinbox_rotate_snap = scene_builder_dock.get_node("%RotateSnap/SpinBox")
 	spinbox_scale_snap = scene_builder_dock.get_node("%ScaleSnap/SpinBox")
-
+	btn_enable_plane = scene_builder_dock.get_node("%EnablePlane")
+	option_plane_mode = scene_builder_dock.get_node("%PlaneMode") 
+	spinbox_plane_y_pos = scene_builder_dock.get_node("%PlaneYPosition")
+	
 	# Misc
 	btn_disable_hotkeys.pressed.connect(disable_hotkeys)
 
@@ -222,7 +228,7 @@ func _process(_delta: float) -> void:
 			if preview_instance:
 				populate_preview_instance_rid_array(preview_instance)
 			var result = perform_raycast_with_exclusion(preview_instance_rid_array)
-			if result and result.collider:
+			if result and result.position:
 				var _preview_item = scene_root.get_node_or_null("SceneBuilderTemp")
 				if _preview_item and _preview_item.get_child_count() > 0:
 					var _instance: Node3D = _preview_item.get_child(0)
@@ -822,7 +828,7 @@ func instantiate_selected_item_at_position() -> void:
 	populate_preview_instance_rid_array(preview_instance)
 	var result = perform_raycast_with_exclusion(preview_instance_rid_array)
 
-	if result and result.collider:
+	if result and result.position:
 		var instance = get_instance_from_path(selected_item.uid)
 		if selected_parent_node:
 			selected_parent_node.add_child(instance)
@@ -871,7 +877,41 @@ func perform_raycast_with_exclusion(exclude_rids: Array = []) -> Dictionary:
 	query.from = origin
 	query.to = end
 	query.exclude = exclude_rids
-	return physics_space.intersect_ray(query)
+	
+	var collision_result = physics_space.intersect_ray(query)
+	
+	if not btn_enable_plane.button_pressed:
+		return collision_result
+	
+	# Calculate plane intersection
+	var plane = Plane(Vector3.UP, spinbox_plane_y_pos.value)
+	var ray_direction = (end - origin).normalized()
+	var plane_intersection = plane.intersects_ray(origin, ray_direction)
+	var plane_result = {}
+	plane_result.position = plane_intersection
+
+	if plane_result.position == null:
+		printerr("[SceneBuilderDocl] plane_result.position == null")
+		return collision_result
+	
+	match option_plane_mode.selected:
+		0: # Prefer colliders
+			if collision_result and collision_result.position:
+				return collision_result
+			return plane_result
+		1: # Closest wins
+			if collision_result and collision_result.position:
+				var collision_distance = (collision_result.position - origin).length_squared()
+				var plane_distance = (plane_result.position - origin).length_squared()
+				if collision_distance < plane_distance:
+					return collision_result
+			return plane_result
+		2: # Ignore colliders
+			if collision_result and "collider" in collision_result:
+				plane_result["collider"] = collision_result["collider"]
+			return plane_result
+			
+	return plane_result
 
 func populate_preview_instance_rid_array(instance: Node) -> void:
 	# This function prevents us from trying to raycast against our preview item.
