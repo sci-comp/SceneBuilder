@@ -59,9 +59,10 @@ Scattering large numbers of objects, often with help from multi-mesh instances, 
 
 #### Grid Snapping
 
-Grid snapping is currently out of scope due to the existence of [GridMap](https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html). GridMap is a fantastic tool built directly into Godot.
+Grid snapping is included, see the section on snapping for more information.
 
-(Edit: actually, this might be worth considering?)
+[!TIP]
+[GridMap](https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html) is a fantastic tool built directly into Godot. GridMap offers different features and may be worth considering for your project.
 
 ---
 
@@ -80,9 +81,15 @@ Implementation details: Scene builder is logically divided into two main parts: 
 
 ---
 
+## Configuration
+
+Scene Builder's behavior can be customized through the configuration file at `res://addons/scene_builder/scene_builder_config.tres`:
+
 ## Shortcuts
 
 With an item selected in the dock,
+
+### Placement Mode Shortcuts
 
 - Enter x rotation mode: 1
 - Enter y rotation mode: 2
@@ -92,9 +99,16 @@ With an item selected in the dock,
 - Enter z offset mode: Shift + 3
 - Enter scale mode: 4
 - Reset orientation: 5
+- Rotate by +/- 90 degrees: `[` and `]`
 - Select previous/next items by pressing: Shift + Left/Right Arrow
 - Select previous/next category by pressing: Alt + Left/Right Arrow
 - Exit placement mode: Escape
+
+### Navigation Shortcuts
+
+- Select children: Ctrl + Right Arrow
+- Select parents: Ctrl + Left Arrow
+- Right-click an item icon to quick-access its resource file
 
 ### The Alt Key
 
@@ -165,6 +179,13 @@ To exit placement mode, we may click the highlighted icon or press the escape ke
 
 When placement mode is active, an item preview is created in the current edited scene. The preview node will have a parent node named "SceneBuilderTemp." We may safely delete this node when we are done, while the item preview node will be automatically clear when exiting placement mode.
 
+#### Parent Node Selection
+By default, new items are instantiated as children of the scene root. Use the parent node selector to:
+
+- Drag and drop a node from the scene tree to set it as the parent
+- Click the button to clear selection and return to scene root  
+- Enable "Force Root" to always use the scene root regardless of selection
+
 #### Use Surface Normal
 
 Instantiated items will align their Y axis with the specified orientation when the checkbox "Surface normal" is toggled on.
@@ -188,6 +209,42 @@ Press `4` to enter scale mode.
 Scale mode works similarly to rotation mode.
 
 To exit scale mode: left click to apply or right-click to cancel and restore the original values.
+
+### Snap Mode
+
+Snapping only works in world space.
+
+> [!NOTE]
+Snapping is disabled when "Use Local Space" is enabled in Godot's 3D toolbar.
+
+#### Grid Size
+
+When Snap is enabled, the Translation, Rotation, and Scale settings used.
+
+#### Plane Mode
+
+Enable plane mode to place objects on an invisible horizontal plane:
+
+- **Y Position** - Set the height of the placement plane
+- Interaction Modes:
+  - **Prefer Colliders** - Use colliders when available, fall back to plane
+  - **Closest Wins** - Use whichever surface (collider or plane) is closer
+  - **Ignore Colliders** - Always use the plane, ignore collision surfaces
+
+### Path3D Mode
+
+Scene Builder can automatically place items along Path3D curves.
+
+This feature was designed with fences in mind, but it might be useful in other ways. To use,
+
+1. Select a Path3D node in your scene
+2. Choose a collection with fence-like items of equal width
+3. Configure placement settings:
+   - **Separation Distance** - Spacing between placed items
+   - **Jitter** - Random rotation variance on X, Y, Z axes
+   - **Y-Offset** - Additional rotation around the path direction
+4. Click "Place Fence" to populate the path
+5. (Optional) Once the items have been instantiated, you can delete the Path3D
 
 ## Contributors
 
