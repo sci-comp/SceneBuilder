@@ -61,7 +61,7 @@ Scattering large numbers of objects, often with help from multi-mesh instances, 
 
 Grid snapping is included, see the section on snapping for more information.
 
-[!TIP]
+[!NOTE]
 [GridMap](https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html) is a fantastic tool built directly into Godot. GridMap offers different features and may be worth considering for your project.
 
 ---
